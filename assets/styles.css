@@ -323,7 +323,6 @@ p:last-child{ margin-bottom:0; }
 @media (max-width:720px){
   .status-bar__avail{ margin-left:0; }
   .status-bar__sep{ display:none; }
-  .status-bar__folio{ display:none; }
 }
 
 .site-head{
@@ -880,6 +879,19 @@ details.qa[open] summary{ font-weight:500; }
   margin-bottom:.3rem;
 }
 .contact__ways dd{ margin:0 0 1.1rem; }
+
+.contact__how{
+  font-size:clamp(1.7rem,3.4vw,2.5rem);
+  font-weight:500;
+  margin:0 0 1rem;
+}
+.contact__actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.85rem;
+  align-items:center;
+  margin-top:1.75rem;
+}
 
 .form{ display:flex; flex-direction:column; gap:1.1rem; }
 .form__row{

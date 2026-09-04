@@ -16,7 +16,7 @@
 <meta property="og:image" content="https://snehajain.co.uk/assets/img/og.png">
 <meta name="twitter:card" content="summary_large_image">
 
-<link rel="icon" href="assets/img/logo-dark.png" type="image/png">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 
 <link rel="preconnect" href="https://use.typekit.net" crossorigin>
 <link rel="stylesheet" href="https://use.typekit.net/yhu7ntr.css">
@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,300..600;1,300..600&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="assets/styles.css?v=4">
+<link rel="stylesheet" href="assets/styles.css?v=5">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -32,8 +32,6 @@
 <!-- HEADER, PLACEHOLDER. Replace this whole block when the new design lands. -->
 <div class="status-bar" id="top">
   <div class="wrap status-bar__inner">
-    <span class="status-bar__folio">Sneha Jain, brand &amp; packaging</span>
-    <span class="status-bar__sep">/</span>
     <span id="clock">&nbsp;</span>
     <span class="status-bar__sep">/</span>
     <span>Based in Southampton</span>
@@ -94,16 +92,27 @@
           </dl>
         </div>
 
-        <form class="form reveal" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-          <div class="form__row">
-            <label><span>Your name</span><input type="text" name="name" autocomplete="name" required></label>
-            <label><span>Email</span><input type="email" name="email" autocomplete="email" required></label>
+        <div class="reveal">
+          <h2 class="contact__how">No form to fill in.</h2>
+          <p>Two lines is genuinely enough to start. Whichever route you pick lands with me
+            directly, and I reply within two working days.</p>
+
+          <div class="contact__actions">
+            <a class="btn btn--solid" href="mailto:designspacebysj@gmail.com?subject=Project%20enquiry">Email me <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <a class="btn btn--ghost" href="https://www.instagram.com/snehajain.design" rel="me noopener" target="_blank">DM on Instagram</a>
           </div>
-          <label><span>Your product, in two lines</span><textarea name="message" rows="5" required></textarea></label>
-          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" class="hp">
-          <button type="submit" class="btn btn--solid">Send <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          <p class="form__note">The form needs a Formspree ID before it will deliver. Until then, email works.</p>
-        </form>
+
+          <!-- TALLY FORM, ready to switch on.
+               Sneha uses Tally and does not want a form embedded in the page, so this
+               links out to one instead. Make a Tally form with only the fields you want
+               for website enquiries, then paste its share link in place of
+               YOUR_TALLY_LINK below and delete these two comment markers.
+
+          <div class="contact__actions" style="margin-top:1rem">
+            <a class="btn btn--yellow" href="YOUR_TALLY_LINK" rel="noopener" target="_blank">Fill in the short brief <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+          </div>
+          -->
+        </div>
       </div>
     </div>
   </section>

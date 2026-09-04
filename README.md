@@ -43,7 +43,7 @@ The oversized name that used to sit under the header has been removed.
 
 ## After editing the stylesheet, bump the version
 
-Every page links the stylesheet as `assets/styles.css?v=4`. Browsers cache CSS hard,
+Every page links the stylesheet as `assets/styles.css?v=5`. Browsers cache CSS hard,
 and a stale copy against new markup breaks the page rather than merely dating it.
 Raising that number in all eleven HTML files forces every browser to fetch
 the new file. Nothing else depends on it.
@@ -100,13 +100,37 @@ the other six backgrounds and roughly eighty graphics, is deliberately unused.
 
 | File | Where it appears |
 | --- | --- |
-| `logo-dark.png`, `logo-cream.png` | Header lockup and favicon. The cream version swaps in for dark mode |
+| `logo-dark.png`, `logo-cream.png` | The header mark. The cream version swaps in for dark mode |
+| `favicon.svg` | Browser tab icon. Generated, see below |
 | `bg-stripes.png` | Ground for the intro, how I work and services FAQ sections |
 | `bg-dark.png` | Texture behind the closing band |
 | `mark-dots.png` | Separator in the scrolling strip |
 | `mark-braces.png` | Beside the pull quote on About |
 | `mark-diamond.png`, `mark-heart.png` | Copied but not yet placed |
 | `card-front.png`, `card-back.png` | Copied but not yet placed |
+
+## The favicon is generated, not a raw logo file
+
+The logo mark is portrait, roughly 1136 by 1783. Pointing a favicon straight at it
+made browsers squash it into their square slot, which stretched it. `assets/img/favicon.svg`
+now holds the cream mark centred on a coffee tile at its true proportions, with the PNG
+embedded so the icon needs no second request.
+
+If the logo art ever changes, regenerate it rather than editing by hand. The mark is
+placed at 40 units tall inside a 64 unit square, and its width follows the source
+aspect ratio.
+
+## Enquiries go out to Tally, not to a form on the site
+
+There is no form on the site. Sneha uses Tally and did not want one embedded, so
+`contact.html` offers email and an Instagram DM, both of which work today.
+
+A third button linking out to Tally sits ready in a comment block on that page. Make a
+Tally form carrying only the fields you want from website enquiries, keeping it separate
+from any existing form so the two do not mix. Paste its share link over
+`YOUR_TALLY_LINK` and delete the two comment markers.
+
+The `.form` styles are still in the stylesheet in case a form ever comes back.
 
 ## Two sections are hidden on purpose
 
@@ -123,7 +147,7 @@ delete the comment markers to bring it back. The styles are already there.
 | Find | Replace with |
 | --- | --- |
 | `USERNAME` | Real LinkedIn and Behance handles, or delete those two links |
-| `YOUR_FORM_ID` | Formspree form ID on `contact.html` |
+| `YOUR_TALLY_LINK` | Tally share link, in the commented block on `contact.html` |
 | `assets/img/portrait.svg` | Her profile photo, the same one as Instagram |
 | `assets/work/*.svg` | Real project images, about 1600px wide and compressed |
 
