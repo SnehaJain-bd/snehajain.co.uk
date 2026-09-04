@@ -20,7 +20,7 @@ Every item in the navigation is its own page.
 | `work.html` | Selected work | Work |
 | `contact.html` | Start a project | Start a project button |
 | `404.html` | Not found | Not linked |
-| `work/project-*.html` | Four case studies | From the work grid |
+| `work/project-*.html` | Six case studies | From the work grid |
 | `work/_template.html` | Copy this for a new case study | Not published |
 
 ## The header is still a placeholder
@@ -34,7 +34,7 @@ in every page between these two comments:
 <!-- END HEADER -->
 ```
 
-That block appears in all eleven HTML files. The matching CSS is section 5 of
+That block appears in all thirteen HTML files. The matching CSS is section 5 of
 `assets/styles.css`. Three hooks in `assets/script.js` depend on it: the `.is-open`
 class on `#nav`, the `#clock` element, and the `--head-h` custom property. Keep those
 three, or delete the matching code.
@@ -43,9 +43,9 @@ The oversized name that used to sit under the header has been removed.
 
 ## After editing the stylesheet, bump the version
 
-Every page links the stylesheet as `assets/styles.css?v=5`. Browsers cache CSS hard,
+Every page links the stylesheet as `assets/styles.css?v=6`. Browsers cache CSS hard,
 and a stale copy against new markup breaks the page rather than merely dating it.
-Raising that number in all eleven HTML files forces every browser to fetch
+Raising that number in all thirteen HTML files forces every browser to fetch
 the new file. Nothing else depends on it.
 
 The header is the logo mark on its own, with no name beside it. A `<picture>` element
@@ -102,10 +102,10 @@ the other six backgrounds and roughly eighty graphics, is deliberately unused.
 | --- | --- |
 | `logo-dark.png`, `logo-cream.png` | The header mark. The cream version swaps in for dark mode |
 | `favicon.svg` | Browser tab icon. Generated, see below |
-| `bg-stripes.png` | Ground for the intro, how I work and services FAQ sections |
+| `bg-stripes.png` | Ground for the approach section and the services page FAQ |
 | `bg-dark.png` | Texture behind the closing band |
-| `mark-dots.png` | Separator in the scrolling strip |
-| `mark-braces.png` | Beside the pull quote on About |
+| `mark-dots.png` | Separator in the strip under the hero |
+| `mark-braces.png` | Copied but not yet placed |
 | `mark-diamond.png`, `mark-heart.png` | Copied but not yet placed |
 | `card-front.png`, `card-back.png` | Copied but not yet placed |
 
@@ -153,20 +153,19 @@ delete the comment markers to bring it back. The styles are already there.
 
 Marked in the files with a `PLACEHOLDER` comment:
 
-- **About page body copy.** The five things list was written for an Instagram story, not
-  the site, so it has been removed. The page currently runs on two approved lines. It
-  wants a proper written bio.
+- **Work, projects five and six.** The heading says six projects, so there are six slots.
+  Four carry invented placeholder brands left over from the first build, and five and six
+  are deliberately unnamed. Every one needs replacing with a real project. If there are
+  fewer than six ready, change the number in the heading, which lives in `WORK_HEAD`
+  wording on the home and work pages.
 - **Package deliverables and timelines** on `services.html`, all four marked
   "to confirm". Packages v3 was not supplied. No prices are shown anywhere, which is
   correct until the real figures are in.
-- **FAQ answers** are twelve questions across four groups. They are written in her voice
-  rather than being the FAQ v3 text. The revision term is correct: three rounds of
-  changes are included.
 - **Case study bodies** are still the template prompts. Each one wants the brief, the
   decisions and the outcome, described by decisions rather than adjectives.
 
-The counter on the home page has been removed. The same figures still appear as a
-sentence at the foot of the About page, which is the approved proof line.
+The home page counter is gone. Those figures now read as a sentence in the "What I
+actually do" paragraph on the About page.
 
 Still to make: `assets/img/og.png`, 1200x630, the preview image when a link is shared.
 Until it exists links share with no picture. It must be PNG or JPG, because social
@@ -174,7 +173,7 @@ platforms ignore SVG.
 
 ## Adding a new project
 
-1. `cp work/_template.html work/project-five.html`
+1. `cp work/_template.html work/project-seven.html`
 2. Replace `PROJECT_NAME`, `PROJECT_SLUG`, `PROJECT_HEADLINE`, `PROJECT_BLURB`,
    `PROJECT_TAGS`, `PROJECT_SECTOR` and `PROJECT_NEXT`.
 3. Add the image to `assets/work/`.

@@ -452,14 +452,6 @@ p:last-child{ margin-bottom:0; }
 .hero__line--muted{ color:var(--ink-2); }
 
 .hero__actions{ display:flex; flex-wrap:wrap; gap:.85rem; align-items:center; }
-.hero__meta{
-  font-family:var(--mono);
-  font-size:.7rem;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-  color:var(--ink-3);
-  margin-left:.5rem;
-}
 
 /* Sub-page hero */
 .page-hero{
@@ -604,38 +596,6 @@ p:last-child{ margin-bottom:0; }
   border-radius:999px;
   padding:.32rem .7rem;
   background:var(--paper-2);
-}
-
-/* ---------- 10. MARQUEE ---------- */
-
-.marquee{
-  overflow:hidden;
-  border-block:1px solid var(--line);
-  padding-block:1.6rem;
-  background:var(--paper);
-  mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
-}
-.marquee__track{
-  display:flex;
-  align-items:center;
-  gap:3rem;
-  width:max-content;
-  animation:slide 38s linear infinite;
-}
-.marquee:hover .marquee__track{ animation-play-state:paused; }
-@keyframes slide{ to{ transform:translateX(-50%); } }
-@media (prefers-reduced-motion:reduce){
-  .marquee__track{ animation:none; }
-  .marquee{ overflow-x:auto; }
-}
-.marquee__item{
-  font-family:var(--head);
-  font-size:clamp(1.35rem,3vw,2.15rem);
-  font-weight:500;
-  letter-spacing:-.02em;
-  color:var(--ink-2);
-  white-space:nowrap;
 }
 
 /* ---------- 11. TESTIMONIALS ---------- */
@@ -1111,7 +1071,46 @@ figcaption{
 /* ---------- 22. PRINT ---------- */
 
 @media print{
-  .site-head,.status-bar,.nav-toggle,.marquee,.cta-band,.form{ display:none !important; }
+  .site-head,.status-bar,.nav-toggle,.cta-band,.form{ display:none !important; }
   body{ background:#fff; color:#000; font-size:11pt; }
   .reveal{ opacity:1; transform:none; }
 }
+
+/* ---------- 23. HERO STRIP ---------- */
+
+.strip{
+  border-block:1px solid var(--line);
+  background:var(--paper);
+  padding-block:1.15rem;
+}
+.strip__inner{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:center;
+  gap:.75rem 1.25rem;
+  font-family:var(--mono);
+  font-size:.7rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--ink-2);
+  text-align:center;
+}
+
+/* ---------- 24. ABOUT STORY ---------- */
+
+.story{ max-width:58ch; }
+.story__lead{
+  font-family:var(--head);
+  font-size:clamp(1.2rem,2.2vw,1.55rem);
+  line-height:1.36;
+  letter-spacing:-.012em;
+  color:var(--ink);
+  margin-bottom:1.4em;
+}
+.story h2{
+  font-size:clamp(1.3rem,2.5vw,1.75rem);
+  font-weight:500;
+  margin:2.6rem 0 .8rem;
+}
+.story p{ color:var(--ink-2); }
