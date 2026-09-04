@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" role="img" aria-label="Placeholder artwork">
+  <rect width="1200" height="900" fill="#1b1815"/>
+  <g stroke="#f0d9cd" stroke-width="2" fill="none" opacity=".85">
+    <path d="M120 660 L360 220 L600 660 Z"/>
+    <path d="M360 660 L600 220 L840 660 Z"/>
+    <path d="M600 660 L840 220 L1080 660 Z"/>
+  </g>
+  <rect x="120" y="658" width="960" height="3" fill="#e0794c"/>
+  <text x="120" y="760" font-family="Georgia, serif" font-size="46" fill="#f7f3ed">Northlight Studio</text>
+  <text x="120" y="802" font-family="Helvetica, Arial, sans-serif" font-size="20" letter-spacing="4" fill="#a89f95">POSITIONING / IDENTITY</text>
+</svg>

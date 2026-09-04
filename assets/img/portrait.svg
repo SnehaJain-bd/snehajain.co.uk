@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000" role="img" aria-label="Portrait placeholder">
+  <rect width="800" height="1000" fill="#efe7db"/>
+  <circle cx="400" cy="380" r="150" fill="#d8c9b8"/>
+  <path d="M170 1000 C170 720 250 590 400 590 C550 590 630 720 630 1000 Z" fill="#d8c9b8"/>
+  <circle cx="400" cy="380" r="150" fill="none" stroke="#b04a25" stroke-width="3"/>
+  <text x="400" y="930" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="22" letter-spacing="5" fill="#7a6f64">YOUR PHOTO HERE</text>
+</svg>

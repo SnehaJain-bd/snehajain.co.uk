@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" role="img" aria-label="Placeholder artwork">
+  <rect width="1200" height="900" fill="#f7f3ed"/>
+  <g>
+    <rect x="180" y="150" width="200" height="440" rx="6" fill="#b04a25"/>
+    <rect x="420" y="220" width="200" height="370" rx="6" fill="#1b1815"/>
+    <rect x="660" y="110" width="200" height="480" rx="6" fill="#d9a441"/>
+    <rect x="900" y="260" width="140" height="330" rx="6" fill="#7a8b6f"/>
+  </g>
+  <text x="180" y="700" font-family="Georgia, serif" font-size="46" fill="#1b1815">Saffron Field</text>
+  <text x="180" y="742" font-family="Helvetica, Arial, sans-serif" font-size="20" letter-spacing="4" fill="#7a6f64">NAMING / PACKAGING</text>
+</svg>
