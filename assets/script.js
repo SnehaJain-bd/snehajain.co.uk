@@ -102,6 +102,32 @@
     items.forEach(function (el) { io.observe(el); });
   }
 
+  /* ---------- Tally embed ----------
+     The form is Tally's. This only swaps data-tally-src onto src and
+     lets Tally size the frame to its content. Nothing loads on pages
+     that have no Tally iframe. */
+  var tallyFrames = document.querySelectorAll('iframe[data-tally-src]');
+  if (tallyFrames.length) {
+    var tallySrc = 'https://tally.so/widgets/embed.js';
+    var loadTally = function () {
+      if (typeof Tally !== 'undefined') { Tally.loadEmbeds(); return; }
+      /* Script blocked or failed. Point the frames at the form directly
+         so people still get something they can fill in. */
+      Array.prototype.forEach.call(tallyFrames, function (f) {
+        if (!f.getAttribute('src')) f.setAttribute('src', f.dataset.tallySrc);
+      });
+    };
+    if (typeof Tally !== 'undefined') {
+      loadTally();
+    } else if (!document.querySelector('script[src="' + tallySrc + '"]')) {
+      var ts = document.createElement('script');
+      ts.src = tallySrc;
+      ts.onload = loadTally;
+      ts.onerror = loadTally;
+      document.body.appendChild(ts);
+    }
+  }
+
   /* ---------- FAQ: one open answer per column ---------- */
   document.querySelectorAll('.faq-group').forEach(function (group) {
     var all = group.querySelectorAll('details.qa');

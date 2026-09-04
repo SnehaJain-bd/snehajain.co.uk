@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" role="img" aria-label="Placeholder artwork for Project six">
-  <rect width="1200" height="900" fill="#EDE7DA"/>
-  <path d="M600 190 L880 420 L600 650 L320 420 Z" fill="#FFF176" stroke="#2A211A" stroke-width="2.5"/>
-  <path d="M600 190 L880 420 L600 650 Z" fill="#00A7E1"/>
-  <circle cx="600" cy="420" r="52" fill="#EDE7DA" stroke="#2A211A" stroke-width="2.5"/>
-  <rect x="150" y="700" width="900" height="1.5" fill="#2A211A" opacity=".25"/>
-  <text x="150" y="770" font-family="Georgia, serif" font-size="46" fill="#2A211A">Project six</text>
-  <text x="150" y="812" font-family="Helvetica, Arial, sans-serif" font-size="20" letter-spacing="4" fill="#7A7168">SLOT AWAITING REAL WORK</text>
-</svg>

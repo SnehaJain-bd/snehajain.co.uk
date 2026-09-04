@@ -1,0 +1,155 @@
+{
+  "_comment": "Single source of truth for every project on the site. Edit here, or through admin.html, then run: node build/build.js . Order in this list is the order on the page. published:false keeps a project on file but off the site entirely. Empty fields are simply not rendered, so nothing half-written ever ships.",
+  "projects": [
+    {
+      "slug": "asmi",
+      "title": "Asmi",
+      "subtitle": "Brand identity for an apparel brand",
+      "client": "Asmi",
+      "year": "2026",
+      "sector": "Apparel",
+      "services": [
+        "Brand Strategy",
+        "Visual Identity",
+        "Packaging Design"
+      ],
+      "summary": "A culturally inspired apparel brand built around one idea: that clothing can be a way of wearing your identity. Audience, positioning and personality first, then the logo system, type, palette and surface patterns.",
+      "decision": "",
+      "brief": "",
+      "outcome": "",
+      "image": "assets/work/asmi.svg",
+      "imageAlt": "Asmi brand identity artwork",
+      "behance": "https://www.behance.net/gallery/246778461/Asmi-Brand-Identity-for-an-Apparel-Brand",
+      "featured": true,
+      "published": true
+    },
+    {
+      "slug": "sunlife-international",
+      "title": "Sunlife International",
+      "subtitle": "Brand identity and stationery",
+      "client": "Sunlife International",
+      "year": "2026",
+      "sector": "Food and FMCG",
+      "services": [
+        "Brand Strategy",
+        "Visual Identity",
+        "Brand Guidelines"
+      ],
+      "summary": "A food and FMCG distributor operating in Nepal since 2002, and the authorised distributor for Foster Clark's and Fortune Foods. After 24 years of trust built on the shelf, a rebrand to finally look the part.",
+      "decision": "",
+      "brief": "",
+      "outcome": "",
+      "image": "assets/work/sunlife-international.svg",
+      "imageAlt": "Sunlife International brand identity artwork",
+      "behance": "https://www.behance.net/gallery/253593671/Sunlife-International-Brand-Identity-Stationery",
+      "featured": true,
+      "published": true
+    },
+    {
+      "slug": "swirly",
+      "title": "Swirly",
+      "subtitle": "Brand identity and packaging",
+      "client": "Swirly",
+      "year": "2026",
+      "sector": "Food and drink",
+      "services": [
+        "Visual Identity",
+        "Packaging Design"
+      ],
+      "summary": "Ice cream that belongs to everyone. Joyful enough to excite a seven year old, nostalgic enough to take an adult straight back to childhood. Logo, a palette across eight flavours, typography, patterns and tub labels, all made to work at shelf scale.",
+      "decision": "",
+      "brief": "",
+      "outcome": "",
+      "image": "assets/work/swirly.svg",
+      "imageAlt": "Swirly brand identity and packaging artwork",
+      "behance": "https://www.behance.net/gallery/249432895/Swirly-Brand-Identity-Packaging-Design",
+      "featured": true,
+      "published": true
+    },
+    {
+      "slug": "paloma",
+      "title": "Paloma",
+      "subtitle": "Holiday residence brand identity",
+      "client": "Paloma",
+      "year": "2026",
+      "sector": "Hospitality",
+      "services": [
+        "Brand Strategy",
+        "Visual Identity",
+        "Art Direction"
+      ],
+      "summary": "A Mediterranean coastal retreat built around slow living. The mark is a scallop shell with a starfish at its centre, held to a single terracotta and warm cream palette across the whole stay.",
+      "decision": "",
+      "brief": "",
+      "outcome": "",
+      "image": "assets/work/paloma.svg",
+      "imageAlt": "Paloma brand identity artwork",
+      "behance": "https://www.behance.net/gallery/254786069/Paloma-Holiday-Residence-Brand-Identity",
+      "featured": true,
+      "published": true
+    },
+    {
+      "slug": "lumeya",
+      "title": "LUMEYA",
+      "subtitle": "Conscious luxury skincare",
+      "client": "LUMEYA",
+      "year": "2026",
+      "sector": "Skincare",
+      "services": [
+        "Brand Strategy",
+        "Visual Identity",
+        "Packaging Design"
+      ],
+      "summary": "A full brand identity system for a conscious luxury skincare concept. Custom wordmark, a five colour palette, four SKUs and secondary touchpoints, all built around one conviction: dark is not just an aesthetic, it is a position.",
+      "decision": "",
+      "brief": "",
+      "outcome": "",
+      "image": "assets/work/lumeya.svg",
+      "imageAlt": "LUMEYA brand identity and packaging artwork",
+      "behance": "https://www.behance.net/gallery/252151085/LUMEYA-Conscious-Luxury-Skincare",
+      "featured": true,
+      "published": true
+    },
+    {
+      "slug": "napur-gin",
+      "title": "Napur Gin",
+      "subtitle": "Branding and packaging",
+      "client": "Napur Gin",
+      "year": "2024",
+      "sector": "Spirits",
+      "services": [
+        "Visual Identity",
+        "Packaging Design"
+      ],
+      "summary": "Brand identity and packaging for a gin label.",
+      "decision": "",
+      "brief": "",
+      "outcome": "",
+      "image": "assets/work/napur-gin.svg",
+      "imageAlt": "Napur Gin brand identity and packaging artwork",
+      "behance": "https://www.behance.net/gallery/209229885/Napur-Gin-Branding-Project",
+      "featured": true,
+      "published": false
+    }
+  ],
+  "testimonials": [
+    {
+      "quote": "",
+      "name": "",
+      "role": "",
+      "brand": ""
+    },
+    {
+      "quote": "",
+      "name": "",
+      "role": "",
+      "brand": ""
+    },
+    {
+      "quote": "",
+      "name": "",
+      "role": "",
+      "brand": ""
+    }
+  ]
+}

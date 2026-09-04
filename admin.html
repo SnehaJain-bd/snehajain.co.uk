@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project editor, snehajain.co.uk</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300..600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FBF9F4; --paper-2:#F4F0E7; --paper-3:#EDE7DA;
+    --ink:#2A211A; --ink-2:#6C5F54; --ink-3:#7A7168;
+    --line:#E3DDD0; --line-2:#D3CABA;
+    --yellow:#FFF176; --blue-deep:#0077A8;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --radius:10px;
+  }
+  *,*::before,*::after{ box-sizing:border-box; }
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:"Work Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    font-size:15px; line-height:1.55;
+  }
+  header{
+    position:sticky; top:0; z-index:10;
+    background:var(--ink); color:var(--paper);
+    padding:.9rem 1.5rem;
+    display:flex; flex-wrap:wrap; align-items:center; gap:.75rem 1.25rem;
+  }
+  header h1{ font-size:1rem; font-weight:600; margin:0; margin-right:auto; letter-spacing:-.01em; }
+  header .hint{ font-family:var(--mono); font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; opacity:.7; }
+
+  .btn{
+    font:inherit; font-size:.85rem; font-weight:500;
+    border:1.5px solid transparent; border-radius:999px;
+    padding:.5rem 1.1rem; cursor:pointer;
+    background:var(--yellow); color:#2A211A;
+    transition:background .2s,color .2s,border-color .2s;
+  }
+  .btn:hover{ background:var(--paper); }
+  .btn--ghost{ background:transparent; color:var(--paper); border-color:rgba(251,249,244,.4); }
+  .btn--ghost:hover{ background:var(--paper); color:var(--ink); }
+  .btn--small{ padding:.3rem .7rem; font-size:.75rem; background:var(--paper-3); color:var(--ink); }
+  .btn--small:hover{ background:var(--yellow); }
+  .btn--danger:hover{ background:#C0392B; color:#fff; }
+
+  .layout{ display:grid; grid-template-columns:280px minmax(0,1fr); gap:0; min-height:calc(100vh - 56px); }
+  @media (max-width:820px){ .layout{ grid-template-columns:1fr; } }
+
+  .side{ background:var(--paper-2); border-right:1px solid var(--line); padding:1.25rem; }
+  .side h2, .main h2{
+    font-family:var(--mono); font-size:.68rem; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--ink-3); margin:0 0 .9rem; font-weight:400;
+  }
+  .plist{ list-style:none; margin:0 0 1rem; padding:0; display:flex; flex-direction:column; gap:.4rem; }
+  .plist li{
+    display:flex; align-items:center; gap:.4rem;
+    background:var(--paper); border:1px solid var(--line);
+    border-radius:8px; padding:.5rem .6rem;
+  }
+  .plist li.active{ border-color:var(--ink); background:var(--yellow); }
+  .plist button.name{
+    flex:1; text-align:left; background:none; border:0; font:inherit;
+    font-size:.88rem; cursor:pointer; color:inherit; padding:0;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+  .plist .ord{ display:flex; flex-direction:column; gap:1px; }
+  .plist .ord button{
+    background:none; border:0; cursor:pointer; line-height:1;
+    font-size:.6rem; color:var(--ink-3); padding:1px 2px;
+  }
+  .plist .ord button:hover{ color:var(--ink); }
+
+  .main{ padding:1.5rem; max-width:900px; }
+  fieldset{ border:1px solid var(--line); border-radius:var(--radius); padding:1.25rem; margin:0 0 1.25rem; background:var(--paper); }
+  legend{ font-weight:600; padding:0 .5rem; font-size:.95rem; }
+  .row{ display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:.9rem; }
+  label{ display:flex; flex-direction:column; gap:.3rem; margin-bottom:.9rem; }
+  label > span{
+    font-family:var(--mono); font-size:.65rem; letter-spacing:.11em;
+    text-transform:uppercase; color:var(--ink-2);
+  }
+  label small{ font-family:"Work Sans",sans-serif; text-transform:none; letter-spacing:0; color:var(--ink-3); font-size:.75rem; }
+  input[type=text], input[type=url], textarea, select{
+    font:inherit; font-size:.92rem; color:var(--ink); background:var(--paper);
+    border:1px solid var(--line-2); border-radius:7px; padding:.55rem .7rem; width:100%;
+  }
+  input:focus, textarea:focus, select:focus{ outline:none; border-color:var(--ink); box-shadow:0 0 0 3px var(--yellow); }
+  textarea{ resize:vertical; min-height:5rem; }
+  .check{ flex-direction:row; align-items:center; gap:.5rem; }
+  .check input{ width:auto; }
+  .check span{ text-transform:none; letter-spacing:0; font-family:inherit; font-size:.9rem; color:var(--ink); }
+
+  .note{
+    background:var(--paper-3); border-left:3px solid var(--yellow);
+    padding:.85rem 1rem; border-radius:0 8px 8px 0; font-size:.86rem; margin:0 0 1.25rem;
+  }
+  .note code{ font-family:var(--mono); font-size:.82em; }
+  .empty{ color:var(--ink-3); font-style:italic; }
+  .bar{ display:flex; flex-wrap:wrap; gap:.6rem; align-items:center; margin-top:1.5rem; }
+  .bar .msg{ font-size:.85rem; color:var(--blue-deep); }
+  textarea#raw{ font-family:var(--mono); font-size:.78rem; min-height:14rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Project editor</h1>
+  <span class="hint" id="count">&nbsp;</span>
+  <button class="btn btn--ghost" id="reload">Reload from file</button>
+  <button class="btn" id="download">Download projects.json</button>
+</header>
+
+<div class="layout">
+  <aside class="side">
+    <h2>Projects</h2>
+    <ul class="plist" id="plist"></ul>
+    <button class="btn btn--small" id="add">Add a project</button>
+  </aside>
+
+  <main class="main">
+    <p class="note">
+      This page edits a copy in your browser. It cannot save by itself.
+      When you are done press <strong>Download projects.json</strong>, put the file in
+      <code>content/</code> replacing the old one, then run <code>node build/build.js</code>
+      and push. Empty fields are simply left off the live site.
+    </p>
+
+    <div id="editor"></div>
+
+    <fieldset>
+      <legend>Testimonials</legend>
+      <p class="note" style="margin-bottom:1rem">
+        Leave a quote empty and its card shows on the site as a blank slot. Fill one in and it
+        becomes a real testimonial. Only use words a client actually said, with their permission.
+      </p>
+      <div id="tlist"></div>
+      <button class="btn btn--small" id="addT">Add a slot</button>
+    </fieldset>
+
+    <fieldset>
+      <legend>Raw JSON</legend>
+      <p class="note" style="margin-bottom:1rem">
+        If the editor cannot reach the file, paste the contents of
+        <code>content/projects.json</code> here and press Load.
+      </p>
+      <textarea id="raw" spellcheck="false"></textarea>
+      <div class="bar">
+        <button class="btn btn--small" id="loadRaw">Load from this box</button>
+        <button class="btn btn--small" id="copy">Copy to clipboard</button>
+        <span class="msg" id="msg"></span>
+      </div>
+    </fieldset>
+  </main>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  var DEFAULT = { _comment:'', projects:[], testimonials:[] };
+  var data = JSON.parse(JSON.stringify(DEFAULT));
+  var current = 0;
+
+  var $ = function(id){ return document.getElementById(id); };
+  function msg(t){ $('msg').textContent = t; setTimeout(function(){ $('msg').textContent=''; }, 4000); }
+
+  var FIELDS = [
+    ['title','Title','text','Shown on the card and as the page heading'],
+    ['slug','Slug','text','The URL. Lowercase, hyphens, no spaces. Changing it changes the page address'],
+    ['subtitle','Card line','text','One line under the title in the grid'],
+    ['client','Client','text',''],
+    ['year','Year','text',''],
+    ['sector','Sector','text',''],
+    ['services','Services','text','Comma separated. These become the tags'],
+    ['image','Image path','text','For example assets/work/paloma.jpg'],
+    ['imageAlt','Image description','text','For screen readers'],
+    ['behance','Behance link','url','Optional. Adds a link at the foot of the case study']
+  ];
+  var LONG = [
+    ['summary','Summary','Real words about the project. Used on the card and under the title'],
+    ['brief','The brief','Who came to you and what was in their way. Left off the site while empty'],
+    ['decision','The decision','The one decision that made the project work. Left off the site while empty'],
+    ['outcome','The outcome','What changed. Left off the site while empty']
+  ];
+
+  function blank(){
+    return { slug:'new-project', title:'New project', subtitle:'', client:'', year:String(new Date().getFullYear()),
+             sector:'', services:[], summary:'', decision:'', brief:'', outcome:'',
+             image:'assets/work/new-project.svg', imageAlt:'', behance:'', featured:true, published:true };
+  }
+
+  function renderList(){
+    var ul = $('plist'); ul.innerHTML = '';
+    data.projects.forEach(function(p,i){
+      var li = document.createElement('li');
+      if(i === current) li.className = 'active';
+      var b = document.createElement('button');
+      b.className = 'name'; b.textContent = (p.published === false ? '· ' : '') + (p.title || p.slug || '(untitled)');
+      if(p.published === false){ b.style.opacity='.5'; b.title='Not published'; }
+      b.onclick = function(){ current = i; render(); };
+      var ord = document.createElement('span'); ord.className = 'ord';
+      var up = document.createElement('button'); up.textContent='▲'; up.title='Move up';
+      up.onclick = function(){ if(i>0){ swap(i,i-1); current=i-1; render(); } };
+      var dn = document.createElement('button'); dn.textContent='▼'; dn.title='Move down';
+      dn.onclick = function(){ if(i<data.projects.length-1){ swap(i,i+1); current=i+1; render(); } };
+      ord.appendChild(up); ord.appendChild(dn);
+      var del = document.createElement('button');
+      del.className='btn btn--small btn--danger'; del.textContent='×'; del.title='Delete';
+      del.onclick = function(){
+        if(!confirm('Delete "'+(p.title||p.slug)+'"? This only changes the copy in this page.')) return;
+        data.projects.splice(i,1); if(current>=data.projects.length) current=Math.max(0,data.projects.length-1);
+        render();
+      };
+      li.appendChild(b); li.appendChild(ord); li.appendChild(del);
+      ul.appendChild(li);
+    });
+    var live = data.projects.filter(function(x){ return x.published !== false; }).length;
+    $('count').textContent = live + ' live / ' + data.projects.length + ' on file';
+  }
+
+  function swap(a,b){ var t=data.projects[a]; data.projects[a]=data.projects[b]; data.projects[b]=t; }
+
+  function renderEditor(){
+    var host = $('editor'); host.innerHTML = '';
+    var p = data.projects[current];
+    if(!p){ host.innerHTML = '<p class="empty">No projects yet. Press "Add a project".</p>'; return; }
+
+    var fs = document.createElement('fieldset');
+    var lg = document.createElement('legend'); lg.textContent = p.title || 'Project';
+    fs.appendChild(lg);
+
+    var row = document.createElement('div'); row.className='row';
+    FIELDS.forEach(function(f){
+      var key=f[0], lab=f[1], type=f[2], help=f[3];
+      var l=document.createElement('label');
+      var s=document.createElement('span'); s.textContent=lab;
+      if(help){ var sm=document.createElement('small'); sm.textContent=' '+help; s.appendChild(sm); }
+      var inp=document.createElement('input'); inp.type = type==='url'?'url':'text';
+      inp.value = key==='services' ? (p.services||[]).join(', ') : (p[key]||'');
+      inp.oninput = function(){
+        if(key==='services') p.services = inp.value.split(',').map(function(x){return x.trim();}).filter(Boolean);
+        else p[key] = inp.value;
+        if(key==='title'){ lg.textContent = inp.value || 'Project'; renderList(); }
+        sync();
+      };
+      l.appendChild(s); l.appendChild(inp); row.appendChild(l);
+    });
+    fs.appendChild(row);
+
+    LONG.forEach(function(f){
+      var key=f[0], lab=f[1], help=f[2];
+      var l=document.createElement('label');
+      var s=document.createElement('span'); s.textContent=lab;
+      var sm=document.createElement('small'); sm.textContent=' '+help; s.appendChild(sm);
+      var ta=document.createElement('textarea'); ta.value=p[key]||'';
+      ta.oninput=function(){ p[key]=ta.value; sync(); };
+      l.appendChild(s); l.appendChild(ta); fs.appendChild(l);
+    });
+
+    [['published','Publish this project. Unticked keeps it on file but off the site completely'],
+     ['featured','Show it on the home page as well as the work page']
+    ].forEach(function(f){
+      var fl=document.createElement('label'); fl.className='check';
+      var cb=document.createElement('input'); cb.type='checkbox'; cb.checked = p[f[0]] !== false;
+      cb.onchange=function(){ p[f[0]]=cb.checked; renderList(); sync(); };
+      var cs=document.createElement('span'); cs.textContent=f[1];
+      fl.appendChild(cb); fl.appendChild(cs); fs.appendChild(fl);
+    });
+
+    host.appendChild(fs);
+  }
+
+  function renderT(){
+    var host=$('tlist'); host.innerHTML='';
+    (data.testimonials||[]).forEach(function(t,i){
+      var wrap=document.createElement('div');
+      wrap.style.cssText='border:1px solid var(--line);border-radius:8px;padding:1rem;margin-bottom:.85rem';
+      var q=document.createElement('label');
+      var qs=document.createElement('span'); qs.textContent='Quote '+(i+1);
+      var qt=document.createElement('textarea'); qt.value=t.quote||'';
+      qt.oninput=function(){ t.quote=qt.value; sync(); };
+      q.appendChild(qs); q.appendChild(qt); wrap.appendChild(q);
+
+      var row=document.createElement('div'); row.className='row';
+      [['name','Name'],['role','Role'],['brand','Brand']].forEach(function(f){
+        var l=document.createElement('label');
+        var s=document.createElement('span'); s.textContent=f[1];
+        var inp=document.createElement('input'); inp.type='text'; inp.value=t[f[0]]||'';
+        inp.oninput=function(){ t[f[0]]=inp.value; sync(); };
+        l.appendChild(s); l.appendChild(inp); row.appendChild(l);
+      });
+      wrap.appendChild(row);
+
+      var del=document.createElement('button');
+      del.className='btn btn--small btn--danger'; del.textContent='Remove this slot';
+      del.onclick=function(){ data.testimonials.splice(i,1); render(); };
+      wrap.appendChild(del);
+      host.appendChild(wrap);
+    });
+  }
+
+  function sync(){ $('raw').value = JSON.stringify(data, null, 2); }
+  function render(){ renderList(); renderEditor(); renderT(); sync(); }
+
+  function adopt(obj){
+    data = obj && typeof obj === 'object' ? obj : JSON.parse(JSON.stringify(DEFAULT));
+    if(!Array.isArray(data.projects)) data.projects = [];
+    if(!Array.isArray(data.testimonials)) data.testimonials = [];
+    current = 0; render();
+  }
+
+  function load(){
+    fetch('content/projects.json?ts=' + Date.now())
+      .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function(j){ adopt(j); msg('Loaded ' + data.projects.length + ' projects.'); })
+      .catch(function(){
+        msg('Could not read the file. Open this page over a local server, or paste the JSON below.');
+        render();
+      });
+  }
+
+  $('add').onclick = function(){ data.projects.push(blank()); current = data.projects.length-1; render(); };
+  $('addT').onclick = function(){ data.testimonials.push({quote:'',name:'',role:'',brand:''}); render(); };
+  $('reload').onclick = load;
+  $('loadRaw').onclick = function(){
+    try { adopt(JSON.parse($('raw').value)); msg('Loaded from the box.'); }
+    catch(e){ msg('That is not valid JSON: ' + e.message); }
+  };
+  $('copy').onclick = function(){
+    $('raw').select();
+    try { document.execCommand('copy'); msg('Copied.'); } catch(e){ msg('Copy failed, select it by hand.'); }
+  };
+  $('download').onclick = function(){
+    var blob = new Blob([JSON.stringify(data, null, 2) + '\n'], {type:'application/json'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'projects.json';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+    msg('Downloaded. Put it in content/ and run node build/build.js');
+  };
+
+  load();
+})();
+</script>
+</body>
+</html>

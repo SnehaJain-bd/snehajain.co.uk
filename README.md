@@ -1,32 +1,100 @@
 # snehajain.co.uk
 
 Portfolio site for Sneha Jain, strategic brand designer for founders.
-Plain HTML, CSS and a little JavaScript. No build step, no dependencies, no framework.
-Edit a file, push, and the live site updates in about a minute.
+Plain HTML and CSS with a little JavaScript. No framework, no dependencies, no hosting bill.
 
-Layout follows the [Quomi](https://quomi.framer.website/) template. Copy follows
-`website-copy.md` in the brand assets folder. Voice rules from that file are applied
-throughout: plain statements, no em-dashes, nothing bracketed ships.
+## Read this first: the HTML files are generated
+
+Every `.html` file in this repo is written by `build/build.js`. Editing one by hand works
+until the next build, which silently replaces it. Change the source instead:
+
+| To change | Edit |
+| --- | --- |
+| Projects, testimonials | `content/projects.json`, or `admin.html` in a browser |
+| Page copy, layout, sections | `build/build.js` |
+| Colour, type, spacing | `assets/styles.css` |
+| Clock, menu, reveals, Tally loader | `assets/script.js` |
+
+Then run, from the repo root:
+
+```
+node build/build.js
+```
+
+It rewrites all the pages and `sitemap.xml`, and deletes case study pages for projects that
+are no longer published.
+
+## The project editor
+
+`admin.html` is a small content editor. It is not linked from the site and carries a
+`noindex` tag. Open it over a local server, not by double-clicking, so it can read the data
+file:
+
+```
+python -m http.server 8000
+```
+
+Then go to <http://localhost:8000/admin.html>.
+
+You get a list of projects on the left and a form on the right. Add, reorder, delete, and
+fill in the fields. When you are done:
+
+1. Press **Download projects.json**.
+2. Replace `content/projects.json` with the file you just downloaded.
+3. Run `node build/build.js`.
+4. Commit and push.
+
+If the editor cannot read the file, paste the contents of `content/projects.json` into the
+Raw JSON box and press Load.
+
+### Two switches worth knowing
+
+- **Publish this project.** Unticked, the project stays in the file but leaves the site
+  completely: no page, no card, no sitemap entry. Nothing is lost and one tick brings it
+  back. Napur Gin is currently held back this way.
+- **Show it on the home page.** Unticked, the project appears on the work page only.
+
+### Fields that are left off while empty
+
+`brief`, `decision` and `outcome` only render if you write something in them. A case study
+with all three empty shows its summary, its facts and its image, and stops there. That way
+a half-written project never reaches the site looking half-written.
+
+## Projects currently live
+
+Pulled from the Behance profile, in the order set in the data file.
+
+| Order | Project | Year |
+| --- | --- | --- |
+| 1 | Asmi | 2026 |
+| 2 | Sunlife International | 2026 |
+| 3 | Swirly | 2026 |
+| 4 | Paloma | 2026 |
+| 5 | LUMEYA | 2026 |
+| held back | Napur Gin | 2024 |
+
+**The images are placeholders, not the Behance artwork.** Each project has an abstract SVG
+in the brand palette at `assets/work/<slug>.svg`. Replace them with real images, about
+1600px wide and compressed, then point the `image` field at the new file. Each case study
+links out to its Behance page at the foot.
 
 ## Pages
 
-Every item in the navigation is its own page.
-
-| File | Page | Nav |
-| --- | --- | --- |
-| `index.html` | Home | Logo |
-| `about.html` | About | About |
-| `services.html` | Services and packages | Services |
-| `work.html` | Selected work | Work |
-| `contact.html` | Start a project | Start a project button |
-| `404.html` | Not found | Not linked |
-| `work/project-*.html` | Six case studies | From the work grid |
-| `work/_template.html` | Copy this for a new case study | Not published |
+| File | Page |
+| --- | --- |
+| `index.html` | Home |
+| `about.html` | About |
+| `services.html` | Services and packages |
+| `work.html` | Selected work |
+| `contact.html` | Start a project, with the Tally form |
+| `404.html` | Not found |
+| `work/<slug>.html` | One per published project |
+| `admin.html` | Project editor, not linked, noindex |
 
 ## The header is still a placeholder
 
-A new design is coming. Until it arrives the current header stands in, and it is fenced
-in every page between these two comments:
+A new design is coming. Until it arrives the current header stands in, fenced in
+`build/build.js` between these two comments, which then appear in every page:
 
 ```
 <!-- HEADER, PLACEHOLDER. Replace this whole block when the new design lands. -->
@@ -34,24 +102,19 @@ in every page between these two comments:
 <!-- END HEADER -->
 ```
 
-That block appears in all thirteen HTML files. The matching CSS is section 5 of
-`assets/styles.css`. Three hooks in `assets/script.js` depend on it: the `.is-open`
-class on `#nav`, the `#clock` element, and the `--head-h` custom property. Keep those
-three, or delete the matching code.
+Change it once in the builder, not in eleven files. Three hooks in `assets/script.js` depend
+on it: the `.is-open` class on `#nav`, the `#clock` element, and the `--head-h` custom
+property. Keep those three, or delete the matching code.
 
-The oversized name that used to sit under the header has been removed.
+The header is the logo mark on its own. A `<picture>` element lets the browser pick the
+cream or dark version natively, so only one is ever in the page, and the `img` carries real
+`width` and `height` so it stays the right size even before CSS loads.
 
 ## After editing the stylesheet, bump the version
 
-Every page links the stylesheet as `assets/styles.css?v=6`. Browsers cache CSS hard,
-and a stale copy against new markup breaks the page rather than merely dating it.
-Raising that number in all thirteen HTML files forces every browser to fetch
-the new file. Nothing else depends on it.
-
-The header is the logo mark on its own, with no name beside it. A `<picture>` element
-lets the browser pick the cream or dark version natively, so only one is ever in the
-page, and the `img` carries real `width` and `height` attributes so it stays the right
-size even before CSS loads.
+Pages link the stylesheet as `assets/styles.css?v=7`, set by `CSS_VERSION` at the top of
+`build/build.js`. Browsers cache CSS hard, and a stale copy against new markup breaks the
+page rather than merely dating it. Raise the number and rebuild.
 
 ## Brand tokens
 
@@ -65,16 +128,14 @@ Everything visual comes from the first 60 lines of `assets/styles.css`.
 | `--blue` | `#00A7E1` | Accent. Decorative fills only on light ground |
 | `--blue-deep` | `#0077A8` | Accent where something must actually be read |
 
-Off-white, coffee and yellow do the work. Blue is an accent and is kept off anything
-that has to be legible on the light ground, because `#00A7E1` measures 2.6:1 there and
-fails the 4.5:1 minimum. It survives in three places where it is safe: the pulsing
-availability dot, focus rings via `--blue-deep` at 4.7:1, and dark mode, where the true
-brand blue measures 6.6:1 against the dark ground and is used directly.
+Off-white, coffee and yellow do the work. Blue is an accent and is kept off anything that
+has to be legible on the light ground, because `#00A7E1` measures 2.6:1 there and fails the
+4.5:1 minimum. It survives where it is safe: the pulsing availability dot, focus rings via
+`--blue-deep` at 4.7:1, and dark mode, where the brand blue measures 6.6:1 and is used
+directly.
 
 Yellow is a fill, never a text colour. Yellow on off-white is 1.1:1 and effectively
-invisible. Coffee on yellow is 13.6:1, the strongest pairing in the palette, so yellow
-always sits behind dark text: the `.mark` highlighter, link underlines that fill on
-hover, and the solid button hover state.
+invisible. Coffee on yellow is 13.6:1, so yellow always sits behind dark text.
 
 Text links are coffee with a yellow underline that fills on hover. Blue is not used for
 links anywhere on the light ground.
@@ -87,98 +148,68 @@ links anywhere on the light ground.
 | Body | Work Sans | Google Fonts |
 | Labels and numbers | System monospace | No download |
 
-The accent face has been dropped for now. Shantell Sans is no longer loaded on any page.
-The font package is still in the brand assets folder if it comes back.
-
-The Typekit kit must stay published with `snehajain.co.uk` on its allowed domains, or
-headings fall back to Georgia.
+The accent face is dropped for now. Shantell Sans is not loaded on any page. The Typekit kit
+must stay published with `snehajain.co.uk` on its allowed domains, or headings fall back to
+Georgia.
 
 ## Brand assets in use
-
-Copied into `assets/img/` from the brand assets folder. The rest of that folder, including
-the other six backgrounds and roughly eighty graphics, is deliberately unused.
 
 | File | Where it appears |
 | --- | --- |
 | `logo-dark.png`, `logo-cream.png` | The header mark. The cream version swaps in for dark mode |
-| `favicon.svg` | Browser tab icon. Generated, see below |
+| `favicon.svg` | Browser tab icon, generated. See below |
 | `bg-stripes.png` | Ground for the approach section and the services page FAQ |
 | `bg-dark.png` | Texture behind the closing band |
 | `mark-dots.png` | Separator in the strip under the hero |
-| `mark-braces.png` | Copied but not yet placed |
-| `mark-diamond.png`, `mark-heart.png` | Copied but not yet placed |
+| `mark-braces.png`, `mark-diamond.png`, `mark-heart.png` | Copied but not yet placed |
 | `card-front.png`, `card-back.png` | Copied but not yet placed |
 
-## The favicon is generated, not a raw logo file
+The rest of the brand assets folder, including six other backgrounds and around eighty
+graphics, is deliberately unused.
 
-The logo mark is portrait, roughly 1136 by 1783. Pointing a favicon straight at it
-made browsers squash it into their square slot, which stretched it. `assets/img/favicon.svg`
-now holds the cream mark centred on a coffee tile at its true proportions, with the PNG
-embedded so the icon needs no second request.
+### The favicon is generated, not a raw logo file
 
-If the logo art ever changes, regenerate it rather than editing by hand. The mark is
-placed at 40 units tall inside a 64 unit square, and its width follows the source
-aspect ratio.
+The logo mark is portrait, roughly 1136 by 1783. Pointing a favicon straight at it made
+browsers squash it into their square slot. `assets/img/favicon.svg` holds the cream mark
+centred on a coffee tile at its true proportions, with the PNG embedded so the icon needs no
+second request. Regenerate rather than editing it by hand if the logo art changes.
 
-## Enquiries go out to Tally, not to a form on the site
+## The enquiry form is Tally
 
-There is no form on the site. Sneha uses Tally and did not want one embedded, so
-`contact.html` offers email and an Instagram DM, both of which work today.
+The form on `contact.html` is Tally form `OD2Da8`, embedded as an iframe. Answers go
+straight to the Tally inbox and never touch this site. The loader lives in
+`assets/script.js` and only runs on pages that contain a Tally iframe. With JavaScript off,
+a link to the form is shown instead.
 
-A third button linking out to Tally sits ready in a comment block on that page. Make a
-Tally form carrying only the fields you want from website enquiries, keeping it separate
-from any existing form so the two do not mix. Paste its share link over
-`YOUR_TALLY_LINK` and delete the two comment markers.
+To swap forms, change `TALLY` at the top of `build/build.js` and rebuild.
 
-The `.form` styles are still in the stylesheet in case a form ever comes back.
+## Testimonials
 
-## Two sections are hidden on purpose
+The section is live on the home page. Quotes come from the `testimonials` array in
+`content/projects.json`. An empty quote renders as a visible dashed slot reading "Waiting on
+a real quote", so the layout is there and nothing is invented. Fill in the quote, name, role
+and brand through `admin.html` and the slot becomes a real testimonial.
 
-**Testimonials** are commented out in `index.html`. The copy file marks them
-`[CONFIRM: 2 or 3 real quotes, verbatim, name + brand + permission. Never paraphrased]`
-and its own rule is that nothing bracketed ships. Invented quotes were removed rather
-than published under real-sounding names. Paste real quotes into the commented block and
-delete the comment markers to bring it back. The styles are already there.
-
-**Insights** has been removed entirely, along with its navigation entry.
+Only use words a client actually said, with their permission.
 
 ## Still to fill in
 
 | Find | Replace with |
 | --- | --- |
-| `USERNAME` | Real LinkedIn and Behance handles, or delete those two links |
-| `YOUR_TALLY_LINK` | Tally share link, in the commented block on `contact.html` |
+| `USERNAME` | Real LinkedIn handle, or delete that link |
 | `assets/img/portrait.svg` | Her profile photo, the same one as Instagram |
-| `assets/work/*.svg` | Real project images, about 1600px wide and compressed |
+| `assets/work/*.svg` | Real project images |
 
-Marked in the files with a `PLACEHOLDER` comment:
+Also outstanding:
 
-- **Work, projects five and six.** The heading says six projects, so there are six slots.
-  Four carry invented placeholder brands left over from the first build, and five and six
-  are deliberately unnamed. Every one needs replacing with a real project. If there are
-  fewer than six ready, change the number in the heading, which lives in `WORK_HEAD`
-  wording on the home and work pages.
-- **Package deliverables and timelines** on `services.html`, all four marked
-  "to confirm". Packages v3 was not supplied. No prices are shown anywhere, which is
-  correct until the real figures are in.
-- **Case study bodies** are still the template prompts. Each one wants the brief, the
-  decisions and the outcome, described by decisions rather than adjectives.
-
-The home page counter is gone. Those figures now read as a sentence in the "What I
-actually do" paragraph on the About page.
-
-Still to make: `assets/img/og.png`, 1200x630, the preview image when a link is shared.
-Until it exists links share with no picture. It must be PNG or JPG, because social
-platforms ignore SVG.
-
-## Adding a new project
-
-1. `cp work/_template.html work/project-seven.html`
-2. Replace `PROJECT_NAME`, `PROJECT_SLUG`, `PROJECT_HEADLINE`, `PROJECT_BLURB`,
-   `PROJECT_TAGS`, `PROJECT_SECTOR` and `PROJECT_NEXT`.
-3. Add the image to `assets/work/`.
-4. Copy one `<a class="project">` block into `work.html` and `index.html`.
-5. Add the URL to `sitemap.xml`.
+- **Case study bodies.** Every project has its summary and facts, but `brief`, `decision`
+  and `outcome` are empty, so those sections do not render yet. The decision is the one the
+  page is named after.
+- **Package deliverables and timelines** on `services.html`, all four marked "to confirm".
+  No prices are shown anywhere, which is correct until the real figures are in.
+- **`assets/img/og.png`**, 1200 by 630, the preview image when a link is shared. Until it
+  exists links share with no picture. It must be PNG or JPG, because social platforms ignore
+  SVG.
 
 ## Previewing locally
 
@@ -187,14 +218,15 @@ python -m http.server 8000
 ```
 
 Then open <http://localhost:8000>. Double-clicking a file mostly works, but the
-root-relative links in `404.html` only behave properly over a server.
+root-relative links in `404.html` and the editor's file loading only behave over a server.
 
 ## Deploying
 
 See `DEPLOY.md` for the GitHub and DNS walkthrough. Day to day:
 
 ```
+node build/build.js
 git add -A
-git commit -m "Update work section"
+git commit -m "Add the Swirly case study"
 git push
 ```

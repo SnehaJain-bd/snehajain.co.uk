@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" role="img" aria-label="Placeholder artwork for Asmi">
+  <rect width="1200" height="900" fill="#EDE7DA"/>
+  <path d="M600 200 L760 200 L840 300 L760 360 L760 620 L440 620 L440 360 L360 300 L440 200 Z" fill="#FFF176" stroke="#2A211A" stroke-width="2.5"/>
+  <path d="M600 200 A70 70 0 0 0 740 200" fill="none" stroke="#2A211A" stroke-width="2.5"/>
+  <circle cx="600" cy="460" r="60" fill="#00A7E1"/>
+  <rect x="150" y="700" width="900" height="1.5" fill="#2A211A" opacity=".25"/>
+  <text x="150" y="770" font-family="Georgia, serif" font-size="46" fill="#2A211A">Asmi</text>
+  <text x="150" y="812" font-family="Helvetica, Arial, sans-serif" font-size="19" letter-spacing="4" fill="#7A7168">APPAREL</text>
+</svg>
