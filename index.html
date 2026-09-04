@@ -6,8 +6,8 @@
 <title>Sneha Jain — Graphic Designer &amp; Brand Strategist</title>
 <meta name="description" content="Sneha Jain is a graphic designer and brand strategist building considered identities for founders and growing businesses — strategy, visual identity, packaging and brand systems.">
 <link rel="canonical" href="https://snehajain.co.uk/">
-<meta name="theme-color" content="#f7f3ed" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#14120f" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FBF9F4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1A1512" media="(prefers-color-scheme: dark)">
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://snehajain.co.uk/">
@@ -18,9 +18,14 @@
 
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 
+<!-- Heading face: Loretta Variable (Adobe Typekit) -->
+<link rel="preconnect" href="https://use.typekit.net" crossorigin>
+<link rel="stylesheet" href="https://use.typekit.net/yhu7ntr.css">
+<!-- Body: Work Sans · Accent: Shantell Sans -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,300..600;1,300..600&family=Shantell+Sans:wght@400..700&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="assets/styles.css">
 
 <script type="application/ld+json">
@@ -31,7 +36,7 @@
   "jobTitle": "Graphic Designer & Brand Strategist",
   "url": "https://snehajain.co.uk",
   "email": "mailto:hello@snehajain.co.uk",
-  "address": { "@type": "PostalAddress", "addressCountry": "GB" },
+  "address": { "@type": "PostalAddress", "addressLocality": "London", "addressCountry": "GB" },
   "sameAs": [
     "https://www.linkedin.com/in/USERNAME",
     "https://www.instagram.com/USERNAME",
@@ -43,236 +48,669 @@
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
-<header class="site-head" id="top">
-  <a class="wordmark" href="#top" aria-label="Sneha Jain, home">
-    <span class="wordmark__name">Sneha Jain</span>
-    <span class="wordmark__role">Design &amp; Brand Strategy</span>
-  </a>
+<!-- =======================================================
+     HEADER — PLACEHOLDER
+     Sneha is supplying a new header design. Replace everything
+     between this comment and "END PLACEHOLDER HEADER" plus the
+     matching block in assets/styles.css (section 5).
+     ======================================================= -->
 
-  <button class="nav-toggle" aria-expanded="false" aria-controls="nav" aria-label="Open menu">
-    <span></span><span></span>
-  </button>
+<div class="status-bar" id="top">
+  <div class="wrap status-bar__inner">
+    <span id="clock">&nbsp;</span>
+    <span class="status-bar__sep">/</span>
+    <span id="today">&nbsp;</span>
+    <span class="status-bar__sep">/</span>
+    <span>Based in London</span>
+    <span class="status-bar__avail">
+      <span class="status-bar__dot" aria-hidden="true"></span>
+      Available for work
+    </span>
+  </div>
+</div>
 
-  <nav id="nav" class="nav" aria-label="Primary">
-    <a href="#work">Work</a>
-    <a href="#services">Services</a>
-    <a href="#about">About</a>
-    <a href="#contact" class="nav__cta">Start a project</a>
-  </nav>
+<header class="site-head">
+  <div class="wrap site-head__inner">
+    <a class="wordmark" href="#top" aria-label="Sneha Jain, home">Sneha&nbsp;Jain<sup>&reg;</sup></a>
+
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav" aria-label="Open menu">
+      <span></span><span></span>
+    </button>
+
+    <nav id="nav" class="nav" aria-label="Primary">
+      <a href="#intro">About</a>
+      <a href="#services">Services</a>
+      <a href="#work">Work</a>
+      <a href="#insights">Insights</a>
+      <a href="#contact" class="nav__cta">Book a call</a>
+    </nav>
+  </div>
 </header>
+<!-- END PLACEHOLDER HEADER -->
 
 <main id="main">
 
   <!-- ===============  HERO  =============== -->
   <section class="hero">
-    <p class="eyebrow reveal">Graphic Designer &amp; Brand Strategist · London, UK</p>
-    <h1 class="hero__title reveal">
-      Brands built on a <em>clear idea</em>, not just a nice logo.
-    </h1>
-    <p class="hero__lede reveal">
-      I help founders and growing businesses work out what they actually stand for — then give it a
-      visual language that holds up everywhere, from a packet on a shelf to a pitch deck at 9am.
-    </p>
-    <div class="hero__actions reveal">
-      <a class="btn btn--solid" href="#work">See selected work</a>
-      <a class="btn btn--ghost" href="#contact">Work with me</a>
+    <div class="wrap">
+      <h1 class="hero__title reveal">
+        <span class="lead-in">Hey, I&rsquo;m</span>
+        Sneha Jain, and I design brands that know
+        <strong>what they stand for</strong> &mdash; not just
+        <span class="mark">what they look like</span>.
+      </h1>
+      <div class="hero__actions reveal">
+        <a class="btn btn--solid" href="#contact">
+          Book a call
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a class="btn btn--ghost" href="#work">See selected work</a>
+        <span class="hero__meta">London, UK &middot; Working worldwide</span>
+      </div>
     </div>
   </section>
 
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee__track">
-      <span>Brand Strategy</span><i>✳</i><span>Visual Identity</span><i>✳</i><span>Packaging</span><i>✳</i><span>Art Direction</span><i>✳</i><span>Editorial &amp; Print</span><i>✳</i><span>Brand Guidelines</span><i>✳</i><span>Brand Strategy</span><i>✳</i><span>Visual Identity</span><i>✳</i><span>Packaging</span><i>✳</i><span>Art Direction</span><i>✳</i><span>Editorial &amp; Print</span><i>✳</i><span>Brand Guidelines</span><i>✳</i>
+  <!-- ===============  GIANT WORDMARK  =============== -->
+  <div class="bigmark" aria-hidden="true">
+    <div class="bigmark__row">
+      <span>S</span><span>N</span><span>E</span><span>H</span><span>A</span><span class="dot">&middot;</span><span>J</span><span>A</span><span>I</span><span>N</span>
     </div>
   </div>
 
-  <!-- ===============  WORK  =============== -->
-  <section class="section" id="work">
-    <div class="section__head reveal">
-      <h2 class="section__title">Selected work</h2>
-      <p class="section__note">A few projects that show how strategy and craft meet.</p>
-    </div>
-
-    <div class="work-grid">
-
-      <a class="card reveal" href="work/project-one.html">
-        <div class="card__media"><img src="assets/work/project-one.svg" alt="Brand identity system for Marigold &amp; Co." loading="lazy" width="1200" height="900"></div>
-        <div class="card__meta">
-          <h3>Marigold &amp; Co.</h3>
-          <p>Identity, packaging and tone of voice for a small-batch tea house.</p>
-          <span class="card__tags">Strategy · Identity · Packaging</span>
+  <!-- ===============  INTRO  =============== -->
+  <section class="section" id="intro">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Intro</p>
+        <div>
+          <h2 class="sec-title">Beyond the Logo</h2>
+          <p class="sec-lede">Where <strong>strategy</strong> meets the craft that makes it visible.</p>
         </div>
-      </a>
+      </div>
 
-      <a class="card reveal" href="work/project-two.html">
-        <div class="card__media"><img src="assets/work/project-two.svg" alt="Visual identity for Northlight Studio" loading="lazy" width="1200" height="900"></div>
-        <div class="card__meta">
-          <h3>Northlight Studio</h3>
-          <p>Repositioning an architecture practice for a bigger conversation.</p>
-          <span class="card__tags">Positioning · Identity · Web</span>
-        </div>
-      </a>
+      <div class="intro__body reveal">
+        <p>Every brief arrives half-formed. The real work is figuring out what the business is
+          trying to become &mdash; and then giving that idea a visual language it can actually live
+          in. I treat design as <strong>both a craft and a conversation</strong>.</p>
+        <p>I work with independent founders, studios and in-house teams across food, culture and the
+          built environment. My background sits on both sides of the table: the strategic thinking
+          that decides <strong>why</strong> a brand exists, and the hands-on craft that decides how
+          it looks and feels. Fewer handovers, less lost in translation, and work that stays true to
+          the idea it started from.</p>
+      </div>
 
-      <a class="card reveal" href="work/project-three.html">
-        <div class="card__media"><img src="assets/work/project-three.svg" alt="Packaging design for Saffron Field" loading="lazy" width="1200" height="900"></div>
-        <div class="card__meta">
-          <h3>Saffron Field</h3>
-          <p>A spice range that earns its place on the shelf and in the kitchen.</p>
-          <span class="card__tags">Naming · Packaging · Art Direction</span>
-        </div>
-      </a>
+      <!-- PLACEHOLDER FIGURES — confirm or change before launch -->
+      <ul class="stats reveal">
+        <li class="stat">
+          <span class="stat__label">Projects delivered</span>
+          <span class="stat__value">40<sup>+</sup></span>
+        </li>
+        <li class="stat">
+          <span class="stat__label">Repeat clients</span>
+          <span class="stat__value">60<sup>%</sup></span>
+        </li>
+        <li class="stat">
+          <span class="stat__label">Brands launched</span>
+          <span class="stat__value">12<sup>+</sup></span>
+        </li>
+      </ul>
 
-      <a class="card reveal" href="work/project-four.html">
-        <div class="card__media"><img src="assets/work/project-four.svg" alt="Editorial design for The Long Table" loading="lazy" width="1200" height="900"></div>
-        <div class="card__meta">
-          <h3>The Long Table</h3>
-          <p>An editorial system for a community food journal.</p>
-          <span class="card__tags">Editorial · Print · Layout</span>
-        </div>
-      </a>
-
+      <div class="sec-foot reveal">
+        <p class="sec-foot__note">The person behind the work</p>
+        <a class="arrow-link" href="#contact">More about me <span>&rarr;</span></a>
+      </div>
     </div>
   </section>
 
   <!-- ===============  SERVICES  =============== -->
   <section class="section section--alt" id="services">
-    <div class="section__head reveal">
-      <h2 class="section__title">How I can help</h2>
-      <p class="section__note">Engagements usually start in one of three places.</p>
-    </div>
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Services</p>
+        <div>
+          <h2 class="sec-title">Design Expertise</h2>
+          <p class="sec-lede">Building brands that <strong>connect</strong> with the people they are for.</p>
+        </div>
+      </div>
 
-    <ol class="services">
-      <li class="service reveal">
-        <span class="service__num">01</span>
-        <h3>Brand Strategy</h3>
-        <p>Research, positioning, audience and messaging. We work out what you stand for, who it is
-           for, and the words you will use — before a single pixel moves.</p>
-        <ul>
-          <li>Discovery &amp; stakeholder workshops</li>
-          <li>Positioning &amp; brand platform</li>
-          <li>Naming, tone of voice, messaging</li>
-        </ul>
-      </li>
-      <li class="service reveal">
-        <span class="service__num">02</span>
-        <h3>Visual Identity</h3>
-        <p>Logo, type, colour, imagery and layout — designed as a system and documented so your team
-           can use it without me in the room.</p>
-        <ul>
-          <li>Logo &amp; identity system</li>
-          <li>Type, colour &amp; art direction</li>
-          <li>Brand guidelines &amp; asset kit</li>
-        </ul>
-      </li>
-      <li class="service reveal">
-        <span class="service__num">03</span>
-        <h3>Applied Design</h3>
-        <p>The places a brand actually lives: packaging, print, social, decks and campaign artwork —
-           made to one consistent standard.</p>
-        <ul>
-          <li>Packaging &amp; print</li>
-          <li>Social &amp; campaign templates</li>
-          <li>Presentation &amp; pitch design</li>
-        </ul>
-      </li>
-    </ol>
+      <ol class="services reveal">
+        <li class="service">
+          <div class="service__top"><h3>Brand Strategy</h3><span class="service__num">1</span></div>
+          <p>Research, positioning and audience work that decides what you stand for.</p>
+        </li>
+        <li class="service">
+          <div class="service__top"><h3>Visual Identity</h3><span class="service__num">2</span></div>
+          <p>Logo, type, colour and imagery, designed as a system rather than a one-off.</p>
+        </li>
+        <li class="service">
+          <div class="service__top"><h3>Naming &amp; Tone of Voice</h3><span class="service__num">3</span></div>
+          <p>The words a brand uses, and the way it sounds when it uses them.</p>
+        </li>
+        <li class="service">
+          <div class="service__top"><h3>Packaging Design</h3><span class="service__num">4</span></div>
+          <p>Structure, artwork and shelf presence for products that need to be picked up.</p>
+        </li>
+        <li class="service">
+          <div class="service__top"><h3>Art Direction</h3><span class="service__num">5</span></div>
+          <p>Guiding photography, illustration and campaign work to one standard.</p>
+        </li>
+        <li class="service">
+          <div class="service__top"><h3>Brand Guidelines</h3><span class="service__num">6</span></div>
+          <p>Documentation your team can follow without me in the room.</p>
+        </li>
+        <li class="service">
+          <div class="service__top"><h3>Editorial &amp; Print</h3><span class="service__num">7</span></div>
+          <p>Books, reports and journals where layout carries the argument.</p>
+        </li>
+        <li class="service">
+          <div class="service__top"><h3>Web &amp; Digital Design</h3><span class="service__num">8</span></div>
+          <p>Sites and interfaces that carry the identity properly onto a screen.</p>
+        </li>
+        <li class="service">
+          <div class="service__top"><h3>Workshops</h3><span class="service__num">9</span></div>
+          <p>Structured sessions for founders and teams to get unstuck together.</p>
+        </li>
+        <li class="service">
+          <div class="service__top"><h3>Campaign &amp; Social</h3><span class="service__num">10</span></div>
+          <p>Templates and artwork that keep everyday output on-brand.</p>
+        </li>
+        <li class="service">
+          <div class="service__top"><h3>Presentation Design</h3><span class="service__num">11</span></div>
+          <p>Pitch decks and investor material that argue clearly and look the part.</p>
+        </li>
+        <li class="service">
+          <div class="service__top"><h3>Brand Refresh</h3><span class="service__num">12</span></div>
+          <p>Bringing an existing identity forward without throwing away its equity.</p>
+        </li>
+      </ol>
+
+      <div class="sec-foot reveal">
+        <p class="sec-foot__note">Let&rsquo;s bring your project to life</p>
+        <a class="btn btn--solid" href="#contact">
+          Book a call
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
   </section>
 
-  <!-- ===============  ABOUT  =============== -->
-  <section class="section" id="about">
-    <div class="about">
-      <div class="about__portrait reveal">
-        <img src="assets/img/portrait.svg" alt="Portrait of Sneha Jain" loading="lazy" width="800" height="1000">
+  <!-- ===============  FEATURED WORK  =============== -->
+  <section class="section" id="work">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Featured Projects</p>
+        <div>
+          <h2 class="sec-title">Selected Work</h2>
+          <p class="sec-lede">Practical problems, <strong>brought to life</strong> through considered design.</p>
+        </div>
       </div>
-      <div class="about__body reveal">
-        <h2 class="section__title">Hello, I am Sneha</h2>
-        <p class="lede">A graphic designer and brand strategist with a soft spot for brands that have
-           something honest to say.</p>
-        <p>I work with independent founders, studios and in-house teams across food, culture and the
-           built environment — the kind of projects where the brief arrives half-formed and the real
-           work is figuring out what the business is trying to become.</p>
-        <p>My background sits on both sides of the table: the strategic thinking that decides
-           <em>why</em> a brand exists, and the hands-on craft that decides how it looks and feels.
-           That means fewer handovers, less lost in translation, and work that stays true to the idea
-           it started from.</p>
-        <p>Outside of client work you will find me collecting type specimens, over-photographing
-           packaging in supermarkets, and redesigning menus in my head.</p>
 
-        <dl class="facts">
-          <div><dt>Based in</dt><dd>London, UK — working with clients worldwide</dd></div>
-          <div><dt>Focus</dt><dd>Brand strategy, identity systems, packaging</dd></div>
-          <div><dt>Tools</dt><dd>Adobe CC, Figma, InDesign, a lot of tracing paper</dd></div>
-        </dl>
+      <div class="work-grid">
+        <a class="project reveal" href="work/project-one.html">
+          <div class="project__media">
+            <img src="assets/work/project-one.svg" alt="Brand identity system for Marigold and Co." loading="lazy" width="1200" height="900">
+          </div>
+          <div class="project__body">
+            <h3 class="project__title">Marigold &amp; Co. <span class="arw">&#8599;</span></h3>
+            <p class="project__desc">Identity, packaging and tone of voice for a small-batch tea house.</p>
+            <ul class="tags"><li>Strategy</li><li>Identity</li><li>Packaging</li></ul>
+          </div>
+        </a>
+
+        <a class="project reveal" href="work/project-two.html">
+          <div class="project__media">
+            <img src="assets/work/project-two.svg" alt="Visual identity for Northlight Studio" loading="lazy" width="1200" height="900">
+          </div>
+          <div class="project__body">
+            <h3 class="project__title">Northlight Studio <span class="arw">&#8599;</span></h3>
+            <p class="project__desc">Repositioning an architecture practice for a bigger conversation.</p>
+            <ul class="tags"><li>Positioning</li><li>Identity</li><li>Web</li></ul>
+          </div>
+        </a>
+
+        <a class="project reveal" href="work/project-three.html">
+          <div class="project__media">
+            <img src="assets/work/project-three.svg" alt="Packaging design for Saffron Field" loading="lazy" width="1200" height="900">
+          </div>
+          <div class="project__body">
+            <h3 class="project__title">Saffron Field <span class="arw">&#8599;</span></h3>
+            <p class="project__desc">A spice range that earns its place on the shelf and in the kitchen.</p>
+            <ul class="tags"><li>Naming</li><li>Packaging</li><li>Art Direction</li></ul>
+          </div>
+        </a>
+
+        <a class="project reveal" href="work/project-four.html">
+          <div class="project__media">
+            <img src="assets/work/project-four.svg" alt="Editorial design for The Long Table" loading="lazy" width="1200" height="900">
+          </div>
+          <div class="project__body">
+            <h3 class="project__title">The Long Table <span class="arw">&#8599;</span></h3>
+            <p class="project__desc">An editorial system for a community food journal.</p>
+            <ul class="tags"><li>Editorial</li><li>Print</li><li>Layout</li></ul>
+          </div>
+        </a>
       </div>
+    </div>
+  </section>
+
+  <!-- ===============  CLIENT MARQUEE  =============== -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      <span class="marquee__item">Brand Strategy</span><span class="marquee__star">&#10039;</span>
+      <span class="marquee__item">Visual Identity</span><span class="marquee__star">&#10039;</span>
+      <span class="marquee__item">Packaging</span><span class="marquee__star">&#10039;</span>
+      <span class="marquee__item">Art Direction</span><span class="marquee__star">&#10039;</span>
+      <span class="marquee__item">Editorial &amp; Print</span><span class="marquee__star">&#10039;</span>
+      <span class="marquee__item">Brand Guidelines</span><span class="marquee__star">&#10039;</span>
+      <span class="marquee__item">Brand Strategy</span><span class="marquee__star">&#10039;</span>
+      <span class="marquee__item">Visual Identity</span><span class="marquee__star">&#10039;</span>
+      <span class="marquee__item">Packaging</span><span class="marquee__star">&#10039;</span>
+      <span class="marquee__item">Art Direction</span><span class="marquee__star">&#10039;</span>
+      <span class="marquee__item">Editorial &amp; Print</span><span class="marquee__star">&#10039;</span>
+      <span class="marquee__item">Brand Guidelines</span><span class="marquee__star">&#10039;</span>
+    </div>
+  </div>
+
+  <!-- ===============  TESTIMONIALS  =============== -->
+  <section class="section" id="voices">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Social Proof</p>
+        <div>
+          <h2 class="sec-title">Voices of Trust</h2>
+          <p class="sec-lede">Real words from the <strong>brands and founders</strong> I have worked with.</p>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER TESTIMONIALS — replace with real, approved quotes before launch -->
+      <ul class="voices">
+        <li class="voice reveal">
+          <span class="voice__mark" aria-hidden="true">&ldquo;</span>
+          <p class="voice__quote">Sneha asked the questions nobody else had bothered to ask. We came in wanting a logo and left with a much clearer business.</p>
+          <footer class="voice__by">
+            <span><span class="voice__name">Client name</span><span class="voice__role">Founder, Company</span></span>
+          </footer>
+        </li>
+        <li class="voice reveal">
+          <span class="voice__mark" aria-hidden="true">&ldquo;</span>
+          <p class="voice__quote">The packaging did what we could not do in three years of trying. It got people to pick the product up.</p>
+          <footer class="voice__by">
+            <span><span class="voice__name">Client name</span><span class="voice__role">Director, Company</span></span>
+          </footer>
+        </li>
+        <li class="voice reveal">
+          <span class="voice__mark" aria-hidden="true">&ldquo;</span>
+          <p class="voice__quote">Clear process, no jargon, and every deadline met. The guidelines are still the document our team uses daily.</p>
+          <footer class="voice__by">
+            <span><span class="voice__name">Client name</span><span class="voice__role">Head of Marketing, Company</span></span>
+          </footer>
+        </li>
+        <li class="voice reveal">
+          <span class="voice__mark" aria-hidden="true">&ldquo;</span>
+          <p class="voice__quote">She captured the personality of the brand in a way that felt honest rather than borrowed.</p>
+          <footer class="voice__by">
+            <span><span class="voice__name">Client name</span><span class="voice__role">Creative Entrepreneur</span></span>
+          </footer>
+        </li>
+      </ul>
     </div>
   </section>
 
   <!-- ===============  PROCESS  =============== -->
   <section class="section section--alt" id="process">
-    <div class="section__head reveal">
-      <h2 class="section__title">How we would work together</h2>
-      <p class="section__note">Clear stages, clear deliverables, no mystery.</p>
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Process</p>
+        <div>
+          <h2 class="sec-title">How We Work</h2>
+          <p class="sec-lede">Clear stages, clear deliverables, <strong>no mystery</strong>.</p>
+        </div>
+      </div>
+
+      <ol class="steps reveal">
+        <li class="step">
+          <span class="step__num">1</span>
+          <h3>Listen <span class="arw">&rarr;</span></h3>
+          <p>A proper conversation about the business, the market and what is not working. Free, no obligation.</p>
+        </li>
+        <li class="step">
+          <span class="step__num">2</span>
+          <h3>Define <span class="arw">&rarr;</span></h3>
+          <p>Research and workshops turn into a written brand platform we both agree on.</p>
+        </li>
+        <li class="step">
+          <span class="step__num">3</span>
+          <h3>Design <span class="arw">&rarr;</span></h3>
+          <p>Routes explored, one direction chosen, then built out into a complete system.</p>
+        </li>
+        <li class="step">
+          <span class="step__num">4</span>
+          <h3>Hand over</h3>
+          <p>Guidelines, files and a walkthrough so your team can run with it confidently.</p>
+        </li>
+      </ol>
+
+      <div class="sec-foot reveal">
+        <p class="sec-foot__note">Your next project starts here</p>
+        <a class="btn btn--solid" href="#contact">
+          Book a call
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
     </div>
-    <ol class="steps">
-      <li class="reveal"><span>01</span><h3>Listen</h3><p>A proper conversation about the business, the market and what is not working. Free, no obligation.</p></li>
-      <li class="reveal"><span>02</span><h3>Define</h3><p>Research and workshops turn into a written brand platform we both agree on.</p></li>
-      <li class="reveal"><span>03</span><h3>Design</h3><p>Routes explored, one direction chosen, then built out into a full system.</p></li>
-      <li class="reveal"><span>04</span><h3>Hand over</h3><p>Guidelines, files and a walkthrough so your team can run with it confidently.</p></li>
-    </ol>
   </section>
 
-  <!-- ===============  TESTIMONIAL  =============== -->
-  <section class="quote reveal">
-    <blockquote>
-      <p>&ldquo;Sneha asked the questions nobody else had bothered to ask. We came in wanting a logo
-         and left with a much clearer idea of the business.&rdquo;</p>
-      <footer>— Client name, <cite>Founder, Company</cite></footer>
-    </blockquote>
+  <!-- ===============  PRICING  =============== -->
+  <section class="section" id="pricing">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Pricing</p>
+        <div>
+          <h2 class="sec-title">What It Costs</h2>
+          <p class="sec-lede">Two ways to work together, depending on <strong>scope and pace</strong>.</p>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER PRICING — set real figures before launch -->
+      <div class="tiers">
+        <div class="tier tier--feature reveal">
+          <span class="tier__label">Brand Project</span>
+          <div class="tier__price"><span class="cur">&pound;</span>4,500<span class="per">&nbsp;from</span></div>
+          <ul class="tier__list">
+            <li>Discovery and stakeholder workshop</li>
+            <li>Written positioning and brand platform</li>
+            <li>Full visual identity system</li>
+            <li>Brand guidelines and asset kit</li>
+            <li>Two rounds of refinement included</li>
+          </ul>
+          <p class="tier__note">Best for founders and small teams launching or relaunching a brand properly, once.</p>
+          <div class="tier__meta">Typical delivery: 6&ndash;10 weeks</div>
+        </div>
+
+        <div class="tier reveal">
+          <h3 class="tier__title">Ongoing &amp; Custom</h3>
+          <p class="tier__note">Not every piece of creative work fits in a box. Retainers and custom engagements are
+            built around your goals, timelines and internal team &mdash; whether that is a packaging range,
+            a campaign, or design support alongside an existing in-house function.</p>
+          <ul class="tier__list">
+            <li>Monthly retainer or per-project</li>
+            <li>Packaging, campaign and print work</li>
+            <li>Art direction and design oversight</li>
+            <li>Priority turnaround on small jobs</li>
+          </ul>
+          <div class="tier__meta">Quoted after a call</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============  FAQ  =============== -->
+  <section class="section section--alt" id="faq">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">FAQ</p>
+        <div>
+          <h2 class="sec-title">Common Questions</h2>
+          <p class="sec-lede">Quick answers to what <strong>most people ask</strong> first.</p>
+        </div>
+      </div>
+
+      <div class="faq-groups reveal">
+        <div class="faq-group">
+          <div class="faq-group__head">
+            <span class="faq-group__num">1</span>
+            <h3 class="faq-group__title">Services &amp; Offerings</h3>
+          </div>
+          <details class="qa">
+            <summary>What kind of projects do you take on?</summary>
+            <div class="qa__body">Brand strategy, visual identity, packaging, editorial and art direction. I also
+              build guidelines and design systems so teams can keep the work consistent afterwards.</div>
+          </details>
+          <details class="qa">
+            <summary>Can you help with just a logo?</summary>
+            <div class="qa__body">Rarely, and I will usually say so honestly. A logo without positioning behind it
+              tends to get replaced within two years. If budget is tight I would rather do a smaller,
+              strategy-led piece of work than a decorative one.</div>
+          </details>
+          <details class="qa">
+            <summary>Do you design websites too?</summary>
+            <div class="qa__body">I design them and work with a developer to build them. The site is usually where
+              an identity is tested hardest, so it is worth doing alongside the brand rather than after.</div>
+          </details>
+        </div>
+
+        <div class="faq-group">
+          <div class="faq-group__head">
+            <span class="faq-group__num">2</span>
+            <h3 class="faq-group__title">Process &amp; Workflow</h3>
+          </div>
+          <details class="qa">
+            <summary>What is your design process like?</summary>
+            <div class="qa__body">Four stages: listen, define, design, hand over. You see work in progress at each
+              one, so nothing arrives as a surprise at the end.</div>
+          </details>
+          <details class="qa">
+            <summary>How involved will I be?</summary>
+            <div class="qa__body">More than you might expect at the start, less than you fear later. The discovery
+              stage needs your time. After that it is scheduled check-ins and feedback rounds.</div>
+          </details>
+          <details class="qa">
+            <summary>How do you handle revisions?</summary>
+            <div class="qa__body">Two structured rounds are included in a project fee. Feedback is collected in one
+              place and worked through together rather than traded over email.</div>
+          </details>
+        </div>
+
+        <div class="faq-group">
+          <div class="faq-group__head">
+            <span class="faq-group__num">3</span>
+            <h3 class="faq-group__title">Pricing &amp; Collaboration</h3>
+          </div>
+          <details class="qa">
+            <summary>How much does a project cost?</summary>
+            <div class="qa__body">It depends on scope, complexity and timeline. Full brand projects start at the
+              figure listed above. Smaller pieces of work are quoted individually.</div>
+          </details>
+          <details class="qa">
+            <summary>Do you work with hourly rates?</summary>
+            <div class="qa__body">Not for brand work. Fixed project fees mean you know the cost up front and I am
+              not penalised for solving something quickly.</div>
+          </details>
+          <details class="qa">
+            <summary>Do you take on retainers?</summary>
+            <div class="qa__body">Yes, for ongoing design and art direction once a brand is established. It works
+              best when there is a steady flow of applied work.</div>
+          </details>
+        </div>
+
+        <div class="faq-group">
+          <div class="faq-group__head">
+            <span class="faq-group__num">4</span>
+            <h3 class="faq-group__title">Practicalities</h3>
+          </div>
+          <details class="qa">
+            <summary>How long does a typical project take?</summary>
+            <div class="qa__body">Smaller pieces run two to four weeks. Full brand identities usually take six to
+              ten, depending on how quickly feedback comes back.</div>
+          </details>
+          <details class="qa">
+            <summary>Will I own the final files?</summary>
+            <div class="qa__body">Yes. On final payment, full ownership of the delivered work transfers to you,
+              including editable source files.</div>
+          </details>
+          <details class="qa">
+            <summary>Can you sign an NDA?</summary>
+            <div class="qa__body">Of course. Send yours over, or I can provide a standard mutual one.</div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===============  INSIGHTS  =============== -->
+  <section class="section" id="insights">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Insights</p>
+        <div>
+          <h2 class="sec-title">Notes on Brand</h2>
+          <p class="sec-lede">Reflections from <strong>ongoing work</strong> and the projects behind it.</p>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER ARTICLES — no article pages exist yet, so links point back here -->
+      <ul class="notes">
+        <li class="note reveal">
+          <span class="note__date">Coming soon</span>
+          <h3>Design with Purpose</h3>
+          <p>Good design is not decoration, it is direction. How strategy, identity and art direction
+            work together to produce outcomes rather than surfaces.</p>
+          <a class="arrow-link" href="#insights">Read more <span>&rarr;</span></a>
+        </li>
+        <li class="note reveal">
+          <span class="note__date">Coming soon</span>
+          <h3>What a Rebrand Actually Costs</h3>
+          <p>The line items nobody mentions in the pitch, and how to work out whether the money is
+            better spent on the brand or on the product behind it.</p>
+          <a class="arrow-link" href="#insights">Read more <span>&rarr;</span></a>
+        </li>
+        <li class="note reveal">
+          <span class="note__date">Coming soon</span>
+          <h3>Clarity Over Complexity</h3>
+          <p>The most effective identities are usually the simplest. On stripping away the clutter and
+            keeping only what carries meaning.</p>
+          <a class="arrow-link" href="#insights">Read more <span>&rarr;</span></a>
+        </li>
+        <li class="note reveal">
+          <span class="note__date">Coming soon</span>
+          <h3>Packaging That Gets Picked Up</h3>
+          <p>Shelf is the harshest test a brand ever faces. What separates packaging that sells from
+            packaging that merely looks nice in a portfolio.</p>
+          <a class="arrow-link" href="#insights">Read more <span>&rarr;</span></a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===============  CLOSING CTA  =============== -->
+  <section class="cta-band">
+    <div class="wrap">
+      <h2 class="cta-band__title reveal">
+        Every brand deserves <span class="mark">clarity</span>, focus and
+        <span class="ital">great design</span>.
+      </h2>
+      <a class="btn btn--yellow reveal" href="#contact">
+        Let&rsquo;s start
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
   </section>
 
   <!-- ===============  CONTACT  =============== -->
-  <section class="section contact" id="contact">
-    <div class="contact__inner reveal">
-      <h2 class="contact__title">Let us talk about your brand.</h2>
-      <p class="contact__lede">Tell me a little about the project — where you are now, what you are
-         trying to change, and roughly when you would like to start. I reply to everything within two
-         working days.</p>
-
-      <a class="mailto" href="mailto:hello@snehajain.co.uk?subject=Project%20enquiry">hello@snehajain.co.uk</a>
-
-      <form class="form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-        <div class="form__row">
-          <label>
-            <span>Your name</span>
-            <input type="text" name="name" autocomplete="name" required>
-          </label>
-          <label>
-            <span>Email</span>
-            <input type="email" name="email" autocomplete="email" required>
-          </label>
+  <section class="section" id="contact">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Contact</p>
+        <div>
+          <h2 class="sec-title">Start a Project</h2>
+          <p class="sec-lede">Tell me where you are now and <strong>what you want to change</strong>.</p>
         </div>
-        <label>
-          <span>What are you working on?</span>
-          <textarea name="message" rows="5" required></textarea>
-        </label>
-        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" class="hp">
-        <button type="submit" class="btn btn--solid">Send enquiry</button>
-        <p class="form__note">Prefer email? <a href="mailto:hello@snehajain.co.uk">hello@snehajain.co.uk</a></p>
-      </form>
+      </div>
+
+      <div class="contact-grid">
+        <div class="reveal">
+          <p>Where you are now, what you are trying to change, and roughly when you would like to
+            start. That is enough for a first conversation. I reply to everything within two working
+            days.</p>
+          <p><a class="contact__mail" href="mailto:hello@snehajain.co.uk?subject=Project%20enquiry">hello@snehajain.co.uk</a></p>
+        </div>
+
+        <form class="form reveal" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+          <div class="form__row">
+            <label>
+              <span>Your name</span>
+              <input type="text" name="name" autocomplete="name" required>
+            </label>
+            <label>
+              <span>Email</span>
+              <input type="email" name="email" autocomplete="email" required>
+            </label>
+          </div>
+          <label>
+            <span>Budget range</span>
+            <select name="budget">
+              <option value="">Prefer not to say</option>
+              <option>Under &pound;2,000</option>
+              <option>&pound;2,000 &ndash; &pound;5,000</option>
+              <option>&pound;5,000 &ndash; &pound;10,000</option>
+              <option>&pound;10,000+</option>
+            </select>
+          </label>
+          <label>
+            <span>What are you working on?</span>
+            <textarea name="message" rows="5" required></textarea>
+          </label>
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" class="hp">
+          <button type="submit" class="btn btn--solid">
+            Send enquiry
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <p class="form__note">Prefer email? <a href="mailto:hello@snehajain.co.uk">hello@snehajain.co.uk</a></p>
+        </form>
+      </div>
     </div>
   </section>
 
 </main>
 
+<!-- ===============  FOOTER  =============== -->
 <footer class="site-foot">
-  <div class="site-foot__inner">
-    <p class="site-foot__mark">Sneha&nbsp;Jain</p>
-    <nav class="site-foot__links" aria-label="Social">
-      <a href="https://www.instagram.com/USERNAME" rel="me noopener" target="_blank">Instagram</a>
-      <a href="https://www.linkedin.com/in/USERNAME" rel="me noopener" target="_blank">LinkedIn</a>
-      <a href="https://www.behance.net/USERNAME" rel="me noopener" target="_blank">Behance</a>
-      <a href="mailto:hello@snehajain.co.uk">Email</a>
-    </nav>
-    <p class="site-foot__legal">&copy; <span id="year">2026</span> Sneha Jain. All rights reserved.</p>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:hello@snehajain.co.uk">hello@snehajain.co.uk <span class="arw">&rarr;</span></a></li>
+          <li><a href="#contact">Enquiry form <span class="arw">&rarr;</span></a></li>
+          <li><a href="#top">London, UK <span class="arw">&rarr;</span></a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h4>Menu</h4>
+        <ul>
+          <li><a href="#top">Home <span class="arw">&rarr;</span></a></li>
+          <li><a href="#intro">About <span class="arw">&rarr;</span></a></li>
+          <li><a href="#services">Services <span class="arw">&rarr;</span></a></li>
+          <li><a href="#work">Work <span class="arw">&rarr;</span></a></li>
+          <li><a href="#faq">FAQ <span class="arw">&rarr;</span></a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h4>Social</h4>
+        <ul>
+          <li><a href="https://www.instagram.com/USERNAME" rel="me noopener" target="_blank">Instagram <span class="arw">&rarr;</span></a></li>
+          <li><a href="https://www.linkedin.com/in/USERNAME" rel="me noopener" target="_blank">LinkedIn <span class="arw">&rarr;</span></a></li>
+          <li><a href="https://www.behance.net/USERNAME" rel="me noopener" target="_blank">Behance <span class="arw">&rarr;</span></a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col newsletter">
+        <h4>Newsletter</h4>
+        <p>Occasional notes on brand, design and the work in progress. No spam.</p>
+        <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+          <input type="email" name="email" placeholder="you@company.com" aria-label="Email address" required>
+          <button type="submit" class="btn btn--yellow">Subscribe</button>
+        </form>
+        <small>Unsubscribe any time.</small>
+      </div>
+    </div>
+
+    <div class="foot-bar">
+      <p class="foot-bar__legal">&copy; <span id="year">2026</span> Sneha Jain. All rights reserved.</p>
+      <a href="#top">Back to top &uarr;</a>
+    </div>
   </div>
 </footer>
 
