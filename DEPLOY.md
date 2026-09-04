@@ -24,10 +24,13 @@ git remote add origin https://github.com/YOUR-GITHUB-USERNAME/snehajain.co.uk.gi
 git push -u origin main
 ```
 
-If it asks for a password, use a **personal access token**, not your account
-password (GitHub → Settings → Developer settings → Personal access tokens →
-Fine-grained tokens → repo access). Or install
-[GitHub Desktop](https://desktop.github.com) and do the whole thing by clicking.
+This machine has Git Credential Manager installed, so the first push opens a
+browser window to sign in to GitHub. Approve it there and the credentials are
+saved to Windows Credential Manager — later pushes are silent. You do **not**
+need to create a personal access token by hand.
+
+If the browser window never appears, run `git config --global credential.helper manager`
+and push again.
 
 ## 2. Turn on GitHub Pages
 
