@@ -41,6 +41,17 @@ three, or delete the matching code.
 
 The oversized name that used to sit under the header has been removed.
 
+## After editing the stylesheet, bump the version
+
+Every page links the stylesheet as `assets/styles.css?v=3`. Browsers cache CSS hard,
+and a stale copy against new markup breaks the page rather than merely dating it.
+Raising that number to `?v=4` in all eleven HTML files forces every browser to fetch
+the new file. Nothing else depends on it.
+
+The header logo does not depend on CSS at all. A `<picture>` element lets the browser
+pick the cream or dark mark natively, so only one is ever in the page, and the `img`
+carries real `width` and `height` attributes so it stays small even before CSS loads.
+
 ## Brand tokens
 
 Everything visual comes from the first 60 lines of `assets/styles.css`.

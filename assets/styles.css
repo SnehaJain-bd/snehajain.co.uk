@@ -349,18 +349,17 @@ p:last-child{ margin-bottom:0; }
   margin-right:auto;
   white-space:nowrap;
 }
-.wordmark img{ height:1.9rem; width:auto; }
-.wordmark img.is-cream{ display:none; }
+/* The <picture> element picks the cream or dark mark on its own, so only
+   one is ever in the DOM. Nothing here is load-bearing: the img carries
+   width and height attributes, so an unstyled render is still correct. */
+.wordmark picture{ display:flex; flex:none; }
+.wordmark img{ height:1.75rem; width:auto; }
 .wordmark__text{
   font-family:var(--head);
   font-size:1.22rem;
   font-weight:600;
   letter-spacing:-.02em;
   line-height:1;
-}
-@media (prefers-color-scheme: dark){
-  .wordmark img.is-dark{ display:none; }
-  .wordmark img.is-cream{ display:block; }
 }
 
 .nav{ display:flex; align-items:center; gap:.35rem; }
