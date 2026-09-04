@@ -1,7 +1,7 @@
 /* =========================================================
-   Sneha Jain — snehajain.co.uk
-   Small progressive enhancements. The site works without any
-   of this; nothing here is required to read the page.
+   Sneha Jain, snehajain.co.uk
+   Progressive enhancement only. Every page reads fine
+   with JavaScript switched off.
    ========================================================= */
 
 (function () {
@@ -13,36 +13,26 @@
   var year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
 
-  /* ---------- London clock in the status bar ----------
-     Always shows Sneha's local time, not the visitor's, so the
-     "available for work" line means something. */
+  /* ---------- Southampton clock ----------
+     Shows Sneha's local time, not the visitor's, so the
+     "available for work" line next to it means something. */
   var clock = document.getElementById('clock');
-  var today = document.getElementById('today');
 
   function tick() {
+    if (!clock) return;
     var now = new Date();
     try {
-      if (clock) {
-        clock.textContent = now.toLocaleTimeString('en-GB', {
-          timeZone: 'Europe/London',
-          hour: '2-digit',
-          minute: '2-digit'
-        });
-      }
-      if (today) {
-        today.textContent = now.toLocaleDateString('en-GB', {
-          timeZone: 'Europe/London',
-          day: 'numeric',
-          month: 'long'
-        });
-      }
+      clock.textContent = now.toLocaleTimeString('en-GB', {
+        timeZone: 'Europe/London',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
     } catch (e) {
-      /* Old browser without full Intl time zone data — fall back to local. */
-      if (clock) clock.textContent = now.getHours() + ':' + String(now.getMinutes()).padStart(2, '0');
-      if (today) today.textContent = '';
+      /* Browser without full Intl time zone data. Fall back to local time. */
+      clock.textContent = now.getHours() + ':' + String(now.getMinutes()).padStart(2, '0');
     }
   }
-  if (clock || today) {
+  if (clock) {
     tick();
     setInterval(tick, 30000);
   }
@@ -54,8 +44,9 @@
 
   function setHeadHeight() {
     if (!head) return;
-    var r = head.getBoundingClientRect();
-    document.documentElement.style.setProperty('--head-h', Math.round(r.bottom) + 'px');
+    document.documentElement.style.setProperty(
+      '--head-h', Math.round(head.getBoundingClientRect().bottom) + 'px'
+    );
   }
   setHeadHeight();
   window.addEventListener('resize', setHeadHeight);
@@ -111,7 +102,7 @@
     items.forEach(function (el) { io.observe(el); });
   }
 
-  /* ---------- FAQ: one open answer per group ---------- */
+  /* ---------- FAQ: one open answer per column ---------- */
   document.querySelectorAll('.faq-group').forEach(function (group) {
     var all = group.querySelectorAll('details.qa');
     all.forEach(function (d) {

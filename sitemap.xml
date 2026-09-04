@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://snehajain.co.uk/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://snehajain.co.uk/work/project-one.html</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://snehajain.co.uk/work/project-two.html</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://snehajain.co.uk/work/project-three.html</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://snehajain.co.uk/work/project-four.html</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://snehajain.co.uk/</loc><priority>1.0</priority></url>
+  <url><loc>https://snehajain.co.uk/about.html</loc><priority>0.8</priority></url>
+  <url><loc>https://snehajain.co.uk/services.html</loc><priority>0.8</priority></url>
+  <url><loc>https://snehajain.co.uk/work.html</loc><priority>0.8</priority></url>
+  <url><loc>https://snehajain.co.uk/contact.html</loc><priority>0.8</priority></url>
+  <url><loc>https://snehajain.co.uk/work/project-one.html</loc><priority>0.6</priority></url>
+  <url><loc>https://snehajain.co.uk/work/project-two.html</loc><priority>0.6</priority></url>
+  <url><loc>https://snehajain.co.uk/work/project-three.html</loc><priority>0.6</priority></url>
+  <url><loc>https://snehajain.co.uk/work/project-four.html</loc><priority>0.6</priority></url>
 </urlset>

@@ -1,143 +1,161 @@
 # snehajain.co.uk
 
-Portfolio site for Sneha Jain — graphic designer and brand strategist.
+Portfolio site for Sneha Jain, strategic brand designer for founders.
 Plain HTML, CSS and a little JavaScript. No build step, no dependencies, no framework.
 Edit a file, push, and the live site updates in about a minute.
 
-The layout follows the [Quomi](https://quomi.framer.website/) template: a status bar, an
-oversized statement hero, numbered service cards, `( LABEL )` section eyebrows, arrow links
-and a four-column footer.
+Layout follows the [Quomi](https://quomi.framer.website/) template. Copy follows
+`website-copy.md` in the brand assets folder. Voice rules from that file are applied
+throughout: plain statements, no em-dashes, nothing bracketed ships.
 
-## The header is a placeholder
+## Pages
 
-A new header design is coming. Until it lands, the current one is a stand-in and is fenced
-off so it can be replaced without touching anything else:
+Every item in the navigation is its own page.
 
-| Where | What to replace |
-| --- | --- |
-| `index.html` | Between `HEADER — PLACEHOLDER` and `END PLACEHOLDER HEADER` |
-| `work/_template.html` | The same two comment markers |
-| `work/project-*.html` | The same two markers, in all four files |
-| `404.html` | The single `<header class="site-head">` block |
-| `assets/styles.css` | Section 5, between the two `⚑` banners |
+| File | Page | Nav |
+| --- | --- | --- |
+| `index.html` | Home | Logo |
+| `about.html` | About | About |
+| `services.html` | Services and packages | Services |
+| `work.html` | Selected work | Work |
+| `contact.html` | Start a project | Start a project button |
+| `404.html` | Not found | Not linked |
+| `work/project-*.html` | Four case studies | From the work grid |
+| `work/_template.html` | Copy this for a new case study | Not published |
 
-The only thing outside those blocks that depends on the header is `assets/script.js`, which
-toggles `.is-open` on `#nav`, fills `#clock` and `#today`, and sets a `--head-h` custom
-property. Keep those four hooks, or delete the matching code.
+## The header is still a placeholder
+
+A new design is coming. Until it arrives the current header stands in, and it is fenced
+in every page between these two comments:
+
+```
+<!-- HEADER, PLACEHOLDER. Replace this whole block when the new design lands. -->
+...
+<!-- END HEADER -->
+```
+
+That block appears in all eleven HTML files. The matching CSS is section 5 of
+`assets/styles.css`. Three hooks in `assets/script.js` depend on it: the `.is-open`
+class on `#nav`, the `#clock` element, and the `--head-h` custom property. Keep those
+three, or delete the matching code.
+
+The oversized name that used to sit under the header has been removed.
 
 ## Brand tokens
 
 Everything visual comes from the first 60 lines of `assets/styles.css`.
 
-| Token | Value | Used for |
+| Token | Value | Role |
 | --- | --- | --- |
-| `--paper` | `#FBF9F4` | Page ground |
-| `--ink` | `#2A211A` | Body text, solid buttons, the CTA band |
-| `--yellow` | `#FFF176` | Highlight marker, accent buttons, quote marks |
-| `--blue` | `#00A7E1` | Fills, the availability dot, focus rings, underlines |
-| `--blue-ink` | `#0077A8` | Blue *as text* |
+| `--paper` | `#FBF9F4` | Off-white. Page ground |
+| `--ink` | `#2A211A` | Dark coffee. All text, solid buttons, the closing band |
+| `--yellow` | `#FFF176` | Highlighter, button hover, link underlines, active nav |
+| `--blue` | `#00A7E1` | Accent. Decorative fills only on light ground |
+| `--blue-deep` | `#0077A8` | Accent where something must actually be read |
 
-`--blue-ink` exists because `#00A7E1` only reaches 2.6:1 against the off-white ground, which
-fails accessibility for text. The darker blue reaches 4.7:1 and passes. Use `--blue` for
-shapes and fills, `--blue-ink` for anything that has to be read. Yellow is never used as a
-text colour on paper for the same reason — it is a background for dark text.
+Off-white, coffee and yellow do the work. Blue is an accent and is kept off anything
+that has to be legible on the light ground, because `#00A7E1` measures 2.6:1 there and
+fails the 4.5:1 minimum. It survives in three places where it is safe: the pulsing
+availability dot, focus rings via `--blue-deep` at 4.7:1, and dark mode, where the true
+brand blue measures 6.6:1 against the dark ground and is used directly.
 
-Dark mode is a full second palette in the `prefers-color-scheme: dark` block below the
-tokens. Change a token and the whole site follows.
+Yellow is a fill, never a text colour. Yellow on off-white is 1.1:1 and effectively
+invisible. Coffee on yellow is 13.6:1, the strongest pairing in the palette, so yellow
+always sits behind dark text: the `.mark` highlighter, link underlines that fill on
+hover, and the solid button hover state.
+
+Text links are coffee with a yellow underline that fills on hover. Blue is not used for
+links anywhere on the light ground.
 
 ## Type
 
-| Role | Face | Loaded from |
+| Role | Face | Source |
 | --- | --- | --- |
 | Headings | Loretta Variable | Adobe Typekit, kit `yhu7ntr` |
 | Body | Work Sans | Google Fonts |
-| Accent | Shantell Sans | Google Fonts |
-| Labels | System monospace | No download |
+| Labels and numbers | System monospace | No download |
 
-Loretta is a serif from Nova Type Foundry with weights 300–800 plus italics. The Typekit kit
-must stay published and must list `snehajain.co.uk` as an allowed domain, or the headings
-fall back to Georgia. The accent face is deliberately rare: the hero lead-in and little
-`.scribble` notes only.
+The accent face has been dropped for now. Shantell Sans is no longer loaded on any page.
+The font package is still in the brand assets folder if it comes back.
 
-## Files
+The Typekit kit must stay published with `snehajain.co.uk` on its allowed domains, or
+headings fall back to Georgia.
 
-```
-index.html            Homepage: hero, intro, services, work, testimonials,
-                      process, pricing, FAQ, insights, CTA, contact
-404.html              Shown for any bad URL
-CNAME                 Tells GitHub Pages the custom domain
-.nojekyll             Stops GitHub processing the site as a Jekyll blog
-robots.txt            Search engine permissions
-sitemap.xml           Page list — update when pages change
-assets/styles.css     All styling, in 22 numbered sections
-assets/script.js      Clock, mobile menu, scroll reveals, FAQ accordion
-assets/img/           Portrait, favicon
-assets/work/          Project images
-work/_template.html   Copy this to start a new case study
-work/project-*.html   The four case studies
-```
+## Brand assets in use
 
-## Replace before launch
+Copied into `assets/img/` from the brand assets folder. The rest of that folder, including
+the other six backgrounds and roughly eighty graphics, is deliberately unused.
 
-Search the whole folder for each and change every occurrence.
+| File | Where it appears |
+| --- | --- |
+| `logo-dark.png`, `logo-cream.png` | Header lockup and favicon. The cream version swaps in for dark mode |
+| `bg-stripes.png` | Ground for the intro, how I work and services FAQ sections |
+| `bg-dark.png` | Texture behind the closing band |
+| `mark-dots.png` | Separator in the scrolling strip |
+| `mark-braces.png` | Beside the pull quote on About |
+| `mark-diamond.png`, `mark-heart.png` | Copied but not yet placed |
+| `card-front.png`, `card-back.png` | Copied but not yet placed |
+
+## Two sections are hidden on purpose
+
+**Testimonials** are commented out in `index.html`. The copy file marks them
+`[CONFIRM: 2 or 3 real quotes, verbatim, name + brand + permission. Never paraphrased]`
+and its own rule is that nothing bracketed ships. Invented quotes were removed rather
+than published under real-sounding names. Paste real quotes into the commented block and
+delete the comment markers to bring it back. The styles are already there.
+
+**Insights** has been removed entirely, along with its navigation entry.
+
+## Still to fill in
 
 | Find | Replace with |
 | --- | --- |
-| `USERNAME` | Real Instagram / LinkedIn / Behance handles, or delete those links |
-| `YOUR_FORM_ID` | Formspree form ID, in two places: the contact form and the newsletter |
-| `hello@snehajain.co.uk` | The real email address |
-| `assets/img/portrait.svg` | A real photo (`portrait.jpg`) |
-| `assets/work/*.svg` | Real project images (`.jpg`, ~1600px wide, compressed) |
+| `USERNAME` | Real LinkedIn and Behance handles, or delete those two links |
+| `YOUR_FORM_ID` | Formspree form ID on `contact.html` |
+| `assets/img/portrait.svg` | Her profile photo, the same one as Instagram |
+| `assets/work/*.svg` | Real project images, about 1600px wide and compressed |
 
-Four blocks in `index.html` carry a `PLACEHOLDER` comment and need real content, not just a
-find-and-replace:
+Marked in the files with a `PLACEHOLDER` comment:
 
-- **Stats** — "40+ projects, 60% repeat clients, 12+ brands". Invented to fill the layout.
-  Put real figures in or delete the `<ul class="stats">` block. Do not publish them as they are.
-- **Testimonials** — all four say "Client name, Founder, Company". Replace with real quotes
-  you have permission to use, or delete the section.
-- **Pricing** — "from £4,500" is a guess at a sensible anchor, not your rate.
-- **Insights** — four article cards marked "Coming soon" whose links point back at the
-  section, because no article pages exist yet. Write them, or delete the section.
+- **Five things about me** on `about.html`. The copy file calls for the v2.4 list
+  verbatim, including the introvert line. That file was not supplied, so four of the five
+  are stand-ins.
+- **Package deliverables and timelines** on `services.html`, all four marked
+  "to confirm". Packages v3 was not supplied. No prices are shown anywhere, which is
+  correct until the real figures are in.
+- **FAQ answers** are written in her voice but are not the FAQ v3 text. The revision term
+  is correct: three rounds of changes are included.
+- **Case study bodies** are still the template prompts. Each one wants the brief, the
+  decisions and the outcome, described by decisions rather than adjectives.
 
-Still to make: `assets/img/og.png`, a 1200×630 PNG used as the preview when the site is
-shared on WhatsApp, LinkedIn or Slack. Until it exists, links share with no picture. It must
-be PNG or JPG; social platforms ignore SVG.
+The three statistics on the home page are the verified ones from the copy file:
+20+ clients, 50%+ come back, 5 years.
+
+Still to make: `assets/img/og.png`, 1200x630, the preview image when a link is shared.
+Until it exists links share with no picture. It must be PNG or JPG, because social
+platforms ignore SVG.
 
 ## Adding a new project
 
 1. `cp work/_template.html work/project-five.html`
-2. Replace the `PROJECT_*` placeholders: `PROJECT_NAME`, `PROJECT_SLUG`, `PROJECT_HEADLINE`,
-   `PROJECT_BLURB`, `PROJECT_TAGS`, `PROJECT_SECTOR`, `PROJECT_NEXT`.
+2. Replace `PROJECT_NAME`, `PROJECT_SLUG`, `PROJECT_HEADLINE`, `PROJECT_BLURB`,
+   `PROJECT_TAGS`, `PROJECT_SECTOR` and `PROJECT_NEXT`.
 3. Add the image to `assets/work/`.
-4. Copy one `<a class="project">` block in `index.html` and point it at the new page.
-5. Add the new URL to `sitemap.xml`.
-
-## Contact form
-
-The form posts to [Formspree](https://formspree.io) (free tier: 50 submissions a month).
-GitHub Pages only serves static files, so it cannot process a form itself.
-
-1. Sign up at formspree.io with the address enquiries should reach.
-2. Create a form and copy its endpoint ID.
-3. Replace `YOUR_FORM_ID` in `index.html`.
-
-The empty `_gotcha` field is a spam honeypot. Leave it alone.
+4. Copy one `<a class="project">` block into `work.html` and `index.html`.
+5. Add the URL to `sitemap.xml`.
 
 ## Previewing locally
-
-From this folder:
 
 ```
 python -m http.server 8000
 ```
 
-Then open <http://localhost:8000>. Double-clicking `index.html` mostly works, but the
+Then open <http://localhost:8000>. Double-clicking a file mostly works, but the
 root-relative links in `404.html` only behave properly over a server.
 
 ## Deploying
 
-See `DEPLOY.md` for the full GitHub and DNS walkthrough. Day to day:
+See `DEPLOY.md` for the GitHub and DNS walkthrough. Day to day:
 
 ```
 git add -A
