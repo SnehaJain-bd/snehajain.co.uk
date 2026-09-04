@@ -43,14 +43,15 @@ The oversized name that used to sit under the header has been removed.
 
 ## After editing the stylesheet, bump the version
 
-Every page links the stylesheet as `assets/styles.css?v=3`. Browsers cache CSS hard,
+Every page links the stylesheet as `assets/styles.css?v=4`. Browsers cache CSS hard,
 and a stale copy against new markup breaks the page rather than merely dating it.
-Raising that number to `?v=4` in all eleven HTML files forces every browser to fetch
+Raising that number in all eleven HTML files forces every browser to fetch
 the new file. Nothing else depends on it.
 
-The header logo does not depend on CSS at all. A `<picture>` element lets the browser
-pick the cream or dark mark natively, so only one is ever in the page, and the `img`
-carries real `width` and `height` attributes so it stays small even before CSS loads.
+The header is the logo mark on its own, with no name beside it. A `<picture>` element
+lets the browser pick the cream or dark version natively, so only one is ever in the
+page, and the `img` carries real `width` and `height` attributes so it stays the right
+size even before CSS loads.
 
 ## Brand tokens
 
@@ -128,19 +129,20 @@ delete the comment markers to bring it back. The styles are already there.
 
 Marked in the files with a `PLACEHOLDER` comment:
 
-- **Five things about me** on `about.html`. The copy file calls for the v2.4 list
-  verbatim, including the introvert line. That file was not supplied, so four of the five
-  are stand-ins.
+- **About page body copy.** The five things list was written for an Instagram story, not
+  the site, so it has been removed. The page currently runs on two approved lines. It
+  wants a proper written bio.
 - **Package deliverables and timelines** on `services.html`, all four marked
   "to confirm". Packages v3 was not supplied. No prices are shown anywhere, which is
   correct until the real figures are in.
-- **FAQ answers** are written in her voice but are not the FAQ v3 text. The revision term
-  is correct: three rounds of changes are included.
+- **FAQ answers** are twelve questions across four groups. They are written in her voice
+  rather than being the FAQ v3 text. The revision term is correct: three rounds of
+  changes are included.
 - **Case study bodies** are still the template prompts. Each one wants the brief, the
   decisions and the outcome, described by decisions rather than adjectives.
 
-The three statistics on the home page are the verified ones from the copy file:
-20+ clients, 50%+ come back, 5 years.
+The counter on the home page has been removed. The same figures still appear as a
+sentence at the foot of the About page, which is the approved proof line.
 
 Still to make: `assets/img/og.png`, 1200x630, the preview image when a link is shared.
 Until it exists links share with no picture. It must be PNG or JPG, because social

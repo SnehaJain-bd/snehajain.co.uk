@@ -353,14 +353,7 @@ p:last-child{ margin-bottom:0; }
    one is ever in the DOM. Nothing here is load-bearing: the img carries
    width and height attributes, so an unstyled render is still correct. */
 .wordmark picture{ display:flex; flex:none; }
-.wordmark img{ height:1.75rem; width:auto; }
-.wordmark__text{
-  font-family:var(--head);
-  font-size:1.22rem;
-  font-weight:600;
-  letter-spacing:-.02em;
-  line-height:1;
-}
+.wordmark img{ height:2.05rem; width:auto; }
 
 .nav{ display:flex; align-items:center; gap:.35rem; }
 .nav a{
@@ -498,43 +491,6 @@ p:last-child{ margin-bottom:0; }
 }
 .intro__body strong{ color:var(--ink); font-weight:500; }
 
-.stats{
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(210px,1fr));
-  gap:1rem;
-  margin-top:clamp(2.5rem,4vw,3.5rem);
-  padding:0;
-  list-style:none;
-}
-.stat{
-  border:1px solid var(--line);
-  border-radius:999px;
-  padding:1.1rem 1.75rem;
-  background:var(--paper);
-  display:flex;
-  align-items:baseline;
-  justify-content:space-between;
-  gap:1rem;
-  transition:border-color .25s var(--ease), background .25s var(--ease);
-}
-.stat:hover{ border-color:var(--ink); background:var(--yellow-soft); }
-.stat__label{
-  font-family:var(--mono);
-  font-size:.64rem;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  color:var(--ink-2);
-  max-width:12ch;
-  line-height:1.3;
-}
-.stat__value{
-  font-family:var(--head);
-  font-size:1.85rem;
-  font-weight:600;
-  line-height:1;
-  letter-spacing:-.02em;
-  flex:none;
-}
 
 /* ---------- 8. SERVICES ---------- */
 
@@ -1026,27 +982,6 @@ details.qa[open] summary{ font-weight:500; }
 }
 .about__photo img{ width:100%; aspect-ratio:4/5; object-fit:cover; }
 
-.fivethings{
-  list-style:none; margin:0; padding:0;
-  counter-reset:ft;
-  display:flex; flex-direction:column;
-}
-.fivethings li{
-  counter-increment:ft;
-  display:grid;
-  grid-template-columns:2.5rem minmax(0,1fr);
-  gap:1rem;
-  padding:1.2rem 0;
-  border-bottom:1px solid var(--line);
-}
-.fivethings li::before{
-  content:"0" counter(ft);
-  font-family:var(--mono);
-  font-size:.72rem;
-  color:var(--ink-3);
-  padding-top:.35rem;
-}
-.fivethings p{ margin:0; }
 
 .howiwork{
   list-style:none; margin:0; padding:0;
