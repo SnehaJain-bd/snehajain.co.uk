@@ -181,10 +181,10 @@
     ['behance','Behance link','url','Optional. Adds a link at the foot of the case study']
   ];
   var LONG = [
-    ['summary','Summary','Real words about the project. Used on the card and under the title'],
-    ['brief','The brief','Who came to you and what was in their way. Left off the site while empty'],
-    ['decision','The decision','The one decision that made the project work. Left off the site while empty'],
-    ['outcome','The outcome','What changed. Left off the site while empty']
+    ['summary','Summary','Real words about the project. Used on the card and under the title', null, ''],
+    ['brief','The brief','Who came to you and what was in their way. Left off the site while empty', 'briefHeading', 'The brief'],
+    ['decision','The decision','The one decision that made the project work. Left off the site while empty', 'decisionHeading', 'The decision'],
+    ['outcome','The outcome','What changed. Left off the site while empty', 'outcomeHeading', 'The outcome']
   ];
 
   function blank(){
@@ -252,7 +252,18 @@
     fs.appendChild(row);
 
     LONG.forEach(function(f){
-      var key=f[0], lab=f[1], help=f[2];
+      var key=f[0], lab=f[1], help=f[2], hKey=f[3], hDefault=f[4];
+      if(hKey){
+        var hl=document.createElement('label');
+        var hs=document.createElement('span'); hs.textContent=lab+' heading';
+        var hsm=document.createElement('small');
+        hsm.textContent=' What this block is called on the page. Leave empty for "'+hDefault+'"';
+        hs.appendChild(hsm);
+        var hi=document.createElement('input'); hi.type='text';
+        hi.placeholder=hDefault; hi.value=p[hKey]||'';
+        hi.oninput=function(){ p[hKey]=hi.value; sync(); };
+        hl.appendChild(hs); hl.appendChild(hi); fs.appendChild(hl);
+      }
       var l=document.createElement('label');
       var s=document.createElement('span'); s.textContent=lab;
       var sm=document.createElement('small'); sm.textContent=' '+help; s.appendChild(sm);

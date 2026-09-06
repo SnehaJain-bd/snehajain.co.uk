@@ -15,7 +15,7 @@ const path = require('path');
 const ROOT = process.argv[2] ? path.resolve(process.argv[2]) : path.resolve(__dirname, '..');
 const DATA = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/projects.json'), 'utf8'));
 
-const CSS_VERSION = 13;
+const CSS_VERSION = 14;
 const MAIL = 'hello@snehajain.co.uk';
 const IG   = 'https://www.instagram.com/snehajain.design';
 const BEHANCE = 'https://www.behance.net/sneha_jain14';
@@ -694,7 +694,7 @@ PROJECTS.forEach((x, i) => {
   const block = (label, text) => filled(text) ? `
   <section class="case-block">
     <div class="wrap case-block__inner reveal">
-      <h2>${label}</h2>
+      <h2>${esc(label)}</h2>
       <div>${esc(text).split(/\n{2,}/).map(par => `<p>${par.trim()}</p>`).join('\n        ')}</div>
     </div>
   </section>
@@ -752,7 +752,7 @@ ${x.credits.map(c => `        <div><dt>${esc(c.role)}</dt><dd>${esc(c.name)}</dd
       <div><dt>Services</dt><dd>${esc((x.services||[]).join(', '))}</dd></div>
     </dl>
   </div>
-${block('The brief', x.brief)}${block('The decision', x.decision)}${gallery}${block('The outcome', x.outcome)}${credits}
+${block(x.briefHeading || 'The brief', x.brief)}${block(x.decisionHeading || 'The decision', x.decision)}${gallery}${block(x.outcomeHeading || 'The outcome', x.outcome)}${credits}
   <section class="section section--tight">
     <div class="wrap">
       <a class="next-project reveal" href="${next.slug}.html">
