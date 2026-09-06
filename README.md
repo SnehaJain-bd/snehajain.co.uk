@@ -118,7 +118,7 @@ cream or dark version natively, so only one is ever in the page, and the `img` c
 
 ## After editing the stylesheet, bump the version
 
-Pages link the stylesheet as `assets/styles.css?v=10`, set by `CSS_VERSION` at the top of
+Pages link the stylesheet as `assets/styles.css?v=11`, set by `CSS_VERSION` at the top of
 `build/build.js`. Browsers cache CSS hard, and a stale copy against new markup breaks the
 page rather than merely dating it. Raise the number and rebuild.
 
@@ -138,13 +138,13 @@ To make the approach section plain off-white instead, drop `section--dark` from 
 
 ## The hero
 
-One line, "Strategic brand design for founder-led businesses", then the two buttons, then a
-strip reading "Brands that get chosen." Built to match the supplied hero design.
+A two line serif statement, "You know what you are building. Your brand does not say it
+yet.", then a sans sub-line, "Strategic brand design for founder-led businesses", then the
+two buttons, then a strip reading "Brands that get chosen."
 
-The heading is set in Work Sans rather than Loretta, at regular weight and a smaller size
-than the section headings elsewhere, so it stays on one line at desktop width. The two hero
-buttons are the only ones on the site in title case, again to match the design. Every other
-"Start a project" button is sentence case.
+The heading lines are separate spans so they break where they are written rather than where
+the container runs out. The two hero buttons are the only ones on the site in title case,
+matching the design. Every other "Start a project" button is sentence case.
 
 ## Case study layout
 
@@ -259,7 +259,9 @@ Section 5 of `DEPLOY.md` lists the options, cheapest first. Registrar forwarding
 existing inbox is free at most UK registrars and is enough to start.
 
 The contact page lists email only. Instagram and Behance were removed from it, though both
-are still in the footer under Social.
+are still in the footer under Social. The footer Contact column is now the address plus a
+solid Start a Project button, and the line about working with founders anywhere has been
+taken out of both the footer and the contact page. It still appears in the meta description.
 
 ## Still to fill in
 

@@ -15,7 +15,7 @@ const path = require('path');
 const ROOT = process.argv[2] ? path.resolve(process.argv[2]) : path.resolve(__dirname, '..');
 const DATA = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/projects.json'), 'utf8'));
 
-const CSS_VERSION = 10;
+const CSS_VERSION = 11;
 const MAIL = 'hello@snehajain.co.uk';
 const IG   = 'https://www.instagram.com/snehajain.design';
 const BEHANCE = 'https://www.behance.net/sneha_jain14';
@@ -140,9 +140,8 @@ const footer = p => `
         <h4>Contact</h4>
         <ul>
           <li><a href="mailto:${MAIL}">${MAIL} <span class="arw">&rarr;</span></a></li>
-          <li><a href="${IG}" rel="me noopener" target="_blank">@snehajain.design <span class="arw">&rarr;</span></a></li>
-          <li><a href="${p}contact.html">Start a project <span class="arw">&rarr;</span></a></li>
         </ul>
+        <a class="btn btn--solid foot-col__cta" href="${p}contact.html">Start a Project ${ARROW}</a>
       </div>
       <div class="foot-col">
         <h4>Menu</h4>
@@ -166,7 +165,6 @@ const footer = p => `
         <h4>Based in</h4>
         <ul>
           <li>Southampton, UK</li>
-          <li>Working with founders anywhere</li>
         </ul>
       </div>
     </div>
@@ -362,7 +360,11 @@ head({
 
   <section class="hero">
     <div class="wrap">
-      <h1 class="hero__title reveal">Strategic brand design for founder-led businesses.</h1>
+      <h1 class="hero__title reveal">
+        <span>You know what you&rsquo;re building.</span>
+        <span>Your brand doesn&rsquo;t say it yet.</span>
+      </h1>
+      <p class="hero__sub reveal">Strategic brand design for founder-led businesses.</p>
       <div class="hero__actions reveal">
         <a class="btn btn--solid" href="contact.html">Start a Project ${ARROW}</a>
         <a class="btn btn--ghost" href="work.html">See Selected Work</a>
@@ -631,7 +633,7 @@ head({
             <dt>Email</dt>
             <dd><a class="contact__mail" href="mailto:${MAIL}?subject=Project%20enquiry">${MAIL}</a></dd>
             <dt>Based in</dt>
-            <dd>Southampton, UK. Working with founders anywhere.</dd>
+            <dd>Southampton, UK.</dd>
             <dt>Reply time</dt>
             <dd>Within two working days.</dd>
           </dl>
