@@ -15,7 +15,7 @@ const path = require('path');
 const ROOT = process.argv[2] ? path.resolve(process.argv[2]) : path.resolve(__dirname, '..');
 const DATA = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/projects.json'), 'utf8'));
 
-const CSS_VERSION = 15;
+const CSS_VERSION = 16;
 const MAIL = 'hello@snehajain.co.uk';
 const IG   = 'https://www.instagram.com/snehajain.design';
 const BEHANCE = 'https://www.behance.net/sneha_jain14';
@@ -231,6 +231,50 @@ ${SERVICES.map(([t,d],i)=>
    no page, no card, no sitemap entry. Nothing is lost, one flag brings it back. */
 const ALL_PROJECTS = DATA.projects || [];
 const PROJECTS = ALL_PROJECTS.filter(x => x.published !== false);
+
+/* ---- images by folder ----
+   Drop files in assets/work/<slug>/ and they are picked up automatically.
+   No paths to type anywhere.
+
+     cover.*                 becomes the cover image
+     anything else           joins the gallery, in filename order
+     a name containing wide  spans the full width of the gallery
+
+   Alt text is read from the filename, so 03-pattern-detail.jpg becomes
+   "pattern detail". A folder always wins over the image and gallery
+   fields in projects.json. */
+const IMAGE_EXT = /\.(jpe?g|png|webp|avif|gif|svg)$/i;
+
+function altFromName(file, title){
+  const words = file
+    .replace(IMAGE_EXT, '')
+    .replace(/^[\s_\-0-9]+/, '')        // leading order numbers
+    .replace(/[-_\s]*\bwide\b[-_\s]*/gi, ' ')  // the layout marker is not description
+    .replace(/[-_]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return words ? title + ', ' + words : title + ' project image';
+}
+
+PROJECTS.forEach(x => {
+  const dir = path.join(ROOT, 'assets/work', x.slug);
+  if (!fs.existsSync(dir) || !fs.statSync(dir).isDirectory()) return;
+
+  const files = fs.readdirSync(dir).filter(f => IMAGE_EXT.test(f)).sort();
+  if (!files.length) return;
+
+  const coverFile = files.find(f => /^cover\./i.test(f)) || files[0];
+  x.image = 'assets/work/' + x.slug + '/' + coverFile;
+  if (!filled(x.imageAlt)) x.imageAlt = altFromName(coverFile, x.title);
+
+  x.gallery = files.filter(f => f !== coverFile).map(f => ({
+    src: 'assets/work/' + x.slug + '/' + f,
+    alt: altFromName(f, x.title),
+    wide: /wide/i.test(f)
+  }));
+
+  console.log('  ' + x.slug + ': cover ' + coverFile + ', ' + x.gallery.length + ' gallery image' + (x.gallery.length === 1 ? '' : 's'));
+});
 const WORK_HEAD = 'The decision behind each project.';
 const WORK_SUB  = 'What each brand had to work out before any of it could look like this.';
 

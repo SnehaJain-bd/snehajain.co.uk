@@ -61,10 +61,35 @@ goes for the gallery and credits. A case study with all of them empty shows its 
 title, its summary and its facts, and stops there. That way a half-written project never
 reaches the site looking half-written.
 
-**All five published projects currently carry dummy text**, so the full case study layout is
-visible while the design is being reviewed. Every dummy paragraph starts with the words
-"Dummy text" and the gallery uses `placeholder-01` through `placeholder-04`. Replace them
-before the site goes anywhere near a client. Search the repo for `Dummy text` to find them.
+Asmi, Lumeya and Swirly carry her own published copy, taken verbatim from the Framer site.
+Sunlife International and Paloma have none yet, so those two pages currently show a cover, a
+summary, the facts row and a gallery, then stop. No dummy prose is live anywhere.
+
+## Adding project images
+
+Every project has a folder at `assets/work/<slug>/`. Drop image files straight into it and
+the build picks them up. There is nothing to type in the editor and no paths to keep in
+sync.
+
+| File | What it becomes |
+| --- | --- |
+| `cover.jpg` | The wide image at the top of the case study, and the thumbnail in the work grid |
+| anything else | The gallery below the text, in filename order |
+| a name containing `wide` | That image spans the full width instead of sitting two up |
+
+If there is no `cover` file, the first file alphabetically is used. Number the rest to
+control their order, for example `01-logo.jpg`, `02-pattern.jpg`, `03-range-wide.jpg`.
+
+Alt text is read from the filename, so `03-pattern-detail.jpg` reads as "pattern detail" to
+a screen reader. Leading numbers and the word `wide` are stripped out. Name files in plain
+words rather than `IMG_4471.jpg`.
+
+A folder with images in it overrides the `image` and `gallery` fields in
+`content/projects.json` completely. Empty folders change nothing, which is why every
+project still shows its generated placeholder today.
+
+About 1600px wide, exported as JPEG, is the right size. Each folder has a `_README.txt`
+repeating all of this, which the build ignores.
 
 ## Projects currently live
 
@@ -79,9 +104,10 @@ Pulled from the Behance profile, in the order set in the data file.
 | 5 | LUMEYA | 2026 |
 | held back | Napur Gin | 2024 |
 
-**The images are placeholders, not the Behance artwork.** Each project has an abstract SVG
-in the brand palette at `assets/work/<slug>.svg`. Replace them with real images, about
-1600px wide and compressed, then point the `image` field at the new file.
+**The images are placeholders, not the Behance artwork.** Each project falls back to an
+abstract SVG in the brand palette at `assets/work/<slug>.svg`, plus `placeholder-01` through
+`placeholder-04` in the gallery. Put real files in the project's folder and all of that
+disappears on the next build. See "Adding project images" above.
 
 Case studies do not link out to Behance. The `behance` field stays in the data file as a
 reference for whoever is writing the case study, but nothing renders it. Behance is still
@@ -121,7 +147,7 @@ cream or dark version natively, so only one is ever in the page, and the `img` c
 
 ## After editing the stylesheet, bump the version
 
-Pages link the stylesheet as `assets/styles.css?v=12`, set by `CSS_VERSION` at the top of
+Pages link the stylesheet as `assets/styles.css?v=16`, set by `CSS_VERSION` at the top of
 `build/build.js`. Browsers cache CSS hard, and a stale copy against new markup breaks the
 page rather than merely dating it. Raise the number and rebuild.
 

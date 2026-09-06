@@ -377,16 +377,20 @@ p:last-child{ margin-bottom:0; }
 }
 .nav__cta:hover{ background:var(--yellow) !important; color:#2A211A !important; }
 
+/* justify-content, not place-items. place-items sets justify-items, which
+   does nothing in flexbox, so the bars sat at the top of the circle. */
 .nav-toggle{
   display:none;
   width:2.75rem; height:2.75rem;
+  padding:0;
   border:1px solid var(--line-2);
   border-radius:50%;
   background:transparent;
   cursor:pointer;
-  place-items:center;
-  gap:5px;
   flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
 }
 .nav-toggle span{
   display:block; width:17px; height:1.5px;
