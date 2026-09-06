@@ -462,9 +462,7 @@ p:last-child{ margin-bottom:0; }
   background-repeat:repeat;
   border-bottom:1px solid var(--line);
 }
-@media (prefers-color-scheme: dark){
-  .hero{ background-image:none; background-color:var(--paper-2); }
-}
+/* Dark mode hero: see section 29, it takes the dark texture instead. */
 /* Serif statement over a sans sub-line, matching the supplied design.
    The two heading lines break where they are written, not where the
    container happens to run out. */
@@ -1385,3 +1383,62 @@ figcaption{
   transition:transform .6s var(--ease);
 }
 .next-project:hover .next-project__media img{ transform:scale(1.04); }
+
+/* =========================================================
+   29. DARK MODE, SECOND PASS
+
+   In dark mode every token turns to a shade of coffee, so the page
+   read as one flat brown. Three changes:
+
+   1. The stripe paper is a light pattern and cannot work on a dark
+      ground, so the hero takes the dark texture instead.
+   2. The approach section gives that texture up and becomes a deep
+      blue band. A different hue separates it from the page far better
+      than another dark brown, which sat at 1.15:1 against it.
+   3. Yellow does the accent work. On the dark ground it measures
+      15.6:1, so it carries small type comfortably.
+   ========================================================= */
+
+@media (prefers-color-scheme: dark){
+
+  .hero{
+    background-color:#1A1512;
+    background-image:url("img/bg-dark.png");
+    background-size:cover;
+    background-position:center;
+  }
+
+  /* Deep blue rather than a second coffee band. 1.72:1 against the
+     page, with cream at 10:1 and yellow at 9:1 on top of it. */
+  .section--dark{
+    background-color:#184454;
+    background-image:none;
+  }
+
+  /* ---- pops of colour ---- */
+
+  .eyebrow::before,
+  .eyebrow::after{ color:var(--yellow); }
+
+  .strip__inner{ color:var(--yellow); }
+
+  .sec-lede strong{ color:var(--yellow); }
+
+  .step{ border-top-color:var(--yellow); }
+  .faq-group__head{ border-bottom-color:var(--yellow); }
+
+  .case-block h2{ color:var(--yellow); }
+  .case-intro__client,
+  .case-intro__tags{ color:var(--yellow); }
+  .case-intro__tags span{ color:var(--ink-3); }
+
+  .project:hover{ border-color:var(--blue); }
+  .voice:hover{ border-color:var(--blue); }
+  .package:hover{ border-color:var(--blue); }
+
+  .next-project__title .arw{ color:var(--yellow); }
+
+  /* The closing band is the same coffee as the page in dark mode, so
+     give it an edge to sit against. */
+  .cta-band{ border-top:2px solid var(--yellow); }
+}

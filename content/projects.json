@@ -23,24 +23,7 @@
       "featured": true,
       "published": true,
       "gallery": [],
-      "credits": [
-        {
-          "role": "Brand strategy",
-          "name": "Sneha Jain"
-        },
-        {
-          "role": "Visual identity",
-          "name": "Sneha Jain"
-        },
-        {
-          "role": "Art direction",
-          "name": "Sneha Jain"
-        },
-        {
-          "role": "Photography",
-          "name": "To confirm"
-        }
-      ],
+      "credits": [],
       "briefHeading": "The brand",
       "decisionHeading": "Bridging culture with contemporary expression",
       "outcomeHeading": "A distinctive identity with meaning at its core"
@@ -67,24 +50,7 @@
       "featured": true,
       "published": true,
       "gallery": [],
-      "credits": [
-        {
-          "role": "Brand strategy",
-          "name": "Sneha Jain"
-        },
-        {
-          "role": "Visual identity",
-          "name": "Sneha Jain"
-        },
-        {
-          "role": "Art direction",
-          "name": "Sneha Jain"
-        },
-        {
-          "role": "Photography",
-          "name": "To confirm"
-        }
-      ]
+      "credits": []
     },
     {
       "slug": "swirly",
@@ -107,24 +73,7 @@
       "featured": true,
       "published": true,
       "gallery": [],
-      "credits": [
-        {
-          "role": "Brand strategy",
-          "name": "Sneha Jain"
-        },
-        {
-          "role": "Visual identity",
-          "name": "Sneha Jain"
-        },
-        {
-          "role": "Art direction",
-          "name": "Sneha Jain"
-        },
-        {
-          "role": "Photography",
-          "name": "To confirm"
-        }
-      ],
+      "credits": [],
       "briefHeading": "A full brand world",
       "decisionHeading": "Designed to feel like a swirl",
       "outcomeHeading": "A brand that stays with you"
@@ -151,24 +100,7 @@
       "featured": true,
       "published": true,
       "gallery": [],
-      "credits": [
-        {
-          "role": "Brand strategy",
-          "name": "Sneha Jain"
-        },
-        {
-          "role": "Visual identity",
-          "name": "Sneha Jain"
-        },
-        {
-          "role": "Art direction",
-          "name": "Sneha Jain"
-        },
-        {
-          "role": "Photography",
-          "name": "To confirm"
-        }
-      ]
+      "credits": []
     },
     {
       "slug": "lumeya",
@@ -192,24 +124,7 @@
       "featured": true,
       "published": true,
       "gallery": [],
-      "credits": [
-        {
-          "role": "Brand strategy",
-          "name": "Sneha Jain"
-        },
-        {
-          "role": "Visual identity",
-          "name": "Sneha Jain"
-        },
-        {
-          "role": "Art direction",
-          "name": "Sneha Jain"
-        },
-        {
-          "role": "Photography",
-          "name": "To confirm"
-        }
-      ],
+      "credits": [],
       "briefHeading": "The full system",
       "decisionHeading": "The system behind the dark",
       "outcomeHeading": "What this project demonstrates"

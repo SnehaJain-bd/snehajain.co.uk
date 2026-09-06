@@ -15,7 +15,7 @@ const path = require('path');
 const ROOT = process.argv[2] ? path.resolve(process.argv[2]) : path.resolve(__dirname, '..');
 const DATA = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/projects.json'), 'utf8'));
 
-const CSS_VERSION = 17;
+const CSS_VERSION = 18;
 const MAIL = 'hello@snehajain.co.uk';
 const IG   = 'https://www.instagram.com/snehajain.design';
 const BEHANCE = 'https://www.behance.net/sneha_jain14';
