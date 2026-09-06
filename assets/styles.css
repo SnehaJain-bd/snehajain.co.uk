@@ -449,15 +449,17 @@ p:last-child{ margin-bottom:0; }
 @media (prefers-color-scheme: dark){
   .hero{ background-image:none; background-color:var(--paper-2); }
 }
+/* Set in the body face at a modest size so the long second line sits
+   on one line at desktop width, matching the hero design. */
 .hero__title{
-  font-size:clamp(2.3rem, 6vw, 4.75rem);
-  line-height:1.08;
+  font-family:var(--body);
+  font-size:clamp(1.6rem, 3.4vw, 2.55rem);
+  line-height:1.26;
   font-weight:400;
-  letter-spacing:-.024em;
-  max-width:17ch;
-  margin:0 0 2.25rem;
+  letter-spacing:-.015em;
+  margin:0 0 2.5rem;
 }
-.hero__title strong{ font-weight:600; }
+.hero__title strong{ font-weight:500; }
 .hero__line{ display:block; }
 .hero__line--muted{ color:var(--ink-2); }
 

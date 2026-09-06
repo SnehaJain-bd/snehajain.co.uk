@@ -15,7 +15,7 @@ const path = require('path');
 const ROOT = process.argv[2] ? path.resolve(process.argv[2]) : path.resolve(__dirname, '..');
 const DATA = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/projects.json'), 'utf8'));
 
-const CSS_VERSION = 8;
+const CSS_VERSION = 9;
 const MAIL = 'designspacebysj@gmail.com';
 const IG   = 'https://www.instagram.com/snehajain.design';
 const BEHANCE = 'https://www.behance.net/sneha_jain14';
@@ -114,11 +114,9 @@ ${item('work.html','Work')}
 const DOT = p => `<img class="brandmark brandmark--dots" src="${p}assets/img/mark-dots.png" alt="" width="266" height="98">`;
 
 const strip = p => `
-  <div class="strip" aria-label="UK based, working with founders anywhere">
+  <div class="strip">
     <div class="wrap strip__inner">
-      <span>UK based</span>
-      ${DOT(p)}
-      <span>Working with founders anywhere</span>
+      <span>Brands that get chosen.</span>
     </div>
   </div>
 `;
@@ -366,8 +364,7 @@ head({
     <div class="wrap">
       <h1 class="hero__title reveal">
         <span class="hero__line">Hi, I&rsquo;m Sneha.</span>
-        <span class="hero__line"><strong>Strategic brand designer for founders.</strong></span>
-        <span class="hero__line hero__line--muted">Brands that get <span class="mark">chosen.</span></span>
+        <span class="hero__line"><strong>Strategic brand design for founder-led businesses.</strong></span>
       </h1>
       <div class="hero__actions reveal">
         <a class="btn btn--solid" href="contact.html">Start a project ${ARROW}</a>

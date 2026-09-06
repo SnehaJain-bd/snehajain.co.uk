@@ -56,9 +56,15 @@ Raw JSON box and press Load.
 
 ### Fields that are left off while empty
 
-`brief`, `decision` and `outcome` only render if you write something in them. A case study
-with all three empty shows its summary, its facts and its image, and stops there. That way
-a half-written project never reaches the site looking half-written.
+`brief`, `decision` and `outcome` only render if you write something in them, and the same
+goes for the gallery and credits. A case study with all of them empty shows its cover, its
+title, its summary and its facts, and stops there. That way a half-written project never
+reaches the site looking half-written.
+
+**All five published projects currently carry dummy text**, so the full case study layout is
+visible while the design is being reviewed. Every dummy paragraph starts with the words
+"Dummy text" and the gallery uses `placeholder-01` through `placeholder-04`. Replace them
+before the site goes anywhere near a client. Search the repo for `Dummy text` to find them.
 
 ## Projects currently live
 
@@ -112,7 +118,7 @@ cream or dark version natively, so only one is ever in the page, and the `img` c
 
 ## After editing the stylesheet, bump the version
 
-Pages link the stylesheet as `assets/styles.css?v=8`, set by `CSS_VERSION` at the top of
+Pages link the stylesheet as `assets/styles.css?v=9`, set by `CSS_VERSION` at the top of
 `build/build.js`. Browsers cache CSS hard, and a stale copy against new markup breaks the
 page rather than merely dating it. Raise the number and rebuild.
 
@@ -129,6 +135,15 @@ painting dark text on the dark texture at 1.15:1. Both bands now stay dark in bo
 
 To make the approach section plain off-white instead, drop `section--dark` from it in
 `build/build.js` and rebuild.
+
+## The hero
+
+Two lines, "Hi, I am Sneha" and "Strategic brand design for founder-led businesses", then the
+two buttons, then a strip reading "Brands that get chosen."
+
+The hero heading is set in Work Sans rather than Loretta, at a smaller size than the section
+headings elsewhere, so the long second line sits on one line at desktop width. That matches
+the hero design rather than the rest of the site, which is deliberate.
 
 ## Case study layout
 
@@ -191,7 +206,7 @@ Georgia.
 | `favicon.svg` | Browser tab icon, generated. See below |
 | `bg-stripes.png` | Ground for the hero and the services page FAQ |
 | `bg-dark.png` | Texture behind the approach section and the closing band |
-| `mark-dots.png` | Separator in the strip under the hero |
+| `mark-dots.png` | Not currently placed. The strip under the hero is now plain text |
 | `mark-braces.png`, `mark-diamond.png`, `mark-heart.png` | Copied but not yet placed |
 | `card-front.png`, `card-back.png` | Copied but not yet placed |
 
