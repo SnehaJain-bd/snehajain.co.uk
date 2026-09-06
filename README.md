@@ -112,9 +112,40 @@ cream or dark version natively, so only one is ever in the page, and the `img` c
 
 ## After editing the stylesheet, bump the version
 
-Pages link the stylesheet as `assets/styles.css?v=7`, set by `CSS_VERSION` at the top of
+Pages link the stylesheet as `assets/styles.css?v=8`, set by `CSS_VERSION` at the top of
 `build/build.js`. Browsers cache CSS hard, and a stale copy against new markup breaks the
 page rather than merely dating it. Raise the number and rebuild.
+
+## How the page rhythm works
+
+The hero carries the hand-drawn stripe paper, so the section under it cannot also carry
+it. The approach section is dark instead, using `bg-dark.png`. That gives the home page a
+light hero, a dark argument, a long light run through services, work, testimonials and
+questions, then the dark closing band.
+
+`.section--dark` and `.cta-band` hard-code coffee and cream rather than using `--ink` and
+`--paper`. Those two tokens swap in dark mode, which previously left the closing band
+painting dark text on the dark texture at 1.15:1. Both bands now stay dark in both themes.
+
+To make the approach section plain off-white instead, drop `section--dark` from it in
+`build/build.js` and rebuild.
+
+## Case study layout
+
+Modelled on the Thought Over Design case studies: a full-bleed cover, then contained text
+bands with the label on the left and the argument on the right, then image blocks, then a
+large next-project card.
+
+The order is cover, intro, facts, the brief, the decision, gallery, the outcome, credits,
+Behance link, next project. Every one of those after the facts row is optional. A project
+with no written blocks and no gallery renders as a cover, a title, a summary and its facts,
+and stops there.
+
+Two fields feed the image and credit blocks, both editable in `admin.html`:
+
+- **Gallery.** One image per line as `path | description | wide`. Adding `wide` at the end
+  makes that image span the full width of the grid. Everything else sits two up.
+- **Credits.** One per line as `Role: Name`.
 
 ## Brand tokens
 
@@ -158,8 +189,8 @@ Georgia.
 | --- | --- |
 | `logo-dark.png`, `logo-cream.png` | The header mark. The cream version swaps in for dark mode |
 | `favicon.svg` | Browser tab icon, generated. See below |
-| `bg-stripes.png` | Ground for the approach section and the services page FAQ |
-| `bg-dark.png` | Texture behind the closing band |
+| `bg-stripes.png` | Ground for the hero and the services page FAQ |
+| `bg-dark.png` | Texture behind the approach section and the closing band |
 | `mark-dots.png` | Separator in the strip under the hero |
 | `mark-braces.png`, `mark-diamond.png`, `mark-heart.png` | Copied but not yet placed |
 | `card-front.png`, `card-back.png` | Copied but not yet placed |

@@ -15,7 +15,7 @@ const path = require('path');
 const ROOT = process.argv[2] ? path.resolve(process.argv[2]) : path.resolve(__dirname, '..');
 const DATA = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/projects.json'), 'utf8'));
 
-const CSS_VERSION = 7;
+const CSS_VERSION = 8;
 const MAIL = 'designspacebysj@gmail.com';
 const IG   = 'https://www.instagram.com/snehajain.design';
 const BEHANCE = 'https://www.behance.net/sneha_jain14';
@@ -378,7 +378,7 @@ head({
 `
 + strip('')
 + `
-  <section class="section section--stripes" id="approach">
+  <section class="section section--dark" id="approach">
     <div class="wrap">
       <div class="sec-head reveal">
         <p class="eyebrow">Approach</p>
@@ -696,13 +696,40 @@ head({
    something in it, so a half-written case study never reaches the site. */
 PROJECTS.forEach((x, i) => {
   const next = PROJECTS[(i + 1) % PROJECTS.length];
-  const body = [
-    ['The brief',    x.brief],
-    ['The decision', x.decision],
-    ['The outcome',  x.outcome]
-  ].filter(([, v]) => filled(v))
-   .map(([h, v]) => `        <h2>${h}</h2>\n        <p>${esc(v)}</p>`)
-   .join('\n\n');
+
+  /* Each written block is its own band, label on the left, argument on the
+     right. Anything still empty produces nothing at all. */
+  const block = (label, text) => filled(text) ? `
+  <section class="case-block">
+    <div class="wrap case-block__inner reveal">
+      <h2>${label}</h2>
+      <div>${esc(text).split(/\n{2,}/).map(par => `<p>${par.trim()}</p>`).join('\n        ')}</div>
+    </div>
+  </section>
+` : '';
+
+  /* Gallery entries are optional. wide:true spans the full width. */
+  const gallery = Array.isArray(x.gallery) && x.gallery.length ? `
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="case-gallery reveal">
+${x.gallery.map(g => `        <figure${g.wide ? ' class="wide"' : ''}>
+          <img src="../${g.src}" alt="${esc(g.alt || '')}" loading="lazy">
+        </figure>`).join('\n')}
+      </div>
+    </div>
+  </section>
+` : '';
+
+  const credits = Array.isArray(x.credits) && x.credits.length ? `
+  <section class="section section--tight">
+    <div class="wrap">
+      <dl class="case-credits reveal">
+${x.credits.map(c => `        <div><dt>${esc(c.role)}</dt><dd>${esc(c.name)}</dd></div>`).join('\n')}
+      </dl>
+    </div>
+  </section>
+` : '';
 
   pages['work/' + x.slug + '.html'] =
   head({
@@ -714,39 +741,45 @@ PROJECTS.forEach((x, i) => {
   + `
 <main id="main">
 
-  <section class="page-hero">
+  <img class="case-cover" src="../${x.image}" alt="${esc(x.imageAlt || x.title)}" width="1200" height="900">
+
+  <section class="case-intro">
     <div class="wrap">
-      <p class="eyebrow reveal">${esc((x.services||[]).join(' / '))}</p>
-      <h1 class="page-hero__title reveal">${esc(x.title)}</h1>
-      <p class="page-hero__lede reveal">${esc(x.summary)}</p>
+      <p class="case-intro__client reveal">For ${esc(x.client)}</p>
+      <h1 class="case-intro__title reveal">${esc(x.title)}</h1>
+      <p class="case-intro__tags reveal">${(x.services||[]).map(esc).join('<span>/</span>')}</p>
+      <p class="case-intro__summary reveal">${esc(x.summary)}</p>
     </div>
   </section>
 
+  <div class="wrap">
+    <dl class="case-facts reveal">
+      <div><dt>Client</dt><dd>${esc(x.client)}</dd></div>
+      <div><dt>Year</dt><dd>${esc(x.year)}</dd></div>
+      <div><dt>Sector</dt><dd>${esc(x.sector)}</dd></div>
+      <div><dt>Services</dt><dd>${esc((x.services||[]).join(', '))}</dd></div>
+    </dl>
+  </div>
+${block('The brief', x.brief)}${block('The decision', x.decision)}${gallery}${block('The outcome', x.outcome)}${credits}
   <section class="section section--tight">
     <div class="wrap">
-      <dl class="case-facts reveal">
-        <div><dt>Client</dt><dd>${esc(x.client)}</dd></div>
-        <div><dt>Year</dt><dd>${esc(x.year)}</dd></div>
-        <div><dt>Services</dt><dd>${esc((x.services||[]).join(', '))}</dd></div>
-        <div><dt>Sector</dt><dd>${esc(x.sector)}</dd></div>
-      </dl>
-
-      <figure class="reveal" style="margin:clamp(2.5rem,5vw,4rem) 0">
-        <img src="../${x.image}" alt="${esc(x.imageAlt || x.title)}" width="1200" height="900">
-        <figcaption>Placeholder artwork. Swap in the real project images.</figcaption>
-      </figure>
-${body ? `
-      <div class="case-body reveal">
-${body}
-      </div>
-` : ''}${filled(x.behance) ? `
-      <p class="reveal" style="margin-top:2rem">
+${filled(x.behance) ? `      <p class="reveal">
         <a class="arrow-link" href="${x.behance}" rel="noopener" target="_blank">See the full project on Behance <span>&rarr;</span></a>
       </p>
 ` : ''}
+      <a class="next-project reveal" href="${next.slug}.html">
+        <div>
+          <p class="next-project__label">Next project</p>
+          <h2 class="next-project__title">${esc(next.title)} <span class="arw">&#8599;</span></h2>
+          <p class="next-project__sub">${esc(next.subtitle)}</p>
+        </div>
+        <div class="next-project__media">
+          <img src="../${next.image}" alt="" loading="lazy">
+        </div>
+      </a>
+
       <nav class="case-nav" aria-label="Project navigation">
         <a class="arrow-link" href="../work.html"><span>&larr;</span> All work</a>
-        <a class="arrow-link" href="${next.slug}.html">Next project <span>&rarr;</span></a>
       </nav>
     </div>
   </section>

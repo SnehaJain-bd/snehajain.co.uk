@@ -1,5 +1,5 @@
 {
-  "_comment": "Single source of truth for every project on the site. Edit here, or through admin.html, then run: node build/build.js . Order in this list is the order on the page. published:false keeps a project on file but off the site entirely. Empty fields are simply not rendered, so nothing half-written ever ships.",
+  "_comment": "Single source of truth for every project on the site. Edit here, or through admin.html, then run: node build/build.js . Order in this list is the order on the page. published:false keeps a project on file but off the site entirely. Empty fields and empty arrays are simply not rendered, so nothing half-written ever ships.",
   "projects": [
     {
       "slug": "asmi",
@@ -21,7 +21,9 @@
       "imageAlt": "Asmi brand identity artwork",
       "behance": "https://www.behance.net/gallery/246778461/Asmi-Brand-Identity-for-an-Apparel-Brand",
       "featured": true,
-      "published": true
+      "published": true,
+      "gallery": [],
+      "credits": []
     },
     {
       "slug": "sunlife-international",
@@ -43,7 +45,9 @@
       "imageAlt": "Sunlife International brand identity artwork",
       "behance": "https://www.behance.net/gallery/253593671/Sunlife-International-Brand-Identity-Stationery",
       "featured": true,
-      "published": true
+      "published": true,
+      "gallery": [],
+      "credits": []
     },
     {
       "slug": "swirly",
@@ -64,7 +68,9 @@
       "imageAlt": "Swirly brand identity and packaging artwork",
       "behance": "https://www.behance.net/gallery/249432895/Swirly-Brand-Identity-Packaging-Design",
       "featured": true,
-      "published": true
+      "published": true,
+      "gallery": [],
+      "credits": []
     },
     {
       "slug": "paloma",
@@ -86,7 +92,9 @@
       "imageAlt": "Paloma brand identity artwork",
       "behance": "https://www.behance.net/gallery/254786069/Paloma-Holiday-Residence-Brand-Identity",
       "featured": true,
-      "published": true
+      "published": true,
+      "gallery": [],
+      "credits": []
     },
     {
       "slug": "lumeya",
@@ -108,7 +116,9 @@
       "imageAlt": "LUMEYA brand identity and packaging artwork",
       "behance": "https://www.behance.net/gallery/252151085/LUMEYA-Conscious-Luxury-Skincare",
       "featured": true,
-      "published": true
+      "published": true,
+      "gallery": [],
+      "credits": []
     },
     {
       "slug": "napur-gin",
@@ -129,7 +139,9 @@
       "imageAlt": "Napur Gin brand identity and packaging artwork",
       "behance": "https://www.behance.net/gallery/209229885/Napur-Gin-Branding-Project",
       "featured": true,
-      "published": false
+      "published": false,
+      "gallery": [],
+      "credits": []
     }
   ],
   "testimonials": [

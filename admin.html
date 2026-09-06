@@ -190,7 +190,7 @@
   function blank(){
     return { slug:'new-project', title:'New project', subtitle:'', client:'', year:String(new Date().getFullYear()),
              sector:'', services:[], summary:'', decision:'', brief:'', outcome:'',
-             image:'assets/work/new-project.svg', imageAlt:'', behance:'', featured:true, published:true };
+             image:'assets/work/new-project.svg', imageAlt:'', behance:'', gallery:[], credits:[], featured:true, published:true };
   }
 
   function renderList(){
@@ -260,6 +260,50 @@
       ta.oninput=function(){ p[key]=ta.value; sync(); };
       l.appendChild(s); l.appendChild(ta); fs.appendChild(l);
     });
+
+    /* Gallery: one image per line, "path | description | wide" */
+    (function(){
+      var l=document.createElement('label');
+      var s=document.createElement('span'); s.textContent='Gallery';
+      var sm=document.createElement('small');
+      sm.textContent=' One image per line: path | description | wide. Add the word wide at the end to make it span the full width. Leave empty for no gallery';
+      s.appendChild(sm);
+      var ta=document.createElement('textarea');
+      ta.value=(p.gallery||[]).map(function(g){
+        return [g.src, g.alt||'', g.wide?'wide':''].filter(Boolean).join(' | ');
+      }).join('\n');
+      ta.oninput=function(){
+        p.gallery = ta.value.split('\n').map(function(line){
+          var bits=line.split('|').map(function(t){return t.trim();});
+          if(!bits[0]) return null;
+          var g={ src:bits[0], alt:bits[1]||'' };
+          if((bits[2]||'').toLowerCase()==='wide') g.wide=true;
+          return g;
+        }).filter(Boolean);
+        sync();
+      };
+      l.appendChild(s); l.appendChild(ta); fs.appendChild(l);
+    })();
+
+    /* Credits: one per line, "Role: Name" */
+    (function(){
+      var l=document.createElement('label');
+      var s=document.createElement('span'); s.textContent='Credits';
+      var sm=document.createElement('small');
+      sm.textContent=' One per line, in the form Role: Name. Leave empty to hide the credits block';
+      s.appendChild(sm);
+      var ta=document.createElement('textarea');
+      ta.value=(p.credits||[]).map(function(c){ return c.role+': '+c.name; }).join('\n');
+      ta.oninput=function(){
+        p.credits = ta.value.split('\n').map(function(line){
+          var i=line.indexOf(':');
+          if(i<1) return null;
+          return { role:line.slice(0,i).trim(), name:line.slice(i+1).trim() };
+        }).filter(function(c){ return c && c.role; });
+        sync();
+      };
+      l.appendChild(s); l.appendChild(ta); fs.appendChild(l);
+    })();
 
     [['published','Publish this project. Unticked keeps it on file but off the site completely'],
      ['featured','Show it on the home page as well as the work page']
