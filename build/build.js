@@ -15,7 +15,7 @@ const path = require('path');
 const ROOT = process.argv[2] ? path.resolve(process.argv[2]) : path.resolve(__dirname, '..');
 const DATA = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/projects.json'), 'utf8'));
 
-const CSS_VERSION = 14;
+const CSS_VERSION = 15;
 const MAIL = 'hello@snehajain.co.uk';
 const IG   = 'https://www.instagram.com/snehajain.design';
 const BEHANCE = 'https://www.behance.net/sneha_jain14';
@@ -455,7 +455,7 @@ head({
     <div class="wrap">
       <div class="about-grid">
         <figure class="about__photo reveal">
-          <img src="assets/img/portrait.svg" alt="Portrait of Sneha Jain" width="800" height="1000">
+          <img src="assets/img/portrait.png" alt="Portrait of Sneha Jain" width="1080" height="1080">
         </figure>
 
         <div class="story reveal">

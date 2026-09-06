@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000" role="img" aria-label="Portrait placeholder">
-  <rect width="800" height="1000" fill="#EDE7DA"/>
-  <circle cx="400" cy="390" r="145" fill="#FFF176"/>
-  <path d="M175 1000 C175 730 255 600 400 600 C545 600 625 730 625 1000 Z" fill="#FFF176"/>
-  <circle cx="400" cy="390" r="145" fill="none" stroke="#2A211A" stroke-width="3"/>
-  <path d="M175 1000 C175 730 255 600 400 600 C545 600 625 730 625 1000" fill="none" stroke="#2A211A" stroke-width="3"/>
-  <text x="400" y="935" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="21" letter-spacing="5" fill="#2A211A">PROFILE PHOTO HERE</text>
-</svg>

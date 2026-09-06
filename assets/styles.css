@@ -993,7 +993,7 @@ details.qa[open] summary{ font-weight:500; }
   border:1px solid var(--line);
   background:var(--paper-3);
 }
-.about__photo img{ width:100%; aspect-ratio:4/5; object-fit:cover; }
+.about__photo img{ width:100%; aspect-ratio:1/1; object-fit:cover; }
 
 
 .howiwork{
