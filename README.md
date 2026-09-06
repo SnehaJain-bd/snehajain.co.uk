@@ -169,15 +169,15 @@ Two fields feed the image and credit blocks, both editable in `admin.html`:
 ## Two layout traps worth remembering
 
 **A backdrop-filter creates a containing block for fixed children.** The sticky header had
-one, which meant the mobile menu, a  panel inside that header, was laid out
+one, which meant the mobile menu, a `position:fixed` panel inside that header, was laid out
 against the 72px header box instead of the viewport. It opened a few pixels tall and its
 links spilled over the page. The filter is switched off below 860px, where the menu lives.
 
-**Footer buttons need their colour restated.**  sets the muted link colour and
-is more specific than , so a button in the footer silently inherited it and
-rendered at 2.56:1.  puts it back to 15:1.
+**Footer buttons need their colour restated.** `.foot-col a` sets the muted link colour and
+is more specific than `.btn--solid`, so a button in the footer silently inherited it and
+rendered at 2.56:1. `.foot-col a.btn--solid` puts it back to 15:1.
 
-Headings that carry a  highlight need line-height of about 1.24. Below that, the
+Headings that carry a `.mark` highlight need line-height of about 1.24. Below that, the
 yellow block collides with the descenders on the line above once the text wraps on a phone.
 
 ## Brand tokens
