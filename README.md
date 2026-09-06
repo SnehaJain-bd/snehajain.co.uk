@@ -1,7 +1,11 @@
 # snehajain.co.uk
 
 Portfolio site for Sneha Jain, strategic brand designer for founders.
-Plain HTML and CSS with a little JavaScript. No framework, no dependencies, no hosting bill.
+Plain HTML and CSS with a little JavaScript. No framework, no hosting bill.
+
+The published site has no dependencies at all. The one package in `package.json` is `sharp`,
+used only by `build/images.js` to resize photographs on your machine. Nothing from
+`node_modules` is ever served.
 
 ## Read this first: the HTML files are generated
 
@@ -67,29 +71,55 @@ summary, the facts row and a gallery, then stop. No dummy prose is live anywhere
 
 ## Adding project images
 
-Every project has a folder at `assets/work/<slug>/`. Drop image files straight into it and
-the build picks them up. There is nothing to type in the editor and no paths to keep in
-sync.
+Put your **full size originals** in `source-images/<slug>/`. Export straight from Illustrator
+or Photoshop at whatever size you like, no need to resize anything. Then run:
+
+```
+npm install          # first time only
+node build/images.js
+node build/build.js
+```
+
+`build/images.js` resizes and compresses every original into `assets/work/<slug>/`, and
+`build/build.js` reads that folder and writes the pages. There is nothing to type in the
+editor and no paths to keep in sync.
+
+Filenames carry the meaning, so name them properly:
 
 | File | What it becomes |
 | --- | --- |
-| `cover.jpg` | The wide image at the top of the case study, and the thumbnail in the work grid |
+| `cover.jpg` | The image at the top of the case study, and the work grid card |
 | anything else | The gallery below the text, in filename order |
 | a name containing `wide` | That image spans the full width instead of sitting two up |
 
 If there is no `cover` file, the first file alphabetically is used. Number the rest to
 control their order, for example `01-logo.jpg`, `02-pattern.jpg`, `03-range-wide.jpg`.
+Names are lowercased and hyphenated on the way through, so `Cream jar open.jpg` becomes
+`cream-jar-open.jpg` and the URL stays clean.
 
 Alt text is read from the filename, so `03-pattern-detail.jpg` reads as "pattern detail" to
 a screen reader. Leading numbers and the word `wide` are stripped out. Name files in plain
 words rather than `IMG_4471.jpg`.
 
-A folder with images in it overrides the `image` and `gallery` fields in
-`content/projects.json` completely. Empty folders change nothing, which is why every
-project still shows its generated placeholder today.
+### Why originals stay out of the repo
 
-About 1600px wide, exported as JPEG, is the right size. Each folder has a `_README.txt`
-repeating all of this, which the build ignores.
+`source-images/` is in `.gitignore`. Git keeps every version of every file forever, so
+committing full size exports would bloat the repository permanently even if they were later
+deleted. The originals currently on disk come to 287 MB. The web copies come to 4.7 MB.
+
+Each project also gets a `cover-thumb.jpg` at 900px for the work grid card, which is never
+shown large. Using the full cover there cost the home page an extra 650 KB.
+
+Sizes, all set at the top of `build/images.js`:
+
+| Kind | Longest edge | Notes |
+| --- | --- | --- |
+| Cover | 2000px, height capped at 1600 | The slot crops to 16:7, so tall images waste bytes |
+| Wide gallery | 1800px | |
+| Gallery | 1400px | Shown two up |
+| Grid thumbnail | 900px | Generated automatically from the cover |
+
+Quality is 78 with mozjpeg and no chroma subsampling.
 
 ## Projects currently live
 
@@ -104,10 +134,9 @@ Pulled from the Behance profile, in the order set in the data file.
 | 5 | LUMEYA | 2026 |
 | held back | Napur Gin | 2024 |
 
-**The images are placeholders, not the Behance artwork.** Each project falls back to an
-abstract SVG in the brand palette at `assets/work/<slug>.svg`, plus `placeholder-01` through
-`placeholder-04` in the gallery. Put real files in the project's folder and all of that
-disappears on the next build. See "Adding project images" above.
+All five published projects now carry real photography, between five and seven images each.
+The generated placeholders are gone. Only `napur-gin.svg` remains, as the fallback for the
+one project that is held back and has no image folder.
 
 Case studies do not link out to Behance. The `behance` field stays in the data file as a
 reference for whoever is writing the case study, but nothing renders it. Behance is still

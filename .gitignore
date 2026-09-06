@@ -3,3 +3,9 @@ desktop.ini
 .DS_Store
 *.tmp
 ~$*
+
+# Full size originals. Web sized copies live in assets/work/ and are committed.
+source-images/
+
+# Build tooling only. The site itself ships with no dependencies.
+node_modules/

@@ -260,11 +260,16 @@ PROJECTS.forEach(x => {
   const dir = path.join(ROOT, 'assets/work', x.slug);
   if (!fs.existsSync(dir) || !fs.statSync(dir).isDirectory()) return;
 
-  const files = fs.readdirSync(dir).filter(f => IMAGE_EXT.test(f)).sort();
+  const files = fs.readdirSync(dir)
+    .filter(f => IMAGE_EXT.test(f) && !/^cover-thumb./i.test(f))
+    .sort();
   if (!files.length) return;
 
   const coverFile = files.find(f => /^cover\./i.test(f)) || files[0];
   x.image = 'assets/work/' + x.slug + '/' + coverFile;
+  x.thumb = fs.existsSync(path.join(dir, 'cover-thumb.jpg'))
+    ? 'assets/work/' + x.slug + '/cover-thumb.jpg'
+    : x.image;
   if (!filled(x.imageAlt)) x.imageAlt = altFromName(coverFile, x.title);
 
   x.gallery = files.filter(f => f !== coverFile).map(f => ({
@@ -282,7 +287,7 @@ function workGrid(p, list){
   return (list || PROJECTS).map(x =>
 `        <a class="project reveal" href="${p}work/${x.slug}.html">
           <div class="project__media">
-            <img src="${p}${x.image}" alt="${esc(x.imageAlt || x.title + ' project artwork')}" loading="lazy" width="1200" height="900">
+            <img src="${p}${x.thumb || x.image}" alt="${esc(x.imageAlt || x.title + ' project artwork')}" loading="lazy" width="1200" height="900">
           </div>
           <div class="project__body">
             <h3 class="project__title">${esc(x.title)} <span class="arw">&#8599;</span></h3>
@@ -806,7 +811,7 @@ ${block(x.briefHeading || 'The brief', x.brief)}${block(x.decisionHeading || 'Th
           <p class="next-project__sub">${esc(next.subtitle)}</p>
         </div>
         <div class="next-project__media">
-          <img src="../${next.image}" alt="" loading="lazy">
+          <img src="../${next.thumb || next.image}" alt="" loading="lazy">
         </div>
       </a>
 

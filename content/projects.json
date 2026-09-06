@@ -1,5 +1,5 @@
 {
-  "_comment": "Single source of truth for every project on the site. Edit here, or through admin.html, then run: node build/build.js . Order in this list is the order on the page. published:false keeps a project on file but off the site entirely. Empty fields and empty arrays are simply not rendered, so nothing half-written ever ships.",
+  "_comment": "Single source of truth for project text. Images are NOT listed here: drop files in assets/work/<slug>/ and the build reads that folder. Edit here or through admin.html, then run node build/images.js if you added new originals, then node build/build.js . Order in this list is the order on the page. published:false keeps a project on file but off the site entirely. Empty fields are simply not rendered.",
   "projects": [
     {
       "slug": "asmi",
@@ -17,31 +17,12 @@
       "decision": "The visual identity for Asmi was crafted to merge tradition with modern design sensibilities. By integrating symbolic elements like Krishna’s flute and organic leaf forms into a minimal and adaptable system, the brand creates a distinctive visual language that feels both rooted and current. Supporting assets, patterns, and typography extend this identity across touchpoints, ensuring consistency while allowing flexibility. Every design decision reflects the brand’s core values of empowerment, inclusivity, and authenticity while appealing to a digitally native audience.",
       "brief": "Rooted in a blend of cultural symbolism and modern design, the brand brings together meaningful storytelling with contemporary aesthetics. The identity draws inspiration from Indian heritage, most notably through the Devanagari “अ” and Lord Krishna’s flute, while presenting it in a way that feels fresh, relatable, and expressive for today’s generation. Asmi stands as a celebration of individuality, creativity, and cultural pride.",
       "outcome": "Asmi’s brand identity goes beyond aesthetics. It tells a story. By combining cultural depth with modern simplicity, the brand creates a unique space in the streetwear market. The result is a cohesive and versatile system that stands out visually and resonates emotionally with its audience, making Asmi more than just a clothing label. It becomes a medium of self-expression.",
-      "image": "assets/work/asmi.svg",
-      "imageAlt": "Asmi brand identity artwork",
+      "image": "assets/work/asmi/cover.jpg",
+      "imageAlt": "Asmi project cover",
       "behance": "https://www.behance.net/gallery/246778461/Asmi-Brand-Identity-for-an-Apparel-Brand",
       "featured": true,
       "published": true,
-      "gallery": [
-        {
-          "src": "assets/work/placeholder-01.svg",
-          "alt": "Placeholder image one, full width",
-          "wide": true
-        },
-        {
-          "src": "assets/work/placeholder-02.svg",
-          "alt": "Placeholder image two"
-        },
-        {
-          "src": "assets/work/placeholder-03.svg",
-          "alt": "Placeholder image three"
-        },
-        {
-          "src": "assets/work/placeholder-04.svg",
-          "alt": "Placeholder image four, full width",
-          "wide": true
-        }
-      ],
+      "gallery": [],
       "credits": [
         {
           "role": "Brand strategy",
@@ -80,31 +61,12 @@
       "decision": "",
       "brief": "",
       "outcome": "",
-      "image": "assets/work/sunlife-international.svg",
-      "imageAlt": "Sunlife International brand identity artwork",
+      "image": "assets/work/sunlife-international/cover.jpg",
+      "imageAlt": "Sunlife International project cover",
       "behance": "https://www.behance.net/gallery/253593671/Sunlife-International-Brand-Identity-Stationery",
       "featured": true,
       "published": true,
-      "gallery": [
-        {
-          "src": "assets/work/placeholder-01.svg",
-          "alt": "Placeholder image one, full width",
-          "wide": true
-        },
-        {
-          "src": "assets/work/placeholder-02.svg",
-          "alt": "Placeholder image two"
-        },
-        {
-          "src": "assets/work/placeholder-03.svg",
-          "alt": "Placeholder image three"
-        },
-        {
-          "src": "assets/work/placeholder-04.svg",
-          "alt": "Placeholder image four, full width",
-          "wide": true
-        }
-      ],
+      "gallery": [],
       "credits": [
         {
           "role": "Brand strategy",
@@ -139,31 +101,12 @@
       "decision": "The identity system is built around the idea of movement, layering, and contrast, much like the product itself. Soft, fluid forms and rounded typography echo the visual language of swirls, while a bold colour system assigns a distinct personality to each flavour.\n\nThe design balances playfulness with structure. Bright, expressive colours are grounded by clean layouts and consistent hierarchy, ensuring the system feels cohesive across packaging and touchpoints. The result is a brand that feels light, modern, and instantly recognisable, without relying on overused cues from the category.",
       "brief": "This project explores a full brand world, from positioning and visual identity to packaging across multiple flavours, colour systems, and expressive brand touchpoints. Every element is designed to feel cohesive yet full of personality.\n\nAt its core, Swirly is about contrast, bold yet soft, nostalgic yet modern, simple yet expressive. The system leans into vibrant colours, fluid forms, and a tone of voice that feels light, confident, and full of joy. Nothing feels forced. Everything flows.",
       "outcome": "Swirly is designed to be more than just a product on the shelf. It’s a brand that invites interaction, emotion, and recall. From its distinctive colour system to its fluid visual language, every touchpoint works together to create a cohesive and memorable experience.\n\nThe result is a brand that feels both familiar and fresh, one that stands out without trying too hard, and leaves a lasting impression long after the last scoop.",
-      "image": "assets/work/swirly.svg",
-      "imageAlt": "Swirly brand identity and packaging artwork",
+      "image": "assets/work/swirly/cover.jpg",
+      "imageAlt": "Swirly project cover",
       "behance": "https://www.behance.net/gallery/249432895/Swirly-Brand-Identity-Packaging-Design",
       "featured": true,
       "published": true,
-      "gallery": [
-        {
-          "src": "assets/work/placeholder-01.svg",
-          "alt": "Placeholder image one, full width",
-          "wide": true
-        },
-        {
-          "src": "assets/work/placeholder-02.svg",
-          "alt": "Placeholder image two"
-        },
-        {
-          "src": "assets/work/placeholder-03.svg",
-          "alt": "Placeholder image three"
-        },
-        {
-          "src": "assets/work/placeholder-04.svg",
-          "alt": "Placeholder image four, full width",
-          "wide": true
-        }
-      ],
+      "gallery": [],
       "credits": [
         {
           "role": "Brand strategy",
@@ -202,31 +145,12 @@
       "decision": "",
       "brief": "",
       "outcome": "",
-      "image": "assets/work/paloma.svg",
-      "imageAlt": "Paloma brand identity artwork",
+      "image": "assets/work/paloma/cover.jpg",
+      "imageAlt": "Paloma project cover",
       "behance": "https://www.behance.net/gallery/254786069/Paloma-Holiday-Residence-Brand-Identity",
       "featured": true,
       "published": true,
-      "gallery": [
-        {
-          "src": "assets/work/placeholder-01.svg",
-          "alt": "Placeholder image one, full width",
-          "wide": true
-        },
-        {
-          "src": "assets/work/placeholder-02.svg",
-          "alt": "Placeholder image two"
-        },
-        {
-          "src": "assets/work/placeholder-03.svg",
-          "alt": "Placeholder image three"
-        },
-        {
-          "src": "assets/work/placeholder-04.svg",
-          "alt": "Placeholder image four, full width",
-          "wide": true
-        }
-      ],
+      "gallery": [],
       "credits": [
         {
           "role": "Brand strategy",
@@ -262,31 +186,12 @@
       "decision": "The brief was simple to state, harder to execute: design a luxury skincare brand that refuses to participate in the dominant visual language of its category.\n\nMost skincare brands perform softness, soft palettes, rounded type, warm photography, copy that says nurturing a lot. Lumeya’s position is that gentleness in packaging is a category convention, not a value. Dark is what directness looks like when it’s expressed visually.\n\nThe identity system is built on five colours, each with a fixed role. Deep Plum (#2E1429) owns all outer packaging and hardware across every SKU. Cream (#FFF5EF) is the interior, insert cards, shopping bag, unboxing. The contrast between the two is the system: dark exterior, cream interior.\n\nTwo typefaces. Canela Italic for all product names, editorial weight, composed not labelled. Neue Haas Grotesk Light for descriptors and labels, clinical precision in all-caps tracking. Nothing else enters the system.\n\nFour SKUs. One hardware rule: Deep Plum pump heads, dropper caps, jar lids, without exception. The single visual thread that makes four different containers read as one family.",
       "brief": "This project covers the full identity system: brand strategy and positioning, a custom wordmark, a five colour system, typographic hierarchy, packaging design across four SKUs, secondary touchpoints, and a complete set of brand guidelines. Every decision in this system flows from a single conviction. Nothing is decorative.",
       "outcome": "Brand design is not the application of aesthetics to a product. It’s the translation of a conviction into a system. The conviction comes first. Everything else is consequence.\n\nLumeya started with a refusal and ended with a system so specific that every application, a label, a shopping bag, a line of copy, produces something unmistakably itself.",
-      "image": "assets/work/lumeya.svg",
-      "imageAlt": "LUMEYA brand identity and packaging artwork",
+      "image": "assets/work/lumeya/cover.jpg",
+      "imageAlt": "LUMEYA project cover",
       "behance": "https://www.behance.net/gallery/252151085/LUMEYA-Conscious-Luxury-Skincare",
       "featured": true,
       "published": true,
-      "gallery": [
-        {
-          "src": "assets/work/placeholder-01.svg",
-          "alt": "Placeholder image one, full width",
-          "wide": true
-        },
-        {
-          "src": "assets/work/placeholder-02.svg",
-          "alt": "Placeholder image two"
-        },
-        {
-          "src": "assets/work/placeholder-03.svg",
-          "alt": "Placeholder image three"
-        },
-        {
-          "src": "assets/work/placeholder-04.svg",
-          "alt": "Placeholder image four, full width",
-          "wide": true
-        }
-      ],
+      "gallery": [],
       "credits": [
         {
           "role": "Brand strategy",

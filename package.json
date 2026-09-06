@@ -1,0 +1,12 @@
+{
+  "name": "snehajain-co-uk",
+  "private": true,
+  "description": "Build tooling for snehajain.co.uk. The site itself ships as plain HTML and CSS with no dependencies; this is only used to prepare images.",
+  "scripts": {
+    "images": "node build/images.js",
+    "build": "node build/build.js"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.4"
+  }
+}
