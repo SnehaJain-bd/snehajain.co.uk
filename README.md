@@ -118,7 +118,7 @@ cream or dark version natively, so only one is ever in the page, and the `img` c
 
 ## After editing the stylesheet, bump the version
 
-Pages link the stylesheet as `assets/styles.css?v=9`, set by `CSS_VERSION` at the top of
+Pages link the stylesheet as `assets/styles.css?v=10`, set by `CSS_VERSION` at the top of
 `build/build.js`. Browsers cache CSS hard, and a stale copy against new markup breaks the
 page rather than merely dating it. Raise the number and rebuild.
 
@@ -138,12 +138,13 @@ To make the approach section plain off-white instead, drop `section--dark` from 
 
 ## The hero
 
-Two lines, "Hi, I am Sneha" and "Strategic brand design for founder-led businesses", then the
-two buttons, then a strip reading "Brands that get chosen."
+One line, "Strategic brand design for founder-led businesses", then the two buttons, then a
+strip reading "Brands that get chosen." Built to match the supplied hero design.
 
-The hero heading is set in Work Sans rather than Loretta, at a smaller size than the section
-headings elsewhere, so the long second line sits on one line at desktop width. That matches
-the hero design rather than the rest of the site, which is deliberate.
+The heading is set in Work Sans rather than Loretta, at regular weight and a smaller size
+than the section headings elsewhere, so it stays on one line at desktop width. The two hero
+buttons are the only ones on the site in title case, again to match the design. Every other
+"Start a project" button is sentence case.
 
 ## Case study layout
 
@@ -229,6 +230,15 @@ a link to the form is shown instead.
 
 To swap forms, change `TALLY` at the top of `build/build.js` and rebuild.
 
+### The Tally badge cannot be removed on the free plan
+
+Tally decides this server side. Requesting `removeBranding=1` in the embed URL is ignored:
+the payload still comes back with `"removeBranding":false`. Styling it away is impossible
+too, because the form is a cross-origin iframe and a page cannot reach inside one.
+
+The only supported way to drop it is Tally Pro, which turns on a "Remove Tally branding"
+setting for the form.
+
 ## Testimonials
 
 The section is live on the home page. Quotes come from the `testimonials` array in
@@ -237,6 +247,19 @@ a real quote", so the layout is there and nothing is invented. Fill in the quote
 and brand through `admin.html` and the slot becomes a real testimonial.
 
 Only use words a client actually said, with their permission.
+
+## The email address does not exist yet
+
+The site now shows `hello@snehajain.co.uk` everywhere: the contact page, the footer and the
+structured data. GitHub Pages serves web pages only and cannot receive mail, so that mailbox
+has to be created somewhere before anyone writes to it. Until then, enquiries sent to it go
+nowhere.
+
+Section 5 of `DEPLOY.md` lists the options, cheapest first. Registrar forwarding into an
+existing inbox is free at most UK registrars and is enough to start.
+
+The contact page lists email only. Instagram and Behance were removed from it, though both
+are still in the footer under Social.
 
 ## Still to fill in
 

@@ -15,8 +15,8 @@ const path = require('path');
 const ROOT = process.argv[2] ? path.resolve(process.argv[2]) : path.resolve(__dirname, '..');
 const DATA = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/projects.json'), 'utf8'));
 
-const CSS_VERSION = 9;
-const MAIL = 'designspacebysj@gmail.com';
+const CSS_VERSION = 10;
+const MAIL = 'hello@snehajain.co.uk';
 const IG   = 'https://www.instagram.com/snehajain.design';
 const BEHANCE = 'https://www.behance.net/sneha_jain14';
 const TALLY = 'OD2Da8';
@@ -362,13 +362,10 @@ head({
 
   <section class="hero">
     <div class="wrap">
-      <h1 class="hero__title reveal">
-        <span class="hero__line">Hi, I&rsquo;m Sneha.</span>
-        <span class="hero__line"><strong>Strategic brand design for founder-led businesses.</strong></span>
-      </h1>
+      <h1 class="hero__title reveal">Strategic brand design for founder-led businesses.</h1>
       <div class="hero__actions reveal">
-        <a class="btn btn--solid" href="contact.html">Start a project ${ARROW}</a>
-        <a class="btn btn--ghost" href="work.html">See selected work</a>
+        <a class="btn btn--solid" href="contact.html">Start a Project ${ARROW}</a>
+        <a class="btn btn--ghost" href="work.html">See Selected Work</a>
       </div>
     </div>
   </section>
@@ -633,10 +630,6 @@ head({
           <dl class="contact__ways">
             <dt>Email</dt>
             <dd><a class="contact__mail" href="mailto:${MAIL}?subject=Project%20enquiry">${MAIL}</a></dd>
-            <dt>Instagram</dt>
-            <dd><a class="textlink" href="${IG}" rel="me noopener" target="_blank">@snehajain.design</a></dd>
-            <dt>Behance</dt>
-            <dd><a class="textlink" href="${BEHANCE}" rel="me noopener" target="_blank">sneha_jain14</a></dd>
             <dt>Based in</dt>
             <dd>Southampton, UK. Working with founders anywhere.</dd>
             <dt>Reply time</dt>
@@ -646,7 +639,7 @@ head({
 
         <div class="reveal">
           <h2 class="contact__how">Two lines is enough.</h2>
-          <p>Answers land straight in my Tally inbox. If you would rather just email,
+          <p>Answers land straight in my inbox. If you would rather just email,
             the address is on the left.</p>
 
           <div class="tally-wrap">
