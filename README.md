@@ -81,8 +81,11 @@ Pulled from the Behance profile, in the order set in the data file.
 
 **The images are placeholders, not the Behance artwork.** Each project has an abstract SVG
 in the brand palette at `assets/work/<slug>.svg`. Replace them with real images, about
-1600px wide and compressed, then point the `image` field at the new file. Each case study
-links out to its Behance page at the foot.
+1600px wide and compressed, then point the `image` field at the new file.
+
+Case studies do not link out to Behance. The `behance` field stays in the data file as a
+reference for whoever is writing the case study, but nothing renders it. Behance is still
+linked once, in the footer under Social.
 
 ## Pages
 
@@ -118,7 +121,7 @@ cream or dark version natively, so only one is ever in the page, and the `img` c
 
 ## After editing the stylesheet, bump the version
 
-Pages link the stylesheet as `assets/styles.css?v=11`, set by `CSS_VERSION` at the top of
+Pages link the stylesheet as `assets/styles.css?v=12`, set by `CSS_VERSION` at the top of
 `build/build.js`. Browsers cache CSS hard, and a stale copy against new markup breaks the
 page rather than merely dating it. Raise the number and rebuild.
 
@@ -162,6 +165,20 @@ Two fields feed the image and credit blocks, both editable in `admin.html`:
 - **Gallery.** One image per line as `path | description | wide`. Adding `wide` at the end
   makes that image span the full width of the grid. Everything else sits two up.
 - **Credits.** One per line as `Role: Name`.
+
+## Two layout traps worth remembering
+
+**A backdrop-filter creates a containing block for fixed children.** The sticky header had
+one, which meant the mobile menu, a  panel inside that header, was laid out
+against the 72px header box instead of the viewport. It opened a few pixels tall and its
+links spilled over the page. The filter is switched off below 860px, where the menu lives.
+
+**Footer buttons need their colour restated.**  sets the muted link colour and
+is more specific than , so a button in the footer silently inherited it and
+rendered at 2.56:1.  puts it back to 15:1.
+
+Headings that carry a  highlight need line-height of about 1.24. Below that, the
+yellow block collides with the descenders on the line above once the text wraps on a phone.
 
 ## Brand tokens
 

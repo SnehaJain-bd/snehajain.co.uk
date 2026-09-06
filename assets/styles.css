@@ -398,10 +398,23 @@ p:last-child{ margin-bottom:0; }
 
 @media (max-width:860px){
   .nav-toggle{ display:flex; }
+
+  /* A backdrop-filter makes an element the containing block for any
+     position:fixed descendant. That pinned the menu panel inside the
+     header instead of the viewport, so it opened a few pixels tall and
+     its links spilled over the page. No filter at this width, no trap. */
+  .site-head{
+    backdrop-filter:none;
+    -webkit-backdrop-filter:none;
+    background:var(--paper);
+  }
+
   .nav{
     position:fixed;
-    inset:auto 0 0 0;
+    left:0;
+    right:0;
     top:var(--head-h,4.5rem);
+    height:calc(100dvh - var(--head-h,4.5rem));
     flex-direction:column;
     align-items:stretch;
     gap:.25rem;
@@ -412,7 +425,6 @@ p:last-child{ margin-bottom:0; }
     opacity:0;
     visibility:hidden;
     transition:transform .38s var(--ease), opacity .28s var(--ease), visibility .38s;
-    max-height:calc(100dvh - var(--head-h,4.5rem));
     overflow-y:auto;
   }
   .nav.is-open{ transform:translateY(0); opacity:1; visibility:visible; }
@@ -812,7 +824,7 @@ details.qa[open] summary{ font-weight:500; }
 }
 .cta-band__title{
   font-size:clamp(2.1rem,6vw,4.5rem);
-  line-height:1.1;
+  line-height:1.24;
   font-weight:400;
   letter-spacing:-.024em;
   max-width:18ch;
@@ -942,6 +954,11 @@ details.qa[open] summary{ font-weight:500; }
   transition:color .2s var(--ease);
 }
 .foot-col a:hover{ color:var(--ink); }
+
+/* Buttons in the footer must not inherit the muted link colour above.
+   .foot-col a beats .btn--solid on specificity, so restate it here. */
+.foot-col a.btn--solid{ color:var(--paper); }
+.foot-col a.btn--solid:hover{ color:#2A211A; }
 .foot-col__cta{ margin-top:1.15rem; }
 .foot-col a .arw{ opacity:0; transform:translateX(-4px); transition:opacity .25s var(--ease), transform .25s var(--ease); }
 .foot-col a:hover .arw{ opacity:1; transform:translateX(0); }
@@ -1075,7 +1092,7 @@ figcaption{
 .oops__title{
   font-size:clamp(2.2rem,7vw,4.5rem);
   font-weight:400;
-  line-height:1.1;
+  line-height:1.24;
   margin:0;
   max-width:16ch;
 }

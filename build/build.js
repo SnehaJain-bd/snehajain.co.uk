@@ -15,7 +15,7 @@ const path = require('path');
 const ROOT = process.argv[2] ? path.resolve(process.argv[2]) : path.resolve(__dirname, '..');
 const DATA = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/projects.json'), 'utf8'));
 
-const CSS_VERSION = 11;
+const CSS_VERSION = 12;
 const MAIL = 'hello@snehajain.co.uk';
 const IG   = 'https://www.instagram.com/snehajain.design';
 const BEHANCE = 'https://www.behance.net/sneha_jain14';
@@ -755,10 +755,6 @@ ${x.credits.map(c => `        <div><dt>${esc(c.role)}</dt><dd>${esc(c.name)}</dd
 ${block('The brief', x.brief)}${block('The decision', x.decision)}${gallery}${block('The outcome', x.outcome)}${credits}
   <section class="section section--tight">
     <div class="wrap">
-${filled(x.behance) ? `      <p class="reveal">
-        <a class="arrow-link" href="${x.behance}" rel="noopener" target="_blank">See the full project on Behance <span>&rarr;</span></a>
-      </p>
-` : ''}
       <a class="next-project reveal" href="${next.slug}.html">
         <div>
           <p class="next-project__label">Next project</p>
