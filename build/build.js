@@ -15,7 +15,7 @@ const path = require('path');
 const ROOT = process.argv[2] ? path.resolve(process.argv[2]) : path.resolve(__dirname, '..');
 const DATA = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/projects.json'), 'utf8'));
 
-const CSS_VERSION = 12;
+const CSS_VERSION = 13;
 const MAIL = 'hello@snehajain.co.uk';
 const IG   = 'https://www.instagram.com/snehajain.design';
 const BEHANCE = 'https://www.behance.net/sneha_jain14';
@@ -125,8 +125,8 @@ const ctaBand = (p, title) => `
 <section class="cta-band">
   <div class="wrap">
     <h2 class="cta-band__title reveal">${title || 'Tell me what you&rsquo;re <span class="mark">building.</span>'}</h2>
-    <p class="cta-band__lede reveal">Send me two lines about your product. We get on a short call.
-      I send one page with scope, price and timeline.</p>
+    <p class="cta-band__lede reveal">Send a short message about your business. If it looks like a fit,
+      we&rsquo;ll book a call.</p>
     <a class="btn btn--yellow reveal" href="${p}contact.html">Start a project ${ARROW}</a>
   </div>
 </section>
@@ -185,10 +185,10 @@ const footer = p => `
 
 const SERVICES = [
   ['Brand Strategy','Positioning, audience and the argument for your brand. Everything else is built on this.'],
+  ['Naming &amp; Tone of Voice','A name people remember, and a way of speaking that sounds like you rather than like your category.'],
   ['Visual Identity','Logo, type, colour and imagery built as a system, so your brand looks like itself everywhere.'],
   ['Packaging Design','Structure and artwork for products that need to get picked up.'],
   ['Brand Refresh','Moving an existing identity forward without throwing away what your customers already recognise.'],
-  ['Naming &amp; Tone of Voice','A name people remember, and a way of speaking that sounds like you rather than like your category.'],
   ['Brand Guidelines','Rules your team can follow without me in the room.'],
   ['Art Direction','Photography, illustration and campaign work held to one standard, so nothing drifts off brand.'],
   ['Web &amp; Digital Design','Your identity carried onto a screen properly, not squeezed into a template.'],
@@ -205,7 +205,7 @@ const servicesSection = (p, alt) => `
         <p class="eyebrow">Services</p>
         <div>
           <h2 class="sec-title">Twelve services. One job: getting your brand chosen.</h2>
-          <p class="sec-lede">Most projects start with one of the <strong>first four</strong>. The rest tend to follow.</p>
+          <p class="sec-lede">Most projects start with one of the <strong>first five</strong>. The rest tend to follow.</p>
         </div>
       </div>
 
@@ -219,7 +219,7 @@ ${SERVICES.map(([t,d],i)=>
 
       <div class="sec-foot reveal">
         <p class="sec-foot__note">Not sure which of these you need?</p>
-        <a class="btn btn--solid" href="${p}contact.html">Start a project ${ARROW}</a>
+        <a class="btn btn--solid" href="${p}contact.html">Let&rsquo;s work it out ${ARROW}</a>
       </div>
     </div>
   </section>
@@ -255,7 +255,7 @@ function voices(){
   const list = DATA.testimonials || [];
   const cards = list.map(t => filled(t.quote)
 ? `        <li class="voice reveal">
-          <p class="voice__quote">${esc(t.quote)}</p>
+          <p class="voice__quote">&ldquo;${esc(t.quote)}&rdquo;</p>
           <footer class="voice__by">
             <span><span class="voice__name">${esc(t.name)}</span><span class="voice__role">${esc([t.role,t.brand].filter(Boolean).join(', '))}</span></span>
           </footer>
@@ -610,7 +610,7 @@ pages['contact.html'] =
 head({
   p:'', canon:'contact.html',
   title:'Start a project, Sneha Jain',
-  desc:'Send me two lines about your product. We get on a short call. I send one page with scope, price and timeline.'
+  desc:'Send a short message about your business. If it looks like a fit, we will book a call.'
 })
 + header('contact','')
 + `
@@ -620,8 +620,8 @@ head({
     <div class="wrap">
       <p class="eyebrow reveal">Contact</p>
       <h1 class="page-hero__title reveal">Tell me what you&rsquo;re building.</h1>
-      <p class="page-hero__lede reveal">Send me two lines about your product. We get on a short call.
-        I send one page with scope, price and timeline.</p>
+      <p class="page-hero__lede reveal">Send a short message about your business. If it looks like a fit,
+        we&rsquo;ll book a call.</p>
     </div>
   </section>
 
