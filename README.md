@@ -191,7 +191,7 @@ cream or dark version natively, so only one is ever in the page, and the `img` c
 
 ## After editing the stylesheet, bump the version
 
-Pages link the stylesheet as `assets/styles.css?v=18`, set by `CSS_VERSION` at the top of
+Pages link the stylesheet as `assets/styles.css?v=19`, set by `CSS_VERSION` at the top of
 `build/build.js`. Browsers cache CSS hard, and a stale copy against new markup breaks the
 page rather than merely dating it. Raise the number and rebuild.
 
@@ -216,9 +216,11 @@ Section 29 of the stylesheet corrects it:
 
 - The hero takes the dark texture, since the stripe paper is a light pattern and cannot work
   on a dark ground.
-- The approach section gives that texture up and becomes a deep blue band at `#184454`. A
-  different hue separates it from the page properly. Another dark brown sat at 1.15:1
-  against the page and disappeared.
+- The approach section gives that texture up and inverts instead. In light mode it is a
+  coffee band on an off-white page, so in dark mode it becomes an off-white band on a coffee
+  page, at 17.2:1. Every colour inside it flips with the ground, including the eyebrow
+  brackets, which switch from yellow to the deep blue because yellow disappears on
+  off-white.
 - Yellow does the accent work: eyebrow brackets, the strip under the hero, emphasised words,
   the rules above process steps and FAQ groups, and case study headings. On the dark ground
   it measures 15.6:1, so it carries small type comfortably.

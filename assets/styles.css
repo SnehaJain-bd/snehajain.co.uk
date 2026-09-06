@@ -1408,12 +1408,32 @@ figcaption{
     background-position:center;
   }
 
-  /* Deep blue rather than a second coffee band. 1.72:1 against the
-     page, with cream at 10:1 and yellow at 9:1 on top of it. */
+  /* The true inversion. In light mode this is a coffee band on an
+     off-white page, so in dark mode it becomes an off-white band on a
+     coffee page. 17.2:1 against the page, and nothing outside the
+     palette. Every colour inside it has to flip with the ground. */
   .section--dark{
-    background-color:#184454;
+    background-color:#FBF9F4;
     background-image:none;
+    color:#2A211A;
   }
+  .section--dark .sec-title,
+  .section--dark .intro__body strong,
+  .section--dark .sec-lede strong{ color:#2A211A; }
+
+  .section--dark .sec-lede,
+  .section--dark .intro__body p,
+  .section--dark .sec-foot__note,
+  .section--dark .eyebrow{ color:#6C5F54; }
+
+  /* Yellow brackets would vanish on off-white, so the deep blue takes
+     over here, the same one the light theme uses. */
+  .section--dark .eyebrow::before,
+  .section--dark .eyebrow::after{ color:#0077A8; }
+
+  .section--dark .sec-foot{ border-top-color:rgba(42,33,26,.2); }
+  .section--dark .arrow-link{ color:#2A211A; }
+  .section--dark .arrow-link:hover{ color:#2A211A; }
 
   /* ---- pops of colour ---- */
 
