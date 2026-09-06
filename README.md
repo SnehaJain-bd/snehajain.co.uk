@@ -101,6 +101,21 @@ Alt text is read from the filename, so `03-pattern-detail.jpg` reads as "pattern
 a screen reader. Leading numbers and the word `wide` are stripped out. Name files in plain
 words rather than `IMG_4471.jpg`.
 
+### How the gallery packs itself
+
+The gallery grid is six columns wide, so a row fills as 3 + 3, or 2 + 2 + 2, or a single 6.
+The builder works out the spans, so a row is never left half empty.
+
+Ordinary images pair up two to a row. If there is an odd number of them, the last three
+become a row of three rather than leaving one stranded. Wide images then slot in between
+whole rows, never mid pair. A project with only one ordinary image gives it the full width.
+
+This is why a wide image no longer strands its neighbours. Before, a wide file dropped into
+the middle of the sequence left a half empty row on each side of it.
+
+Order still follows the filename, so number your files to control it. `01-` through `05-`
+gives you exact control over which images end up beside each other.
+
 ### Why originals stay out of the repo
 
 `source-images/` is in `.gitignore`. Git keeps every version of every file forever, so
@@ -176,7 +191,7 @@ cream or dark version natively, so only one is ever in the page, and the `img` c
 
 ## After editing the stylesheet, bump the version
 
-Pages link the stylesheet as `assets/styles.css?v=16`, set by `CSS_VERSION` at the top of
+Pages link the stylesheet as `assets/styles.css?v=17`, set by `CSS_VERSION` at the top of
 `build/build.js`. Browsers cache CSS hard, and a stale copy against new markup breaks the
 page rather than merely dating it. Raise the number and rebuild.
 

@@ -1299,13 +1299,17 @@ figcaption{
 }
 
 /* Image blocks */
+/* Six columns, so a row fills cleanly as 3+3, or 2+2+2, or one 6.
+   The builder decides which span each image gets, so no row is ever
+   left half empty. */
 .case-gallery{
   display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-template-columns:repeat(6,minmax(0,1fr));
   gap:clamp(.75rem,1.6vw,1.4rem);
 }
-@media (max-width:640px){ .case-gallery{ grid-template-columns:minmax(0,1fr); } }
-.case-gallery figure{ margin:0; }
+.case-gallery figure{ margin:0; grid-column:span 3; }
+.case-gallery .third{ grid-column:span 2; }
+.case-gallery .wide{ grid-column:span 6; }
 .case-gallery img{
   width:100%;
   aspect-ratio:4/3;
@@ -1314,8 +1318,14 @@ figcaption{
   border:1px solid var(--line);
   background:var(--paper-3);
 }
-.case-gallery .wide{ grid-column:1 / -1; }
 .case-gallery .wide img{ aspect-ratio:16/9; }
+
+@media (max-width:640px){
+  .case-gallery figure,
+  .case-gallery .third,
+  .case-gallery .wide{ grid-column:span 6; }
+  .case-gallery .wide img{ aspect-ratio:4/3; }
+}
 
 /* Credits */
 .case-credits{

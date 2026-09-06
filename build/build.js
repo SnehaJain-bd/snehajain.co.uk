@@ -15,7 +15,7 @@ const path = require('path');
 const ROOT = process.argv[2] ? path.resolve(process.argv[2]) : path.resolve(__dirname, '..');
 const DATA = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/projects.json'), 'utf8'));
 
-const CSS_VERSION = 16;
+const CSS_VERSION = 17;
 const MAIL = 'hello@snehajain.co.uk';
 const IG   = 'https://www.instagram.com/snehajain.design';
 const BEHANCE = 'https://www.behance.net/sneha_jain14';
@@ -280,6 +280,43 @@ PROJECTS.forEach(x => {
 
   console.log('  ' + x.slug + ': cover ' + coverFile + ', ' + x.gallery.length + ' gallery image' + (x.gallery.length === 1 ? '' : 's'));
 });
+/* ---- gallery packing ----
+   The grid is six columns, so a row fills as 3+3 or 2+2+2 or one 6.
+   Left alone, a wide image lands mid sequence and strands the images
+   either side of it in half empty rows. So: pair the ordinary images
+   up first, turn the last three into a row of three when the count is
+   odd, then slot the wide ones in between whole rows. A single
+   ordinary image with nothing to pair with goes full width. */
+function packGallery(items){
+  if (!Array.isArray(items) || !items.length) return [];
+
+  const normals = items.filter(g => !g.wide);
+  const wides   = items.filter(g => g.wide);
+  const rows = [];
+
+  if (normals.length === 1) {
+    rows.push([Object.assign({}, normals[0], { span: 'wide' })]);
+  } else if (normals.length) {
+    const rest = normals.slice();
+    const trio = (rest.length % 2 === 1 && rest.length >= 3) ? rest.splice(-3, 3) : null;
+    for (let i = 0; i < rest.length; i += 2) {
+      rows.push(rest.slice(i, i + 2).map(g => Object.assign({}, g, { span: 'half' })));
+    }
+    if (trio) rows.push(trio.map(g => Object.assign({}, g, { span: 'third' })));
+  }
+
+  const out = [];
+  let w = 0;
+  rows.forEach((row, i) => {
+    out.push(...row);
+    if (w < wides.length && i < rows.length - 1) {
+      out.push(Object.assign({}, wides[w++], { span: 'wide' }));
+    }
+  });
+  while (w < wides.length) out.push(Object.assign({}, wides[w++], { span: 'wide' }));
+  return out;
+}
+
 const WORK_HEAD = 'The decision behind each project.';
 const WORK_SUB  = 'What each brand had to work out before any of it could look like this.';
 
@@ -749,12 +786,14 @@ PROJECTS.forEach((x, i) => {
   </section>
 ` : '';
 
-  /* Gallery entries are optional. wide:true spans the full width. */
-  const gallery = Array.isArray(x.gallery) && x.gallery.length ? `
+  /* Gallery entries are optional. wide:true spans the full width.
+     Everything else is packed so no row is ever left half empty. */
+  const packed = packGallery(x.gallery);
+  const gallery = packed.length ? `
   <section class="section section--tight">
     <div class="wrap">
       <div class="case-gallery reveal">
-${x.gallery.map(g => `        <figure${g.wide ? ' class="wide"' : ''}>
+${packed.map(g => `        <figure${g.span === 'half' ? '' : ' class="' + g.span + '"'}>
           <img src="../${g.src}" alt="${esc(g.alt || '')}" loading="lazy">
         </figure>`).join('\n')}
       </div>
