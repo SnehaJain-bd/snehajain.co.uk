@@ -19,6 +19,7 @@ const CSS_VERSION = 19;
 const MAIL = 'hello@snehajain.co.uk';
 const IG   = 'https://www.instagram.com/snehajain.design';
 const BEHANCE = 'https://www.behance.net/sneha_jain14';
+const LINKEDIN = 'https://www.linkedin.com/in/snehajain14296';
 const TALLY = 'OD2Da8';
 const DESC = 'Brand strategy, identity and packaging for founder-led businesses. UK based, working with founders anywhere.';
 
@@ -158,7 +159,7 @@ const footer = p => `
         <ul>
           <li><a href="${IG}" rel="me noopener" target="_blank">Instagram <span class="arw">&rarr;</span></a></li>
           <li><a href="${BEHANCE}" rel="me noopener" target="_blank">Behance <span class="arw">&rarr;</span></a></li>
-          <li><a href="https://www.linkedin.com/in/USERNAME" rel="me noopener" target="_blank">LinkedIn <span class="arw">&rarr;</span></a></li>
+          <li><a href="${LINKEDIN}" rel="me noopener" target="_blank">LinkedIn <span class="arw">&rarr;</span></a></li>
         </ul>
       </div>
       <div class="foot-col">
@@ -437,7 +438,7 @@ head({
     jobTitle:'Strategic Brand Designer',url:'https://snehajain.co.uk',
     email:'mailto:'+MAIL,
     address:{'@type':'PostalAddress',addressLocality:'Southampton',addressCountry:'GB'},
-    sameAs:[IG,BEHANCE,'https://www.linkedin.com/in/USERNAME']
+    sameAs:[IG,BEHANCE,LINKEDIN]
   },null,2)
 })
 + header('home','')
