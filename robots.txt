@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://snehajain.co.uk/sitemap.xml
