@@ -126,6 +126,23 @@ The filename decides three things:
 So `01-storefront.jpg`, `02-fridge-wide.jpg`, `03-tub.jpg` gives that order with the
 fridge full width. Renaming a file reorders the page.
 
+### Where the cover crops
+
+The cover is cropped to 3:2, because every slot it appears in is landscape.
+Centre is the default and suits most images. When the subject sits low or high
+in a portrait photograph, centre cuts through it, so the filename can say where
+to crop instead:
+
+| Source filename | Crop |
+| --- | --- |
+| `cover.jpg` | Centre. The default |
+| `cover-attention.jpg` | Wherever the busiest part of the picture is |
+| `cover-top.jpg`, `cover-bottom.jpg` | Pinned to that edge |
+
+The token is stripped on the way out, so the file still lands as `cover.jpg` and
+nothing else needs to know. Swirly uses `cover-attention.jpg`: it is a tall shot
+with the tubs near the bottom, and a centre crop sliced them in half.
+
 The rest of the name becomes the alt text a screen reader announces, so
 `pattern-detail.jpg` is read as "Swirly, pattern detail". Worth naming files
 properly for that alone.
@@ -267,6 +284,11 @@ yellow block collides with descenders on the line above once the text wraps.
   "to confirm". No prices are shown, which is correct until the real figures are in.
 - **`public/img/og.png`**, 1200 by 630, the preview image when a link is shared.
   Until it exists links share with no picture.
+- **The Swirly cover source is soft.** It is 4096x5460 but carries nowhere near
+  that much real detail: at 1:1 the pack text is already fuzzy, and the small
+  print is garbled. It looks upscaled. Nothing in the pipeline can recover
+  detail that is not there, so it needs a better export from the original file.
+  Same for `3-tubs.png`, which is only 1024x1024 at source.
 
 ---
 

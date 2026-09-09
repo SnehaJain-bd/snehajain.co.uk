@@ -17,6 +17,10 @@
      cover.*            the case study cover and grid thumbnail
      anything else      the gallery, in filename order
      a name with wide   spans the full width of the gallery
+
+   A cover is cropped to 3:2. Where that crop lands matters, so the
+   filename can say: cover-attention.jpg, cover-top.jpg, cover-bottom.jpg.
+   The token is stripped and the file still lands as cover.jpg.
    ========================================================= */
 
 const fs = require('fs');
@@ -39,6 +43,25 @@ const OUT  = path.join(ROOT, 'public/work');
    across a 2000px band. That is what made those covers look soft. */
 const COVER_W       = 2000;
 const COVER_H       = 1333;
+
+/* Where the 3:2 cover crop lands, taken from the filename.
+
+   Centre is the default because it is predictable. It suits most covers,
+   Paloma included, where the mark and the wordmark sit either side of the
+   middle and a smart crop would clip the wordmark off.
+
+   Portrait sources with the subject low, like Swirly, need attention,
+   which is libvips picking the busiest region. Hence the override. */
+const COVER_FOCUS = /^cover[-_](centre|center|attention|entropy|top|bottom|left|right)/i;
+
+function coverPosition(focus){
+  if (!focus) return 'centre';
+  const f = focus.toLowerCase();
+  if (f === 'attention') return sharp.strategy.attention;
+  if (f === 'entropy')   return sharp.strategy.entropy;
+  if (f === 'center')    return 'centre';
+  return f;
+}
 const WIDTH_WIDE    = 2000;
 const WIDTH_GALLERY = 2000;
 const QUALITY       = 78;
@@ -83,7 +106,12 @@ for (const slug of fs.readdirSync(SRC)) {
     const outDir = path.join(OUT, job.slug);
     fs.mkdirSync(outDir, { recursive: true });
 
-    const name = tidy(job.file);
+    /* cover-attention.jpg is still the cover, so strip the token off
+       the name and remember it for the crop. */
+    const raw   = tidy(job.file);
+    const hit   = raw.match(COVER_FOCUS);
+    const focus = hit ? hit[1] : null;
+    const name  = focus ? 'cover.jpg' : raw;
     const dest = path.join(outDir, name);
     const width = widthFor(name);
 
@@ -93,7 +121,8 @@ for (const slug of fs.readdirSync(SRC)) {
     await sharp(job.src)
       .rotate()                                   // honour EXIF orientation
       .resize(/^cover/.test(name)
-        ? { width: COVER_W, height: COVER_H, fit: 'cover', withoutEnlargement: true }
+        ? { width: COVER_W, height: COVER_H, fit: 'cover',
+            position: coverPosition(focus), withoutEnlargement: true }
         : { width, withoutEnlargement: true })
       .jpeg({ quality: QUALITY, mozjpeg: true, chromaSubsampling: '4:4:4' })
       .toFile(dest);
