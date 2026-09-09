@@ -112,6 +112,7 @@ export function WorkGrid({ projects, withFoot = false }: { projects: Project[]; 
                   alt={p.coverAlt}
                   width={1200}
                   height={900}
+                  quality={82}
                   sizes="(max-width: 700px) 100vw, (max-width: 1240px) 50vw, 400px"
                 />
               </div>

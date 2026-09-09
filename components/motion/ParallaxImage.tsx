@@ -44,6 +44,7 @@ export default function ParallaxImage({
           fill
           sizes={sizes}
           priority={priority}
+          quality={85}
           style={{ objectFit: 'cover' }}
         />
       </m.div>

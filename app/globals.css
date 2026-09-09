@@ -95,7 +95,7 @@ h1,h2,h3,h4{
 }
 
 p{ margin:0 0 1.1em; text-wrap:pretty; }
-p:last-child{ margin-bottom:0; }
+p:not([class]):last-child{ margin-bottom:0; }
 
 ::selection{ background:var(--yellow); color:#2A211A; }
 
@@ -1208,15 +1208,6 @@ figcaption{
 
 /* ---------- 28. CASE STUDY ---------- */
 
-.case-cover{
-  display:block;
-  width:100%;
-  aspect-ratio:16/7;
-  object-fit:cover;
-  background:var(--paper-3);
-  border-bottom:1px solid var(--line);
-}
-@media (max-width:640px){ .case-cover{ aspect-ratio:4/3; } }
 
 .case-intro{ padding-block:clamp(2.5rem,6vw,4.5rem) clamp(2rem,4vw,3rem); }
 .case-intro__client{
@@ -1292,9 +1283,10 @@ figcaption{
   grid-template-columns:repeat(6,minmax(0,1fr));
   gap:clamp(.75rem,1.6vw,1.4rem);
 }
-.case-gallery figure{ margin:0; grid-column:span 3; }
-.case-gallery .third{ grid-column:span 2; }
-.case-gallery .wide{ grid-column:span 6; }
+.case-gallery > *{ grid-column:span 3; }
+.case-gallery > .third{ grid-column:span 2; }
+.case-gallery > .wide{ grid-column:span 6; }
+.case-gallery figure{ margin:0; height:100%; }
 .case-gallery img{
   width:100%;
   aspect-ratio:4/3;
@@ -1306,9 +1298,7 @@ figcaption{
 .case-gallery .wide img{ aspect-ratio:16/9; }
 
 @media (max-width:640px){
-  .case-gallery figure,
-  .case-gallery .third,
-  .case-gallery .wide{ grid-column:span 6; }
+  .case-gallery > *{ grid-column:span 6; }
   .case-gallery .wide img{ aspect-ratio:4/3; }
 }
 
@@ -1571,7 +1561,7 @@ figcaption{
   position:relative;
   display:block;
   width:100%;
-  aspect-ratio:16/7;
+  aspect-ratio:3/2;
   background:var(--paper-3);
   border-bottom:1px solid var(--line);
 }

@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import CtaBand from '@/components/site/CtaBand';
-import SectionHead from '@/components/site/SectionHead';
-import { Highlight, Reveal, Stagger, StaggerItem } from '@/components/motion/primitives';
+import { Reveal } from '@/components/motion/primitives';
 
 export const metadata: Metadata = {
   title: 'About',
@@ -11,12 +10,12 @@ export const metadata: Metadata = {
   alternates: { canonical: '/about' },
 };
 
-const howIWork = [
-  'You don’t need a brief. Making the brief is my job.',
-  'Every direction comes with its reasoning, so there’s always something specific to react to.',
-  'The price is set before we start and never changes after.',
-];
-
+/*
+  This mirrors the live about page exactly: hero, photo beside the story,
+  then the closing band. The pull quote, the "three things you can count
+  on" block and the proof line were removed from this page deliberately
+  when her own copy arrived. Do not put them back.
+*/
 export default function AboutPage() {
   return (
     <>
@@ -39,6 +38,7 @@ export default function AboutPage() {
                   alt="Portrait of Sneha Jain"
                   width={1080}
                   height={1080}
+                  quality={85}
                   sizes="(max-width: 900px) 100vw, 420px"
                   priority
                 />
@@ -85,42 +85,6 @@ export default function AboutPage() {
                 </p>
               </Reveal>
             </div>
-
-            <Reveal className="pullquote" delay={0.05}>
-              <Image
-                className="brandmark brandmark--braces"
-                src="/img/mark-braces.png"
-                alt=""
-                width={430}
-                height={424}
-              />
-              <p>
-                A beautiful brand with no clear positioning is just{' '}
-                <Highlight delay={0.3}>expensive decoration</Highlight>.
-              </p>
-            </Reveal>
-          </div>
-        </section>
-
-        <section className="section section--stripes">
-          <div className="wrap">
-            <SectionHead eyebrow="How I work" title="Three things you can count on" />
-            <Stagger as="ol" className="howiwork" gap={0.1}>
-              {howIWork.map((line) => (
-                <StaggerItem key={line}>{line}</StaggerItem>
-              ))}
-            </Stagger>
-          </div>
-        </section>
-
-        <section className="section section--tight">
-          <div className="wrap">
-            <Reveal>
-              <p className="proofline">
-                Five years. <Highlight delay={0.25}>20+ clients.</Highlight> More than half
-                come back with the next project.
-              </p>
-            </Reveal>
           </div>
         </section>
       </main>
