@@ -5,7 +5,7 @@
    Reads full size originals from  source-images/<slug>/
    Writes source JPEGs to          public/work/<slug>/
 
-   Run from the repo root:   node build/images.js
+   Run from the repo root:   npm run images
 
    Originals are never touched and never committed. Only the
    web sized files go into the repo, which keeps git history
@@ -29,8 +29,16 @@ const OUT  = path.join(ROOT, 'public/work');
 
 /* Displayed widths, doubled for high density screens, then capped.
    The cover runs full bleed, gallery images sit two up or full width. */
-const WIDTH_COVER   = 2000;
-const HEIGHT_COVER  = 1600;   // the cover slot crops to 16:7, so tall sources waste bytes
+/* Every slot a cover appears in is landscape and uses object-fit:cover:
+   the case study band is 3:2, the work card and the next project thumb
+   are 4:3. So the cover is cropped to 3:2 here, which is the crop the
+   browser was doing anyway, done once at full resolution.
+
+   Capping the height instead, as this used to, starved portrait sources
+   of width: a 4096x5460 cover came out 1200px wide and was then stretched
+   across a 2000px band. That is what made those covers look soft. */
+const COVER_W       = 2000;
+const COVER_H       = 1333;
 const WIDTH_WIDE    = 2000;
 const WIDTH_GALLERY = 2000;
 const QUALITY       = 78;
@@ -48,7 +56,7 @@ function tidy(name){
 }
 
 function widthFor(name){
-  if (/^cover\b/.test(name)) return WIDTH_COVER;
+  if (/^cover\b/.test(name)) return COVER_W;
   if (/wide/.test(name)) return WIDTH_WIDE;
   return WIDTH_GALLERY;
 }
@@ -85,18 +93,19 @@ for (const slug of fs.readdirSync(SRC)) {
     await sharp(job.src)
       .rotate()                                   // honour EXIF orientation
       .resize(/^cover/.test(name)
-        ? { width, height: HEIGHT_COVER, fit: 'inside', withoutEnlargement: true }
+        ? { width: COVER_W, height: COVER_H, fit: 'cover', withoutEnlargement: true }
         : { width, withoutEnlargement: true })
       .jpeg({ quality: QUALITY, mozjpeg: true, chromaSubsampling: '4:4:4' })
       .toFile(dest);
 
     const out = fs.statSync(dest).size;
+    const made = await sharp(dest).metadata();
     inBytes += src; outBytes += out; count++;
 
     console.log(
       (job.slug + '/' + name).padEnd(46) +
       String(meta.width + 'x' + meta.height).padEnd(12) + '-> ' +
-      String(Math.min(width, meta.width) + 'px').padEnd(8) +
+      String(made.width + 'x' + made.height).padEnd(12) +
       (src / 1048576).toFixed(1) + ' MB -> ' + (out / 1024).toFixed(0) + ' KB'
     );
   }
@@ -105,5 +114,5 @@ for (const slug of fs.readdirSync(SRC)) {
   console.log('originals ' + (inBytes / 1048576).toFixed(0) + ' MB');
   console.log('web       ' + (outBytes / 1048576).toFixed(1) + ' MB   ' +
               (100 - outBytes / inBytes * 100).toFixed(1) + '% smaller');
-  console.log('\nNow run: node build/build.js');
+  console.log('\nNow commit and push. Vercel builds the site itself.');
 })().catch(e => { console.error(e); process.exit(1); });
