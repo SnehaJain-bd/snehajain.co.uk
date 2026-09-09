@@ -1,11 +1,21 @@
+# Windows and editor noise
 Thumbs.db
 desktop.ini
 .DS_Store
 *.tmp
 ~$*
 
-# Full size originals. Web sized copies live in assets/work/ and are committed.
+# Full size originals. Web sized copies live in public/work and are committed.
 source-images/
 
-# Build tooling only. The site itself ships with no dependencies.
+# Dependencies and build output
 node_modules/
+.next/
+out/
+next-env.d.ts
+
+# Vercel
+.vercel
+
+# Local environment
+.env*.local
