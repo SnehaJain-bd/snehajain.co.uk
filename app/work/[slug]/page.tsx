@@ -1,11 +1,22 @@
 import type { Metadata } from 'next';
+import type { MDXComponents } from 'mdx/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import CtaBand from '@/components/site/CtaBand';
 import ParallaxImage from '@/components/motion/ParallaxImage';
 import { Reveal } from '@/components/motion/primitives';
-import { allSlugs, getProject, getNext, type Project } from '@/lib/projects';
+import Gallery from '@/components/work/Gallery';
+import {
+  allSlugs,
+  getProject,
+  getNext,
+  folderGallery,
+  type Project,
+  type GalleryImage,
+} from '@/lib/projects';
+
+type MDXBody = React.ComponentType<{ components?: MDXComponents }>;
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -13,7 +24,7 @@ type Params = { params: Promise<{ slug: string }> };
 export async function generateStaticParams() {
   const slugs = allSlugs();
   const metas = await Promise.all(slugs.map(getProject));
-  return metas.filter((p) => p.published).map((p) => ({ slug: p.slug }));
+  return metas.filter((p) => p.published && p.cover).map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
@@ -35,17 +46,26 @@ export default async function CaseStudy({ params }: Params) {
   const { slug } = await params;
 
   let project: Project;
-  let Body: React.ComponentType;
+  let Body: MDXBody;
   try {
     const mod = await import(`@/content/projects/${slug}.mdx`);
-    project = { slug, ...mod.meta };
     Body = mod.default;
+    // getProject, not mod.meta, so the cover falls back to the folder
+    project = await getProject(slug);
   } catch {
     notFound();
   }
 
-  if (!project!.published) notFound();
+  if (!project!.published || !project!.cover) notFound();
   const next = await getNext(slug);
+
+  /* <Gallery /> written bare in the MDX means every image in
+     public/work/<slug>/ except the cover, in filename order. An explicit
+     images list still wins, for when the order needs holding by hand. */
+  const folder = folderGallery(slug, project!.title);
+  const BoundGallery = ({ images }: { images?: GalleryImage[] }) => (
+    <Gallery images={images ?? folder} />
+  );
 
   return (
     <>
@@ -102,7 +122,7 @@ export default async function CaseStudy({ params }: Params) {
 
         {/* The case study itself, written in content/projects/<slug>.mdx */}
         <article className="case-article">
-          <Body />
+          <Body components={{ Gallery: BoundGallery }} />
         </article>
 
         <section className="section section--tight">

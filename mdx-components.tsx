@@ -8,6 +8,10 @@ import Gallery from '@/components/work/Gallery';
   section within it, paragraphs sit under it, and <Gallery /> breaks out
   of the column to the full width of the page. Styling lives in section
   28 of globals.css.
+
+  The Gallery here is the fallback. app/work/[slug]/page.tsx passes its
+  own, bound to that project's folder, which is what makes a bare
+  <Gallery /> render the pictures without any paths in the file.
 */
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {

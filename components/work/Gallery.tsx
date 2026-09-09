@@ -3,14 +3,18 @@ import { packGallery, type GalleryImage } from '@/lib/projects';
 import { Stagger, StaggerItem } from '@/components/motion/primitives';
 
 /**
- * Used inside case study MDX as:
- *   <Gallery images={[{ src, alt }, { src, alt, wide: true }]} />
+ * Used inside case study MDX as either:
+ *   <Gallery />                          every image in the folder
+ *   <Gallery images={[{ src, alt }]} />  a hand held list
+ *
+ * The bare form is filled in by app/work/[slug]/page.tsx, which knows
+ * the slug and so knows the folder.
  *
  * The span class goes on the grid child, not the figure inside it.
  * Putting it on the figure left the grid child at one column of six,
  * which is what made the half width images render tiny.
  */
-export default function Gallery({ images }: { images: GalleryImage[] }) {
+export default function Gallery({ images = [] }: { images?: GalleryImage[] }) {
   const packed = packGallery(images);
   if (!packed.length) return null;
 

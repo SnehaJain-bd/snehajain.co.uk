@@ -16,6 +16,7 @@ Vercel builds on every push.
 | To change | Edit |
 | --- | --- |
 | A case study | `content/projects/<slug>.mdx` |
+| Its images | `source-images/<slug>/`, then `npm run images` |
 | Testimonials | `content/testimonials.ts` |
 | Services and packages | `content/services.ts` |
 | FAQ | `content/faq.ts` |
@@ -34,80 +35,120 @@ npm run build    # what Vercel runs, use it to check nothing is broken
 
 ---
 
-## Writing a case study
+## Adding or changing a project
 
-One file per project at `content/projects/<slug>.mdx`. The filename becomes the URL.
+Everything about one project lives in two places, both named after the project:
 
-The top of the file is the metadata:
+```
+content/projects/swirly.mdx     the words
+public/work/swirly/             the pictures
+```
+
+The filename is the URL, so `swirly.mdx` is `/work/swirly`.
+
+### Adding one
+
+1. Copy any existing `.mdx` in `content/projects/` and rename it. Lowercase, hyphens, no spaces.
+2. Change the block at the top, write the body.
+3. Make a folder of the same name in `source-images/` and put the photographs in.
+4. Run `npm run images`.
+5. Commit and push. Vercel builds it.
+
+### The block at the top
 
 ```mdx
 export const meta = {
-  title: "Asmi",
-  subtitle: "Brand identity for an apparel brand",
-  client: "Shruti Patki",
+  title: "Swirly",
+  subtitle: "Brand identity and packaging",
+  client: "Swirly",
   year: "2026",
-  sector: "Clothing",
-  services: ["Brand Strategy", "Visual Identity"],
-  summary: "One or two sentences, used under the title and as the search description.",
-  cover: "/work/asmi/cover.jpg",
-  coverAlt: "Asmi project cover",
-  order: 1,
+  sector: "Ice cream",
+  services: ["Visual Identity", "Packaging Design"],
+  summary: "One or two sentences, shown under the title and used as the search description.",
+  order: 3,
   published: true,
   featured: true,
 };
 ```
 
-Then write. A `##` starts a section, blank lines separate paragraphs, and you can
-drop a gallery in wherever it belongs:
+`order` sets the position on the work page, lowest first.
+
+`published: false` takes a project off the site completely while keeping the file:
+no page, no card, no sitemap entry, and no dead link, because it drops out of the
+"next project" chain too.
+
+`featured: false` keeps it off the home page but leaves it on the work page.
+
+Note what is not in there: no image paths. Nothing to keep in step with the folder.
+
+### The body
+
+A `##` starts a section, a blank line separates paragraphs, and `<Gallery />` on a
+line of its own drops the pictures in:
 
 ```mdx
-## Bridging culture with contemporary expression
+## A full brand world
 
-The visual identity was crafted to merge tradition with modern design sensibilities.
+Every element is designed to feel cohesive yet full of personality.
 
-<Gallery
-  images={[
-    { src: "/work/asmi/box.jpg", alt: "Asmi, box" },
-    { src: "/work/asmi/label-tag.jpg", alt: "Asmi, label tag", wide: true },
-  ]}
-/>
+<Gallery />
 
-## A distinctive identity
+## A brand that stays with you
 
-Asmi's brand identity goes beyond aesthetics.
+More than just a product on the shelf.
 ```
 
-`wide: true` makes an image span the full width. Everything else pairs up two to a
-row, and an odd number turns the last three into a row of three, so no row is ever
-left half empty. That packing lives in `packGallery` in `lib/projects.ts`.
-
-**Two switches.** `published: false` keeps a project on disk but off the site
-completely: no page, no card, no sitemap entry. Napur Gin is held back this way.
-`featured: false` keeps it off the home page but on the work page.
-
-**Adding a project.** Copy an existing `.mdx`, change the metadata, put images in
-`public/work/<slug>/`, and set `order`. Nothing else to register.
+Put `<Gallery />` wherever the images belong. Write as many sections as you want. A
+project with no sections at all is fine, it shows the cover, the facts and the
+gallery.
 
 ---
 
 ## Images
 
-Put full size originals in `source-images/<slug>/`, then run:
+Full size exports go in `source-images/<slug>/`, then:
 
 ```
 npm run images
 ```
 
-That caps them at 2000px and writes JPEGs to `public/work/<slug>/`. From there
-`next/image` does the real work on Vercel: AVIF and WebP, a size per device, lazy
-loading below the fold. A 229 KB source cover is served as a 29 KB AVIF.
+That caps them at 2000px and writes JPEGs to `public/work/<slug>/`. That folder
+**is** the gallery. Nothing to list, nothing to link.
+
+The filename decides three things:
+
+| Filename | What it does |
+| --- | --- |
+| `cover.jpg` | The cover: the large image at the top, and the card on the work page |
+| anything else | Goes in the gallery, in alphabetical order |
+| a name containing `wide` | Spans the full width instead of sharing a row |
+
+So `01-storefront.jpg`, `02-fridge-wide.jpg`, `03-tub.jpg` gives that order with the
+fridge full width. Renaming a file reorders the page.
+
+The rest of the name becomes the alt text a screen reader announces, so
+`pattern-detail.jpg` is read as "Swirly, pattern detail". Worth naming files
+properly for that alone.
+
+Rows fill themselves. Images pair two to a row, an odd number turns the last three
+into a row of three, and wide ones slot between whole rows, so no row is ever left
+half empty. That packing is `packGallery` in `lib/projects.ts`.
+
+**Replacing an image.** Same filename into `source-images/<slug>/`, run
+`npm run images`, push.
+
+**Removing one.** Delete it from `source-images/<slug>/` and from
+`public/work/<slug>/`, since only the second is committed.
+
+**Listing images by hand.** `<Gallery images={[{ src: "/work/swirly/tub.jpg", alt:
+"Swirly, tub" }]} />` still works and overrides the folder for that one block. Only
+needed if a case study wants two separate galleries.
 
 `source-images/` is gitignored. Git keeps every version of every file forever, so
 committing full size exports would bloat the repo permanently. The originals on
-disk are 287 MB. What ships is a fraction of that.
-
-Reference the file at its `public` path, so `public/work/asmi/box.jpg` is
-`/work/asmi/box.jpg`.
+disk are 287 MB. What ships is 4.7 MB, and `next/image` cuts it again on Vercel:
+AVIF and WebP, a size per device, lazy loading below the fold. A 229 KB source
+cover reaches a phone as a 29 KB AVIF.
 
 ---
 

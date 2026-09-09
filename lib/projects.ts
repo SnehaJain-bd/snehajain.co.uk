@@ -9,14 +9,20 @@ export type ProjectMeta = {
   sector: string;
   services: string[];
   summary: string;
-  cover: string;
-  coverAlt: string;
+  /* Both optional. Left out, the cover is cover.* in public/work/<slug>/
+     and the alt text is built from the title. */
+  cover?: string;
+  coverAlt?: string;
   order: number;
   published: boolean;
   featured: boolean;
 };
 
-export type Project = ProjectMeta & { slug: string };
+export type Project = Omit<ProjectMeta, 'cover' | 'coverAlt'> & {
+  slug: string;
+  cover: string;
+  coverAlt: string;
+};
 
 const DIR = path.join(process.cwd(), 'content/projects');
 
@@ -31,7 +37,26 @@ export function allSlugs(): string[] {
 /** Load one project's metadata. Runs at build time only. */
 export async function getProject(slug: string): Promise<Project> {
   const mod = await import(`@/content/projects/${slug}.mdx`);
-  return { slug, ...(mod.meta as ProjectMeta) };
+  const meta = mod.meta as ProjectMeta;
+  const cover = meta.cover || findCover(slug);
+
+  /* No cover means no images have been run for this project yet. Rather
+     than fail the build on a broken image, treat it as not ready: it is
+     filtered out below and the rest of the site keeps working. */
+  if (!cover) {
+    console.warn(
+      `[projects] ${slug} has no images. Put originals in source-images/${slug}/ ` +
+        'and run npm run images. Until then it stays off the site.'
+    );
+  }
+
+  return {
+    slug,
+    ...meta,
+    // A file need not name its cover. If it does not, take the folder’s.
+    cover: cover || '',
+    coverAlt: meta.coverAlt || `${meta.title} project cover`,
+  };
 }
 
 /**
@@ -41,7 +66,7 @@ export async function getProject(slug: string): Promise<Project> {
  */
 export async function getProjects(): Promise<Project[]> {
   const all = await Promise.all(allSlugs().map(getProject));
-  return all.filter((p) => p.published).sort((a, b) => a.order - b.order);
+  return all.filter((p) => p.published && p.cover).sort((a, b) => a.order - b.order);
 }
 
 export async function getFeatured(): Promise<Project[]> {
@@ -94,4 +119,56 @@ export function packGallery(items: GalleryImage[]): PackedImage[] {
   });
   while (w < wides.length) out.push({ ...wides[w++], span: 'wide' });
   return out;
+}
+
+/* ---- images by folder ----
+   Drop files in public/work/<slug>/ and they are found automatically.
+   No paths to type anywhere.
+
+     cover.*                 the case study cover and the work grid card
+     anything else           the gallery, in filename order
+     a name containing wide  spans the full width
+
+   Alt text comes from the filename, so 03-pattern-detail.jpg reads as
+   "pattern detail" to a screen reader. Build time only. */
+
+const IMAGE_EXT = /\.(jpe?g|png|webp|avif|gif|svg)$/i;
+
+function altFromName(file: string, title: string): string {
+  const words = file
+    .replace(IMAGE_EXT, '')
+    .replace(/^[\s_\-0-9]+/, '')
+    .replace(/[-_\s]*\bwide\b[-_\s]*/gi, ' ')
+    .replace(/[-_]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return words ? `${title}, ${words}` : `${title} project image`;
+}
+
+function listFolder(slug: string): string[] {
+  const dir = path.join(process.cwd(), 'public/work', slug);
+  if (!fs.existsSync(dir) || !fs.statSync(dir).isDirectory()) return [];
+  return fs.readdirSync(dir).filter((f) => IMAGE_EXT.test(f)).sort();
+}
+
+/** The cover file for a project, if one is on disk. */
+export function findCover(slug: string): string | null {
+  const files = listFolder(slug);
+  if (!files.length) return null;
+  const cover = files.find((f) => /^cover\./i.test(f)) ?? files[0];
+  return `/work/${slug}/${cover}`;
+}
+
+/** Everything in the folder except the cover, ready for the gallery. */
+export function folderGallery(slug: string, title: string): GalleryImage[] {
+  const files = listFolder(slug);
+  if (!files.length) return [];
+  const cover = files.find((f) => /^cover\./i.test(f)) ?? files[0];
+  return files
+    .filter((f) => f !== cover)
+    .map((f) => ({
+      src: `/work/${slug}/${f}`,
+      alt: altFromName(f, title),
+      wide: /wide/i.test(f),
+    }));
 }
