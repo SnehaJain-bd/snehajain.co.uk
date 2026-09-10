@@ -222,6 +222,19 @@ export function pickGallery(slug: string, title: string, pick: string): GalleryI
     });
 }
 
+/**
+ * Every image in the folder except the cover, whatever the case study
+ * does with them.
+ *
+ * Not the same thing as folderGallery, which returns only what no pick
+ * has claimed. Anywhere outside the case study itself wants this one:
+ * the work page took the other by mistake, and its second shot silently
+ * changed depending on which images the case study happened to name.
+ */
+export function projectImages(slug: string, title: string): GalleryImage[] {
+  return galleryFiles(slug).map((f) => toImage(slug, title, f));
+}
+
 /** Every name mentioned by a pick anywhere in this case study. */
 function pickedIn(slug: string): string[] {
   const file = path.join(DIR, `${slug}.mdx`);
