@@ -68,16 +68,9 @@ export default function TestimonialCarousel({ items }: { items: Testimonial[] })
         ))}
       </div>
 
+      {/* A row of its own, under a hairline, so nothing can collide with
+          the attribution however long a quote runs. */}
       <div className="solo__controls">
-        <button
-          type="button"
-          className="solo__arrow solo__arrow--prev"
-          onClick={() => steer(at - 1)}
-          aria-label="Previous testimonial"
-        >
-          <Mark name="chevron" size={18} />
-        </button>
-
         <div className="solo__dots">
           {items.map((t, i) => (
             <button
@@ -91,14 +84,24 @@ export default function TestimonialCarousel({ items }: { items: Testimonial[] })
           ))}
         </div>
 
-        <button
-          type="button"
-          className="solo__arrow solo__arrow--next"
-          onClick={() => steer(at + 1)}
-          aria-label="Next testimonial"
-        >
-          <Mark name="chevron" size={18} />
-        </button>
+        <div className="solo__arrows">
+          <button
+            type="button"
+            className="solo__arrow solo__arrow--prev"
+            onClick={() => steer(at - 1)}
+            aria-label="Previous testimonial"
+          >
+            <Mark name="chevron" size={18} />
+          </button>
+          <button
+            type="button"
+            className="solo__arrow solo__arrow--next"
+            onClick={() => steer(at + 1)}
+            aria-label="Next testimonial"
+          >
+            <Mark name="chevron" size={18} />
+          </button>
+        </div>
       </div>
     </div>
   );

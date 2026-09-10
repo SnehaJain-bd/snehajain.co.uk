@@ -4,73 +4,162 @@ import { useEffect } from 'react';
 import { useReducedMotion } from 'motion/react';
 
 /*
-  A soft wash of yellow that follows the pointer, so the page is never
-  completely still anywhere.
+  Light that flows with the pointer rather than a circle that chases it.
 
-  One listener writes --fx and --fy onto the root element and every layer
-  that wants the light reads them: this fixed one behind the whole page,
-  and the hero's own, which sits above the stripes rather than behind
-  them. Two elements, one pointer, no duplicated maths.
+  Three blobs, each lagging further behind the last, so it reads as one
+  thing being dragged rather than three things following. Each is
+  stretched along its own direction of travel and squashed across it, by
+  an amount taken from how fast it is going: move quickly and it draws a
+  streak, stop and it relaxes back to round. That is the whole
+  difference. A circle that merely moves still looks like a circle; a
+  circle that deforms looks like liquid.
 
-  Settings are the ones chosen from the dials:
-    size 400   strength 0.50   lag 0.09   softness 50
+  One loop drives every layer on the page. The page-wide one sits behind
+  the content, and sections with their own opaque background carry a
+  local copy so the light is not hidden by them: the hero above its
+  stripes, the closing band above its dark ground. Local layers are
+  offset by their own position, so all of them move as one.
 
-  Lag is what stops it feeling welded to the cursor. Each frame the light
-  moves nine percent of the remaining distance, so it arrives a moment
-  after you do.
+  Transforms only, so nothing reflows or repaints, it only composites.
 
-  Without a fine pointer, so on a phone, it drifts slowly on its own
-  instead. Reduced motion parks it in the middle and stops.
+  Without a fine pointer, so on a phone, it wanders a slow path of its
+  own. Reduced motion parks it and stops.
 */
 
-const LAG = 0.09;
+type Layer = {
+  el: HTMLElement;
+  lag: number;
+  x: number;
+  y: number;
+  /* stretch, eased rather than snapped, so a flick smears */
+  s: number;
+};
+
+type Field = {
+  root: HTMLElement;
+  local: boolean;
+  left: number;
+  top: number;
+  layers: Layer[];
+};
+
+const LAGS = [0.16, 0.09, 0.055];
 
 export default function CursorField() {
   const still = useReducedMotion();
 
   useEffect(() => {
-    const root = document.documentElement;
+    const roots = Array.from(document.querySelectorAll<HTMLElement>('.cursor-field'));
+    if (!roots.length) return;
+
+    const fields: Field[] = roots.map((root) => ({
+      root,
+      local: root.classList.contains('cursor-field--local'),
+      left: 0,
+      top: 0,
+      layers: Array.from(root.querySelectorAll<HTMLElement>('.cursor-field__blob')).map(
+        (el, i) => ({ el, lag: LAGS[i] ?? 0.1, x: 0, y: 0, s: 0 })
+      ),
+    }));
+
+    /* A local layer is positioned inside its section, so it has to know
+       where that section currently is. Cheap to read, but only on the
+       events that can move it. */
+    const measure = () => {
+      for (const f of fields) {
+        if (!f.local) {
+          f.left = 0;
+          f.top = 0;
+          continue;
+        }
+        const r = f.root.getBoundingClientRect();
+        f.left = r.left;
+        f.top = r.top;
+      }
+    };
+
+    let tx = window.innerWidth / 2;
+    let ty = window.innerHeight * 0.4;
+    for (const f of fields) {
+      for (const l of f.layers) {
+        l.x = tx;
+        l.y = ty;
+      }
+    }
+
     if (still) {
-      root.style.setProperty('--fx', '50%');
-      root.style.setProperty('--fy', '38%');
+      measure();
+      for (const f of fields) {
+        for (const l of f.layers) {
+          l.el.style.transform = `translate3d(${tx - f.left}px, ${ty - f.top}px, 0)`;
+        }
+      }
       return;
     }
 
     const fine = window.matchMedia('(pointer: fine)').matches;
-    let tx = 50;
-    let ty = 38;
-    let x = 50;
-    let y = 38;
     let raf = 0;
     let drift = 0;
 
     const onMove = (e: PointerEvent) => {
-      tx = (e.clientX / window.innerWidth) * 100;
-      ty = (e.clientY / window.innerHeight) * 100;
+      tx = e.clientX;
+      ty = e.clientY;
     };
 
     const frame = () => {
       if (!fine) {
-        // no pointer to follow, so wander instead
-        drift += 0.0022;
-        tx = 50 + Math.sin(drift) * 26;
-        ty = 42 + Math.cos(drift * 0.8) * 18;
+        drift += 0.0035;
+        tx = window.innerWidth * (0.5 + Math.sin(drift) * 0.26);
+        ty = window.innerHeight * (0.42 + Math.cos(drift * 0.8) * 0.2);
       }
-      x += (tx - x) * LAG;
-      y += (ty - y) * LAG;
-      root.style.setProperty('--fx', x.toFixed(2) + '%');
-      root.style.setProperty('--fy', y.toFixed(2) + '%');
+
+      for (const f of fields) {
+        for (const l of f.layers) {
+          const dx = (tx - l.x) * l.lag;
+          const dy = (ty - l.y) * l.lag;
+          l.x += dx;
+          l.y += dy;
+
+          const want = Math.min(Math.hypot(dx, dy) / 22, 1);
+          l.s += (want - l.s) * 0.12;
+
+          const angle = Math.atan2(dy, dx);
+          const along = 1 + l.s * 1.15;
+          const across = 1 - l.s * 0.34;
+
+          l.el.style.transform =
+            `translate3d(${(l.x - f.left).toFixed(1)}px, ${(l.y - f.top).toFixed(1)}px, 0) ` +
+            `rotate(${angle.toFixed(3)}rad) scale(${along.toFixed(3)}, ${across.toFixed(3)})`;
+        }
+      }
+
       raf = requestAnimationFrame(frame);
     };
 
+    measure();
+    window.addEventListener('scroll', measure, { passive: true });
+    window.addEventListener('resize', measure);
     if (fine) window.addEventListener('pointermove', onMove, { passive: true });
     raf = requestAnimationFrame(frame);
 
     return () => {
       cancelAnimationFrame(raf);
+      window.removeEventListener('scroll', measure);
+      window.removeEventListener('resize', measure);
       if (fine) window.removeEventListener('pointermove', onMove);
     };
   }, [still]);
 
-  return <div className="cursor-field" aria-hidden="true" />;
+  return <FieldLayers />;
+}
+
+/** The three blobs. Also used inside sections that hide the page-wide one. */
+export function FieldLayers({ local = false }: { local?: boolean }) {
+  return (
+    <div className={`cursor-field${local ? ' cursor-field--local' : ''}`} aria-hidden="true">
+      <span className="cursor-field__blob cursor-field__blob--1" />
+      <span className="cursor-field__blob cursor-field__blob--2" />
+      <span className="cursor-field__blob cursor-field__blob--3" />
+    </div>
+  );
 }

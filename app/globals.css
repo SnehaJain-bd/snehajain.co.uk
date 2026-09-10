@@ -1332,17 +1332,21 @@ figcaption{
   padding:.02em .22em;
   isolation:isolate;
 }
+/* An underline drawn thick, not a block behind the whole word. It sits
+   under the text and rides up over the baseline, which is what a real
+   highlighter does and what a solid fill does not. */
 .mark-draw__ink{
   position:absolute;
-  inset:0;
+  left:0;
+  right:0;
+  bottom:.06em;
+  height:.42em;
   background:var(--yellow);
-  border-radius:3px;
+  border-radius:2px;
   transform-origin:left center;
   z-index:-1;
 }
-.mark-draw__text{ color:#2A211A; position:relative; }
-.cta-band .mark-draw__text,
-.section--dark .mark-draw__text{ color:#2A211A; }
+.mark-draw__text{ position:relative; }
 
 /* ---- case study article, written in MDX ---- */
 .case-article{ display:block; }
@@ -1455,14 +1459,31 @@ figcaption{
   inset:0;
   z-index:0;
   pointer-events:none;
+  overflow:hidden;
   opacity:var(--field-strength);
-  background:radial-gradient(
-    var(--field-size) var(--field-size) at var(--fx) var(--fy),
-    var(--field-tint) 0%,
-    transparent 64%
-  );
-  filter:blur(var(--field-blur));
 }
+/* Inside a section that has its own opaque ground, so the light is not
+   hidden behind it. Offset by its own position in the script. */
+.cursor-field--local{ position:absolute; }
+
+.cursor-field__blob{
+  position:absolute;
+  left:0;
+  top:0;
+  width:var(--field-size);
+  height:var(--field-size);
+  margin-left:calc(var(--field-size) / -2);
+  margin-top:calc(var(--field-size) / -2);
+  border-radius:50%;
+  background:radial-gradient(closest-side, var(--field-tint), transparent 72%);
+  filter:blur(var(--field-blur));
+  will-change:transform;
+}
+/* Each one bigger, fainter and further behind than the last, which is
+   what turns three followers into one flowing shape. */
+.cursor-field__blob--2{ transform:scale(1.35); opacity:.62; }
+.cursor-field__blob--3{ transform:scale(1.75); opacity:.4; }
+.cursor-field__blob--2, .cursor-field__blob--3{ --field-blur:calc(var(--field-size) * .22); }
 
 /* The field is fixed at z-index 0, so everything that should sit in
    front of it needs a stacking position of its own.
@@ -1481,21 +1502,6 @@ main,
 /* Its own copy of the light, above the stripes. Same variables, so it
    moves with the fixed one rather than lagging behind it. */
 .hero{ position:relative; isolation:isolate; }
-.hero__field,
-.cta-band__field{
-  position:absolute;
-  inset:0;
-  z-index:0;
-  pointer-events:none;
-  opacity:var(--field-strength);
-  background:radial-gradient(
-    var(--field-size) var(--field-size) at var(--fx) var(--fy),
-    var(--field-tint) 0%,
-    transparent 64%
-  );
-  filter:blur(var(--field-blur));
-}
-
 /* The closing band is dark in both themes, so it carries its own pale
    light and sits above the page-wide one rather than being painted
    over by it. */
@@ -1675,18 +1681,23 @@ main,
 @media (max-width:760px){ .work-index__preview{ display:none; } }
 
 /* ---- one testimonial at a time ---- */
-.solo{ display:flex; flex-direction:column; gap:1.5rem; }
-.solo__stage{ position:relative; }
+.solo{ display:flex; flex-direction:column; gap:1.75rem; }
+
+/* Every quote in the same grid cell, so the stage is as tall as the
+   longest one rather than as tall as the first. Absolute positioning
+   let the first quote set the height and the third overflow it, which
+   is what put a name on top of the arrows. */
+.solo__stage{ display:grid; }
 .solo__item{
+  grid-area:1 / 1;
   margin:0;
   display:flex;
   flex-direction:column;
-  gap:1rem;
+  gap:1.15rem;
   opacity:0;
   visibility:hidden;
   transition:opacity .55s var(--ease-inout), visibility .55s;
 }
-.solo__item:not(:first-child){ position:absolute; inset:0; }
 .solo__item.is-on{ opacity:1; visibility:visible; }
 
 /* Large enough to be a piece of the design rather than a small round
@@ -1702,9 +1713,26 @@ main,
   font-weight:500;
   max-width:52ch;
 }
-.solo__by{ display:flex; flex-direction:column; }
-.solo__name{ font-weight:600; }
-.solo__role{ color:var(--ink-3); font-size:.86rem; }
+.solo__by{
+  display:flex;
+  flex-direction:column;
+  gap:.15rem;
+  margin-top:.35rem;
+}
+.solo__name{
+  font-family:var(--mono);
+  font-size:.72rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--ink);
+}
+.solo__role{
+  font-family:var(--mono);
+  font-size:.72rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--ink-3);
+}
 
 /* The marker redraws on every quote, which is what makes the change
    read as deliberate rather than as a slideshow ticking over. */
@@ -1714,7 +1742,17 @@ main,
 }
 @keyframes solo-draw{ to{ transform:scaleX(1); } }
 
-.solo__controls{ display:flex; align-items:center; gap:1rem; }
+/* Its own row, under a hairline. Nothing can collide with the
+   attribution however long a quote runs. */
+.solo__controls{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1rem;
+  padding-top:1.25rem;
+  border-top:1px solid var(--line);
+}
+.solo__arrows{ display:flex; gap:.5rem; }
 .solo__arrow{
   display:grid; place-items:center;
   width:2.5rem; height:2.5rem;
@@ -1730,7 +1768,7 @@ main,
    are the same piece of artwork. */
 .solo__arrow--next img{ transform:scaleX(-1); }
 
-.solo__dots{ display:flex; gap:.45rem; }
+.solo__dots{ display:flex; gap:.5rem; align-items:center; }
 .solo__dot{
   width:.5rem; height:.5rem; padding:0;
   border:0; border-radius:999px;

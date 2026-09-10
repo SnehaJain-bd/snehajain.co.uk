@@ -123,7 +123,13 @@ export function Highlight({
 }) {
   const still = useReducedMotion();
 
-  if (still) return <span className="mark">{children}</span>;
+  if (still)
+    return (
+      <span className="mark-draw">
+        <span aria-hidden className="mark-draw__ink" />
+        <span className="mark-draw__text">{children}</span>
+      </span>
+    );
 
   return (
     <span className="mark-draw">
@@ -184,7 +190,13 @@ export function HighlightNow({
   delay?: number;
 }) {
   const still = useReducedMotion();
-  if (still) return <span className="mark">{children}</span>;
+  if (still)
+    return (
+      <span className="mark-draw">
+        <span aria-hidden className="mark-draw__ink" />
+        <span className="mark-draw__text">{children}</span>
+      </span>
+    );
 
   return (
     <span className="mark-draw">

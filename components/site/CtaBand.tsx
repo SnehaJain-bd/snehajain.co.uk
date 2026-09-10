@@ -1,11 +1,12 @@
 import Link from 'next/link';
 import { Arrow } from './Footer';
 import { Highlight, Reveal } from '@/components/motion/primitives';
+import { FieldLayers } from '@/components/motion/CursorField';
 
 export default function CtaBand({ lead = 'Tell me what you’re' }: { lead?: string }) {
   return (
     <section className="cta-band">
-      <span className="cta-band__field" aria-hidden="true" />
+      <FieldLayers local />
       <div className="wrap">
         <Reveal as="div">
           <h2 className="cta-band__title">

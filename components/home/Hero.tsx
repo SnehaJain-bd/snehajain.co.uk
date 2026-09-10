@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Arrow } from '@/components/site/Footer';
 import { FadeIn, HighlightNow } from '@/components/motion/primitives';
+import { FieldLayers } from '@/components/motion/CursorField';
 
 /*
   Centred, because the right hand side of a left aligned hero was empty
@@ -18,7 +19,7 @@ import { FadeIn, HighlightNow } from '@/components/motion/primitives';
 export default function Hero() {
   return (
     <section className="hero hero--centred">
-      <span className="hero__field" aria-hidden="true" />
+      <FieldLayers local />
       <div className="wrap">
         <h1 className="hero__title">
           <FadeIn>You know what you’re building.</FadeIn>
