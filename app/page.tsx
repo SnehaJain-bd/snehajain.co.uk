@@ -22,7 +22,7 @@ export default async function Home() {
               title="The decision behind each project."
               lede="What each brand had to work out before any of it could look like this."
             />
-            <WorkGrid projects={projects} withFoot />
+            <WorkGrid projects={projects} withFoot lead />
           </div>
         </section>
 

@@ -3,10 +3,21 @@ import Image from 'next/image';
 import { Arrow } from '@/components/site/Footer';
 import SectionHead from '@/components/site/SectionHead';
 import { Reveal, Stagger, StaggerItem } from '@/components/motion/primitives';
-import { services } from '@/content/services';
+import Mark, { type MarkName } from '@/components/site/Mark';
+import WorkIndex from '@/components/home/WorkIndex';
+import TestimonialCarousel from '@/components/home/TestimonialCarousel';
+import { services, stages, type Stage } from '@/content/services';
 import { faq } from '@/content/faq';
 import { testimonials } from '@/content/testimonials';
 import type { Project } from '@/lib/projects';
+
+/* One glyph per stage. Diamond for decisions, square for the built
+   thing, triangle for shipping it. */
+const STAGE_MARK: Record<Stage, MarkName> = {
+  decide: 'diamond',
+  design: 'square',
+  deploy: 'triangle',
+};
 
 export function Strip() {
   return (
@@ -69,20 +80,35 @@ export function Services({ alt = true }: { alt?: boolean }) {
           title="Twelve services. One job: getting your brand chosen."
           lede={
             <>
-              Most projects start with one of the <strong>first five</strong>. The rest tend
-              to follow.
+              Most projects start with a <strong>decision</strong>. The rest tend to follow.
             </>
           }
         />
 
-        <Stagger as="ol" className="services" gap={0.05}>
-          {services.map((s, i) => (
-            <StaggerItem key={s.title} className="service">
-              <div className="service__top">
-                <h3>{s.title}</h3>
-                <span className="service__num">{i + 1}</span>
-              </div>
-              <p>{s.body}</p>
+        {/*
+          Grouped by when they happen rather than listed as twelve equal
+          things. The argument of the whole site is that brands get
+          designed before they get decided, so "Decide" being the first
+          column heading is that argument made structural.
+        */}
+        <Stagger className="stages" gap={0.09}>
+          {stages.map((st) => (
+            <StaggerItem key={st.id} as="div" className="stage-col">
+              <h3 className="stage-col__head">
+                <Mark name={STAGE_MARK[st.id]} size={22} className="stage-col__mark" />
+                <span className="stage-col__name">{st.name}</span>
+              </h3>
+              <p className="stage-col__blurb">{st.blurb}</p>
+              <ul className="stage-col__list">
+                {services
+                  .filter((s) => s.stage === st.id)
+                  .map((s) => (
+                    <li key={s.title}>
+                      <span className="stage-col__title">{s.title}</span>
+                      <span className="stage-col__body">{s.body}</span>
+                    </li>
+                  ))}
+              </ul>
             </StaggerItem>
           ))}
         </Stagger>
@@ -99,7 +125,83 @@ export function Services({ alt = true }: { alt?: boolean }) {
   );
 }
 
-export function WorkGrid({ projects, withFoot = false }: { projects: Project[]; withFoot?: boolean }) {
+/*
+  Two shapes for the same projects.
+
+  lead: the home page. The first project, whichever has the lowest
+  order, takes the full width and gets its summary. The rest become an
+  index whose covers appear under the pointer. Putting the strongest
+  work on screen immediately matters, because a pure index asks a first
+  time visitor to hover before they see anything at all.
+
+  Without lead: /work, where an even grid is right, because there the
+  point is the whole body of work rather than one argument.
+*/
+export function WorkGrid({
+  projects,
+  withFoot = false,
+  lead = false,
+}: {
+  projects: Project[];
+  withFoot?: boolean;
+  lead?: boolean;
+}) {
+  if (lead && projects.length > 1) {
+    const [first, ...rest] = projects;
+    return (
+      <>
+        <Reveal as="div">
+          <Link className="lead-project" href={`/work/${first.slug}`}>
+            <div className="lead-project__media">
+              <Image
+                src={first.cover}
+                alt={first.coverAlt}
+                width={1400}
+                height={933}
+                quality={82}
+                priority
+                sizes="(max-width: 760px) 100vw, 60vw"
+              />
+            </div>
+            <div className="lead-project__body">
+              <h3 className="lead-project__title">
+                {first.title} <span className="arw">&#8599;</span>
+              </h3>
+              <p className="lead-project__desc">{first.summary}</p>
+              <ul className="tags">
+                {first.services.map((s) => (
+                  <li key={s}>{s}</li>
+                ))}
+              </ul>
+            </div>
+          </Link>
+        </Reveal>
+
+        <Reveal as="div" delay={0.08}>
+          <WorkIndex
+            items={rest.map((p) => ({
+              slug: p.slug,
+              title: p.title,
+              sector: p.sector,
+              year: p.year,
+              cover: p.cover,
+              coverAlt: p.coverAlt,
+            }))}
+          />
+        </Reveal>
+
+        {withFoot ? (
+          <Reveal className="sec-foot">
+            <p className="sec-foot__note">Every project, in full</p>
+            <Link className="arrow-link" href="/work">
+              See all work <span>&rarr;</span>
+            </Link>
+          </Reveal>
+        ) : null}
+      </>
+    );
+  }
+
   return (
     <>
       <Stagger className="work-grid" gap={0.09}>
@@ -153,33 +255,11 @@ export function Testimonials() {
           title="What clients say."
           lede="Founders I’ve worked with, in their words."
         />
-        <Stagger as="ul" className="voices" gap={0.1}>
-          {testimonials.map((t) =>
-            t.quote.trim() ? (
-              <StaggerItem key={t.name} className="voice">
-                <p className="voice__quote">&ldquo;{t.quote}&rdquo;</p>
-                <footer className="voice__by">
-                  <span>
-                    <span className="voice__name">{t.name}</span>
-                    <span className="voice__role">
-                      {[t.role, t.brand].filter(Boolean).join(', ')}
-                    </span>
-                  </span>
-                </footer>
-              </StaggerItem>
-            ) : (
-              <StaggerItem key={t.name || Math.random()} className="voice voice--empty">
-                <p className="voice__quote">Waiting on a real quote.</p>
-                <footer className="voice__by">
-                  <span>
-                    <span className="voice__name">Client name</span>
-                    <span className="voice__role">Role, brand</span>
-                  </span>
-                </footer>
-              </StaggerItem>
-            )
-          )}
-        </Stagger>
+        {/* One at a time, so each quote gets the full width and is shown
+            whole rather than trimmed to fit a card. */}
+        <Reveal as="div">
+          <TestimonialCarousel items={testimonials.filter((t) => t.quote.trim())} />
+        </Reveal>
       </div>
     </section>
   );
