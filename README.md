@@ -329,9 +329,6 @@ yellow block collides with descenders on the line above once the text wraps.
   `From £0,000` deliberately: an impossible figure cannot ship unnoticed and
   quote a client something that was never agreed. Replace all three before the
   site goes live.
-- **The email address does not exist yet.** The site shows
-  `hello@snehajain.co.uk`. A mailbox has to exist before anyone writes to it.
-  Registrar forwarding into an existing inbox is free at most UK registrars.
 - **Case study copy for Sunlife International and Paloma.** Both have a summary,
   facts and a gallery but no written sections, so those simply do not render.
 - **`public/img/og.png`**, 1200 by 630, the preview image when a link is shared.
