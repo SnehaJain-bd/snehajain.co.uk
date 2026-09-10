@@ -2,6 +2,7 @@ import Hero from '@/components/home/Hero';
 import { Strip, Approach, Services, WorkGrid, Testimonials, Faq } from '@/components/home/sections';
 import SectionHead from '@/components/site/SectionHead';
 import CtaBand from '@/components/site/CtaBand';
+import Divider from '@/components/site/Divider';
 import { getFeatured } from '@/lib/projects';
 
 export default async function Home() {
@@ -27,7 +28,9 @@ export default async function Home() {
           </div>
         </section>
 
+        <Divider />
         <Testimonials />
+        <Divider />
         <Faq />
       </main>
       <CtaBand />
