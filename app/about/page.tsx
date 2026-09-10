@@ -55,9 +55,10 @@ export default function AboutPage() {
                   sunsets and sky.
                 </p>
 
-                <h2 className="story__h2-mark">
-                  <Mark name="braces" size={22} className="story__mark" />
+                <h2>
+                  <Mark name="brace-left" size={22} className="story__mark story__mark--open" />
                   I started out as a software engineer.
+                  <Mark name="brace-right" size={22} className="story__mark story__mark--close" />
                 </h2>
                 <p>
                   I was good at it. The problem was that almost nobody ever saw the work. It

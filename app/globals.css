@@ -1498,10 +1498,12 @@ figcaption{
   pointer-events:none;
   overflow:hidden;
   opacity:var(--field-strength);
-  transition:opacity .5s var(--ease-inout);
+  transition:opacity .9s var(--ease-inout);
 }
-/* Light follows a hand. A hand that has stopped is not asking for it. */
-.cursor-field.is-idle{ opacity:0; }
+/* Light follows a hand. A hand that has stopped is not asking for it.
+   Slower going out than coming in: light that snaps off draws attention
+   to itself leaving, which is the opposite of the point. */
+.cursor-field.is-idle{ opacity:0; transition-duration:1.6s; }
 /* Inside a section that has its own opaque ground, so the light is not
    hidden behind it. Offset by its own position in the script. */
 .cursor-field--local{ position:absolute; }
@@ -2037,13 +2039,15 @@ main,
 /* The braces sitting beside the engineering paragraph on the About page.
    Aligned to the cap height rather than the line box, so it reads as
    punctuation set into the heading rather than an icon bolted in front. */
-.story__h2-mark{
-  display:flex;
-  align-items:baseline;
-  gap:.6rem;
+.story__mark{ display:inline-block; vertical-align:-.06em; }
+.story__mark img{
+  display:block;
+  width:.62em;
+  height:.62em;
+  object-fit:contain;
 }
-.story__mark{ display:block; flex:none; transform:translateY(.18em); }
-.story__mark img{ display:block; width:1.15rem; height:1.15rem; object-fit:contain; }
+.story__mark--open{ margin-right:.28em; }
+.story__mark--close{ margin-left:.24em; }
 
 /* H7: the highlighter sweeping behind a link on hover. Deliberately not
    on every link, only the ones worth reaching for. */
@@ -2089,6 +2093,11 @@ main,
   pointer-events:none;
 }
 .linesin__lines{ display:block; }
-.linesin__mask{ display:block; overflow:hidden; }
+.linesin__mask{
+  display:block;
+  overflow:hidden;
+  padding-bottom:.16em;
+  margin-bottom:-.16em;
+}
 .linesin__line{ display:block; }
 .linesin__plain{ display:block; }

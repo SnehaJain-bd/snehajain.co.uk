@@ -26,6 +26,8 @@ export type MarkName =
   | 'approx'
   | 'ellipsis'
   | 'braces'
+  | 'brace-left'
+  | 'brace-right'
   | 'heart'
   | 'question'
   | 'triangle'

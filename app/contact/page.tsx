@@ -52,7 +52,7 @@ export default function ContactPage() {
             </Reveal>
 
             <Reveal delay={0.1}>
-              <h2 className="contact__how">Two lines is enough.</h2>
+              <h2 className="contact__how">A paragraph is enough.</h2>
               <p>
                 Answers land straight in my inbox. If you would rather just email, the
                 address is on the left.

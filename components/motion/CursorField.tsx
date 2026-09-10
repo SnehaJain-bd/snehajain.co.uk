@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { useReducedMotion } from 'motion/react';
 
 /*
@@ -47,6 +48,7 @@ const LAGS = [0.16, 0.09, 0.055];
 
 export default function CursorField() {
   const still = useReducedMotion();
+  const pathname = usePathname();
 
   useEffect(() => {
     const roots = Array.from(document.querySelectorAll<HTMLElement>('.cursor-field'));
@@ -184,7 +186,7 @@ export default function CursorField() {
         document.removeEventListener('pointerleave', onLeave);
       }
     };
-  }, [still]);
+  }, [still, pathname]);
 
   return <FieldLayers />;
 }
