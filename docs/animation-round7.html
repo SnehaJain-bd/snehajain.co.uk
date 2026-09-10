@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Round seven</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Work+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<style>
+  :root {
+    --paper:#FBF9F4; --paper-2:#F4F0E7; --ink:#2A211A; --ink-2:#6C5F54;
+    --ink-3:#7A7168; --line:#E3DDD0; --line-2:#D3CABA; --yellow:#FFF176;
+    --blue:#00A7E1; --link:#0077A8; --measure:68ch; --radius:14px;
+    --ease:cubic-bezier(.22,.61,.36,1);
+    --ease-expo:cubic-bezier(.16,1,.3,1);
+
+    /* Sampled from her actual covers, not chosen. */
+    --c-swirly:#d2b68b;
+    --c-asmi:#38999a;
+    --c-paloma:#d0b895;
+    --c-lumeya:#453935;
+    --c-sunlife:#6c7e5c;
+  }
+  @media (prefers-color-scheme:dark) {
+    :root:not([data-theme="light"]) {
+      --paper:#1A1512; --paper-2:#221C17; --ink:#FBF9F4; --ink-2:#B3A99D;
+      --ink-3:#8A7F73; --line:#3A312A; --line-2:#4A4037; --link:#4CC5EF;
+    }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:"Work Sans",ui-sans-serif,system-ui,sans-serif; line-height:1.62; -webkit-font-smoothing:antialiased; }
+  ::selection { background:var(--yellow); color:#2A211A; }
+  img { max-width:100%; display:block; }
+
+  .page { max-width:64rem; margin:0 auto; padding:clamp(2rem,6vw,4.5rem) clamp(1.15rem,5vw,2rem) 7rem; }
+  h1,h2,h3,h4 { font-family:Newsreader,Georgia,"Times New Roman",serif; font-weight:500; line-height:1.14; margin:0; text-wrap:balance; }
+  p { margin:0; max-width:var(--measure); }
+  a { color:var(--link); }
+  .eyebrow { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.8rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin:0; }
+  code { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.85em; background:var(--paper-2); border:1px solid var(--line); border-radius:3px; padding:.1em .34em; }
+  .tag { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.66rem; letter-spacing:.1em; text-transform:uppercase; }
+
+  header.masthead { display:flex; flex-direction:column; gap:.9rem; padding-bottom:1.8rem; border-bottom:2px solid var(--ink); }
+  header.masthead h1 { font-size:clamp(2.2rem,6vw,3.1rem); letter-spacing:-.015em; }
+  header.masthead p { font-size:1.15rem; color:var(--ink-2); }
+
+  section { padding-top:3.4rem; display:flex; flex-direction:column; gap:1.1rem; }
+  section > h2 { font-size:clamp(1.7rem,4vw,2.2rem); }
+  section > .lede { color:var(--ink-2); margin-top:-.45rem; }
+  h3 { font-size:1.15rem; }
+  .note { color:var(--ink-2); font-size:.95rem; max-width:var(--measure); }
+  .note b { color:var(--ink); font-weight:500; }
+
+  .bar-head { display:flex; flex-wrap:wrap; gap:.6rem 1rem; align-items:baseline; justify-content:space-between; margin-top:1.6rem; }
+  .bar-head .name { display:flex; gap:.7rem; align-items:baseline; }
+  .key { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.78rem; font-weight:700; color:var(--ink-2); border-top:2px solid var(--ink); padding-top:.25rem; }
+  .stage { position:relative; border:1px solid var(--line); border-radius:var(--radius); background:var(--paper); overflow:hidden; }
+  .stage--pad { padding:clamp(1.2rem,3vw,2rem); }
+  .verdict { border-left:3px solid var(--yellow); background:var(--paper-2); padding:1rem 1.15rem; display:flex; flex-direction:column; gap:.55rem; max-width:var(--measure); }
+  .verdict p { max-width:none; }
+  .hint { position:absolute; right:.7rem; bottom:.7rem; z-index:5; font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-2); background:var(--paper); border:1px solid var(--line); border-radius:999px; padding:.25rem .6rem; pointer-events:none; }
+
+  /* ============ X1 colour fields ============ */
+  .fields { display:flex; flex-direction:column; }
+  .field-row {
+    display:grid; grid-template-columns:1fr 1fr; gap:clamp(1.5rem,4vw,3rem);
+    align-items:center; text-decoration:none; color:#2A211A;
+    padding:clamp(1.8rem,4vw,3rem) clamp(1.5rem,4vw,3rem);
+    background:var(--c);
+    transition:background .4s var(--ease);
+  }
+  .field-row:nth-child(even) .field-shot { order:2; }
+  .field-shot { aspect-ratio:4/3; border-radius:var(--radius); overflow:hidden; box-shadow:0 20px 50px -24px rgba(0,0,0,.5); }
+  .field-shot img { width:100%; height:100%; object-fit:cover; transition:transform .7s var(--ease); }
+  .field-row:hover .field-shot img { transform:scale(1.05); }
+  .field-text h4 { font-size:clamp(1.8rem,4.5vw,3rem); letter-spacing:-.02em; }
+  .field-text p { font-size:.95rem; margin-top:.5rem; max-width:32ch; opacity:.82; }
+  .field-text .tag { display:block; margin-bottom:.5rem; opacity:.7; }
+  .field-row--dark { color:#FBF9F4; }
+  @media (max-width:46rem) { .field-row { grid-template-columns:1fr; } .field-row:nth-child(even) .field-shot { order:0; } }
+
+  /* ============ X2 split screen ============ */
+  .split { display:grid; grid-template-columns:1fr 1fr; min-height:26rem; }
+  .split-list { display:flex; flex-direction:column; justify-content:center; padding:clamp(1.2rem,3vw,2.5rem); }
+  .split-item { display:flex; justify-content:space-between; align-items:baseline; gap:1rem; padding:.9rem 0; border-bottom:1px solid var(--line); text-decoration:none; color:inherit; transition:padding-left .35s var(--ease), color .3s var(--ease); }
+  .split-item:first-child { border-top:1px solid var(--line); }
+  .split-item h4 { font-size:clamp(1.2rem,2.6vw,1.7rem); }
+  .split-list:hover .split-item { color:var(--ink-3); }
+  .split-item:hover, .split-item.on { color:var(--ink); padding-left:.8rem; }
+  .split-view { position:relative; background:var(--paper-2); }
+  .split-view img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity .55s var(--ease); }
+  .split-view img.on { opacity:1; }
+  @media (max-width:46rem) { .split { grid-template-columns:1fr; } .split-view { height:16rem; } }
+
+  /* ============ X3 filmstrip ============ */
+  .strip-outer { overflow-x:auto; padding:clamp(1.2rem,3vw,2rem); scroll-snap-type:x mandatory; }
+  .strip { display:flex; gap:1.2rem; }
+  .strip a { flex:none; width:clamp(15rem,32vw,22rem); text-decoration:none; color:inherit; scroll-snap-align:start; display:flex; flex-direction:column; gap:.6rem; }
+  .strip img { width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:var(--radius); border:1px solid var(--line); transition:transform .5s var(--ease); }
+  .strip a:hover img { transform:translateY(-6px); }
+  .strip h4 { font-size:1.35rem; }
+
+  /* ============ X4 contact sheet ============ */
+  .sheet { display:flex; flex-direction:column; gap:2.2rem; }
+  .sheet-group { display:flex; flex-direction:column; gap:.8rem; text-decoration:none; color:inherit; }
+  .sheet-head { display:flex; flex-wrap:wrap; gap:.4rem 1rem; align-items:baseline; justify-content:space-between; padding-bottom:.5rem; border-bottom:1px solid var(--ink); }
+  .sheet-head h4 { font-size:clamp(1.3rem,2.8vw,1.8rem); }
+  .sheet-imgs { display:grid; grid-template-columns:repeat(auto-fit,minmax(8rem,1fr)); gap:.5rem; }
+  .sheet-imgs img { width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:var(--radius-sm,8px); filter:saturate(.9); transition:filter .4s var(--ease), transform .4s var(--ease); }
+  .sheet-group:hover .sheet-imgs img { filter:saturate(1.05); }
+  .sheet-imgs img:hover { transform:scale(1.03); }
+
+  /* ============ X5 chapters ============ */
+  .chapters { height:30rem; overflow-y:auto; scroll-snap-type:y mandatory; }
+  .chapter { position:relative; height:30rem; scroll-snap-align:start; display:grid; place-items:center; text-align:center; text-decoration:none; overflow:hidden; }
+  .chapter img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .chapter::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(20,14,10,.15), rgba(20,14,10,.62)); }
+  .chapter-cap { position:relative; z-index:1; color:#FBF9F4; display:flex; flex-direction:column; gap:.4rem; padding:1rem; }
+  .chapter-cap h4 { font-size:clamp(2rem,6vw,3.4rem); letter-spacing:-.02em; }
+  .chapter-cap .tag { opacity:.85; }
+
+  footer { margin-top:4.5rem; padding-top:1.4rem; border-top:1px solid var(--line); color:var(--ink-2); font-size:.94rem; }
+  @media (prefers-reduced-motion:reduce) { * { transition-duration:.001ms !important; scroll-behavior:auto !important; } }
+</style>
+</head>
+<body>
+
+<main class="page">
+
+  <header class="masthead">
+    <p class="eyebrow">Working file, round seven</p>
+    <h1>Round seven</h1>
+    <p>Five work page layouts that are not rows of cards. Different in kind, not in spacing.</p>
+  </header>
+
+  <section>
+    <h2>Two things already done</h2>
+    <p class="note"><b>The highlight is back to the block</b> it was before any of this, on the site now. Three underlines were tried and none held: a plain bar read as half a rectangle, a tapered lens bulged at the ends, an even stroke read as flat. It was right the first time.</p>
+    <p class="note"><b>D1 is built</b> on <code>/services</code>: outcome first, then who it is for, then what arrives as a ticked list, with a stage mark on each card. The deliverables in it are drafts I wrote from your service descriptions, marked as such in <code>content/services.ts</code>, and they need replacing with what you actually hand over.</p>
+  </section>
+
+  <section>
+    <h2>The work page, five different kinds</h2>
+    <p class="lede">Everything so far has been a row of cards in a different arrangement. These are not that.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">X1</span><h3>Colour fields</h3></div></div>
+    <div class="stage">
+      <div class="fields">
+        <a class="field-row" href="#" style="--c:var(--c-swirly)">
+          <span class="field-shot"><img src="../public/work/swirly/cover.jpg" alt=""></span>
+          <span class="field-text"><span class="tag">01 &middot; Ice cream</span><h4>Swirly</h4><p>A playful, contemporary ice cream brand built to reimagine how indulgence looks and feels.</p></span>
+        </a>
+        <a class="field-row field-row--dark" href="#" style="--c:var(--c-asmi)">
+          <span class="field-shot"><img src="../public/work/asmi/cover.jpg" alt=""></span>
+          <span class="field-text"><span class="tag">02 &middot; Clothing</span><h4>Asmi</h4><p>Cultural symbolism and modern design, for a brand built on self-expression.</p></span>
+        </a>
+        <a class="field-row" href="#" style="--c:var(--c-paloma)">
+          <span class="field-shot"><img src="../public/work/paloma/cover.jpg" alt=""></span>
+          <span class="field-text"><span class="tag">03 &middot; Hospitality</span><h4>Paloma</h4><p>An identity drawn in sand, for a coastal retreat that never needed to shout.</p></span>
+        </a>
+        <a class="field-row field-row--dark" href="#" style="--c:var(--c-lumeya)">
+          <span class="field-shot"><img src="../public/work/lumeya/cover.jpg" alt=""></span>
+          <span class="field-text"><span class="tag">04 &middot; Skincare</span><h4>Lumeya</h4><p>Conscious luxury skincare, built to refuse the visual language of its category.</p></span>
+        </a>
+      </div>
+    </div>
+    <p class="note"><b>The colours are sampled from your covers, not chosen by me.</b> Swirly's cream, Asmi's teal, Paloma's sand, Lumeya's near-black. Scrolling the page becomes moving through each brand's own world, which is a thing only a brand designer's portfolio can honestly do. It is also the only layout here that would look wrong on anyone else's site.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">X2</span><h3>Split screen</h3></div></div>
+    <div class="stage">
+      <div class="split" data-split>
+        <div class="split-list">
+          <a class="split-item on" href="#" data-shot="0"><h4>Swirly</h4><span class="tag">2026</span></a>
+          <a class="split-item" href="#" data-shot="1"><h4>Asmi</h4><span class="tag">2026</span></a>
+          <a class="split-item" href="#" data-shot="2"><h4>Paloma</h4><span class="tag">2026</span></a>
+          <a class="split-item" href="#" data-shot="3"><h4>Lumeya</h4><span class="tag">2026</span></a>
+          <a class="split-item" href="#" data-shot="4"><h4>Sunlife International</h4><span class="tag">2026</span></a>
+        </div>
+        <div class="split-view">
+          <img class="on" src="../public/work/swirly/cover.jpg" alt="">
+          <img src="../public/work/asmi/cover.jpg" alt="">
+          <img src="../public/work/paloma/cover.jpg" alt="">
+          <img src="../public/work/lumeya/cover.jpg" alt="">
+          <img src="../public/work/sunlife-international/cover.jpg" alt="">
+        </div>
+      </div>
+      <span class="hint">hover the names</span>
+    </div>
+    <p class="note">Names on one side, one large image on the other, changing as you move down the list. Everything is on one screen with no scrolling at all, and the work is shown far larger than any grid allows. The cost is that it needs a pointer, so a phone gets a list and a stack instead.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">X3</span><h3>A filmstrip</h3></div></div>
+    <div class="stage">
+      <div class="strip-outer">
+        <div class="strip">
+          <a href="#"><img src="../public/work/swirly/cover.jpg" alt=""><h4>Swirly</h4><span class="tag">Ice cream</span></a>
+          <a href="#"><img src="../public/work/asmi/cover.jpg" alt=""><h4>Asmi</h4><span class="tag">Clothing</span></a>
+          <a href="#"><img src="../public/work/paloma/cover.jpg" alt=""><h4>Paloma</h4><span class="tag">Hospitality</span></a>
+          <a href="#"><img src="../public/work/lumeya/cover.jpg" alt=""><h4>Lumeya</h4><span class="tag">Skincare</span></a>
+          <a href="#"><img src="../public/work/sunlife-international/cover.jpg" alt=""><h4>Sunlife</h4><span class="tag">Corporate</span></a>
+        </div>
+      </div>
+      <span class="hint">drag sideways</span>
+    </div>
+    <p class="note">Tall portrait crops in a row you push sideways, snapping to each. It feels like handling physical work rather than reading a page. I will say plainly that I would argue against it: people miss horizontal content, and a portfolio where the fifth project is invisible unless someone thinks to scroll is a portfolio with four projects.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">X4</span><h3>A contact sheet</h3></div></div>
+    <div class="stage stage--pad">
+      <div class="sheet">
+        <a class="sheet-group" href="#">
+          <span class="sheet-head"><h4>Swirly</h4><span class="tag">Visual Identity &middot; Packaging &middot; 2026</span></span>
+          <span class="sheet-imgs">
+            <img src="../public/work/swirly/cover.jpg" alt="">
+            <img src="../public/work/swirly/cafe-storefront.jpg" alt="">
+            <img src="../public/work/swirly/outdoor-ad.jpg" alt="">
+            <img src="../public/work/swirly/strawberry-tub.jpg" alt="">
+            <img src="../public/work/swirly/3-tubs.jpg" alt="">
+          </span>
+        </a>
+        <a class="sheet-group" href="#">
+          <span class="sheet-head"><h4>Paloma</h4><span class="tag">Brand Strategy &middot; Visual Identity &middot; 2026</span></span>
+          <span class="sheet-imgs">
+            <img src="../public/work/paloma/cover.jpg" alt="">
+            <img src="../public/work/paloma/tote.jpg" alt="">
+            <img src="../public/work/paloma/robe-towel.jpg" alt="">
+            <img src="../public/work/paloma/key-card-3.jpg" alt="">
+            <img src="../public/work/paloma/shade.jpg" alt="">
+          </span>
+        </a>
+      </div>
+    </div>
+    <p class="note">Every image from every project, in square crops, grouped under the project name. It answers the question a work page is really being asked, which is how much have you actually done, and it uses the photography you already have rather than one hero shot per project. It is also the least designed of the five, deliberately: the work is the design.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">X5</span><h3>Chapters</h3></div></div>
+    <div class="stage">
+      <div class="chapters">
+        <a class="chapter" href="#">
+          <img src="../public/work/swirly/cover.jpg" alt="">
+          <span class="chapter-cap"><span class="tag">01 &middot; Ice cream</span><h4>Swirly</h4></span>
+        </a>
+        <a class="chapter" href="#">
+          <img src="../public/work/asmi/cover.jpg" alt="">
+          <span class="chapter-cap"><span class="tag">02 &middot; Clothing</span><h4>Asmi</h4></span>
+        </a>
+        <a class="chapter" href="#">
+          <img src="../public/work/paloma/cover.jpg" alt="">
+          <span class="chapter-cap"><span class="tag">03 &middot; Hospitality</span><h4>Paloma</h4></span>
+        </a>
+      </div>
+      <span class="hint">scroll inside</span>
+    </div>
+    <p class="note">One project per screen, full bleed, snapping as you scroll. The most dramatic and the most common: this is the layout every studio site has had for about eight years, so it will read as competent rather than as yours. It also puts a dark scrim over your covers, which is a strange thing to do to work chosen for its colour.</p>
+
+    <div class="verdict">
+      <p><b>My reading, and it is not close: X1.</b></p>
+      <p>It is the only one of the twelve layouts I have shown you that could not be lifted onto another designer's site. The colours come from the work itself, so the page is literally made of your clients' brands, and scrolling it is the experience of moving between brand worlds. That is the argument your entire site makes, made into a layout.</p>
+      <p>X4 is the honest runner up and would suit you later, once there are fifteen projects and volume is the point rather than range.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>What I need back</h2>
+    <p>Work page: <b>X1 to X5</b>, or any of F1 to F3 and W1 to W5 from the earlier rounds.</p>
+    <p class="note">And the real package deliverables when you have them.</p>
+  </section>
+
+  <footer>
+    <p>A working file, not part of the site.</p>
+  </footer>
+
+</main>
+
+<script>
+  document.querySelectorAll('[data-split]').forEach(function (root) {
+    var items = root.querySelectorAll('.split-item');
+    var shots = root.querySelectorAll('.split-view img');
+    items.forEach(function (item) {
+      item.addEventListener('pointerenter', function () {
+        var n = Number(item.getAttribute('data-shot'));
+        items.forEach(function (i) { i.classList.remove('on'); });
+        item.classList.add('on');
+        shots.forEach(function (s, i) { s.classList.toggle('on', i === n); });
+      });
+      item.addEventListener('click', function (e) { e.preventDefault(); });
+    });
+  });
+</script>
+
+</body>
+</html>

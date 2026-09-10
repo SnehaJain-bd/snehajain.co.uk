@@ -89,27 +89,61 @@ export const services: Service[] = [
   },
 ];
 
-export type Package = { title: string; who: string; leave: string };
+export type Package = {
+  title: string;
+  who: string;
+  leave: string;
+  /* What actually arrives. A founder cannot judge a package without it.
+
+     EVERY LINE BELOW IS A DRAFT I DID NOT WRITE FROM YOUR PROCESS. They
+     are inferred from the service descriptions so the layout could be
+     built and judged at real length. Replace them with what you really
+     hand over before this goes live, and delete this note when you do.
+     An empty array simply renders no list. */
+  deliverables: string[];
+};
 
 export const packages: Package[] = [
   {
     title: 'Brand Strategy',
     who: 'For founders with a product but no clear point of view yet.',
     leave: 'You leave knowing what your brand says and why.',
+    deliverables: [
+      'Positioning statement',
+      'Audience and category map',
+      'Messaging framework',
+      'Two working sessions',
+    ],
   },
   {
     title: 'Visual Identity',
     who: 'For founders whose strategy is set but whose look doesn’t match it.',
     leave: 'You leave with an identity you can use without me.',
+    deliverables: [
+      'Logo suite and marks',
+      'Type and colour system',
+      'Art direction for imagery',
+      'Guidelines document',
+    ],
   },
   {
     title: 'Full Brand Identity',
     who: 'For founders starting from scratch.',
     leave: 'Strategy and identity together, done once, in order.',
+    deliverables: [
+      'Everything in Brand Strategy',
+      'Everything in Visual Identity',
+      'Applied across your first touchpoints',
+    ],
   },
   {
     title: 'Packaging',
     who: 'For products that need to stand out on a shelf and on a screen.',
     leave: 'Priced per SKU.',
+    deliverables: [
+      'Structure and dieline artwork',
+      'Front of pack design',
+      'Print ready files per SKU',
+    ],
   },
 ];

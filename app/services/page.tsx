@@ -1,7 +1,11 @@
 import type { Metadata } from 'next';
 import CtaBand from '@/components/site/CtaBand';
 import SectionHead from '@/components/site/SectionHead';
-import Mark from '@/components/site/Mark';
+import Mark, { type MarkName } from '@/components/site/Mark';
+
+/* One mark per package, matching the services stages so a package and a
+   stage read as the same family. */
+const PACKAGE_MARK: MarkName[] = ['diamond', 'square', 'ring', 'triangle'];
 import { Services, Faq } from '@/components/home/sections';
 import { Reveal, Stagger, StaggerItem } from '@/components/motion/primitives';
 import { packages } from '@/content/services';
@@ -49,11 +53,27 @@ export default function ServicesPage() {
             <Stagger as="ol" className="packages" gap={0.09}>
               {packages.map((p, i) => (
                 <StaggerItem key={p.title} className="package">
-                  <span className="package__num">{i + 1}</span>
+                  <span className="package__top">
+                    <Mark name={PACKAGE_MARK[i % PACKAGE_MARK.length]} size={20} className="package__mark" />
+                    <span className="package__num">{i + 1}</span>
+                  </span>
                   <h3>{p.title}</h3>
-                  <p className="package__who">{p.who}</p>
                   <p className="package__leave">{p.leave}</p>
-                  <div className="package__meta">Deliverables and timeline: to confirm</div>
+                  <p className="package__who">{p.who}</p>
+                  {p.deliverables.length ? (
+                    <>
+                      <span className="package__label">What you get</span>
+                      <ul className="package__gets">
+                        {p.deliverables.map((d) => (
+                          <li key={d}>
+                            <Mark name="tick" size={15} />
+                            {d}
+                          </li>
+                        ))}
+                      </ul>
+                    </>
+                  ) : null}
+                  <div className="package__meta">Timeline: to confirm</div>
                 </StaggerItem>
               ))}
             </Stagger>

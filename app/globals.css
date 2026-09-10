@@ -46,11 +46,6 @@
      has to start slowly. */
   --ease-inout: cubic-bezier(.45,.05,.35,1);
 
-  /* The highlighter stroke: uneven top and bottom, tapered at both ends,
-     sloping very slightly. Used as a mask so the colour still comes from
-     the palette rather than being baked into the artwork. A rectangle
-     with rounded corners reads as a UI element; this reads as a pen. */
-  --swipe: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 30' preserveAspectRatio='none'%3E%3Cpath d='M9 20 C58 11 96 24 142 15 C162 11 178 12 191 15' fill='none' stroke='black' stroke-width='14' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
 @media (prefers-color-scheme: dark){
@@ -1374,21 +1369,15 @@ figcaption{
    highlighter does and what a solid fill does not. */
 .mark-draw__ink{
   position:absolute;
-  left:-.14em;
-  right:-.16em;
-  bottom:-.02em;
-  height:.5em;
+  inset:0;
   background:var(--yellow);
+  border-radius:3px;
   transform-origin:left center;
   z-index:-1;
-  -webkit-mask-image:var(--swipe);
-  mask-image:var(--swipe);
-  -webkit-mask-size:100% 100%;
-  mask-size:100% 100%;
-  -webkit-mask-repeat:no-repeat;
-  mask-repeat:no-repeat;
 }
-.mark-draw__text{ position:relative; }
+.mark-draw__text{ color:#2A211A; position:relative; }
+.cta-band .mark-draw__text,
+.section--dark .mark-draw__text{ color:#2A211A; }
 
 /* ---- case study article, written in MDX ---- */
 .case-article{ display:block; }
@@ -2075,22 +2064,17 @@ main,
 .marker-link::before{
   content:"";
   position:absolute;
-  left:-.1em; right:-.12em; bottom:.02em;
-  height:.4em;
+  inset:-.02em -.06em;
   background:var(--yellow);
+  border-radius:3px;
   transform:scaleX(0);
   transform-origin:left center;
   transition:transform .45s var(--ease-inout);
   z-index:-1;
-  -webkit-mask-image:var(--swipe);
-  mask-image:var(--swipe);
-  -webkit-mask-size:100% 100%;
-  mask-size:100% 100%;
-  -webkit-mask-repeat:no-repeat;
-  mask-repeat:no-repeat;
 }
 .marker-link:hover::before,
 .marker-link:focus-visible::before{ transform:scaleX(1); }
+.marker-link:hover, .marker-link:focus-visible{ color:#2A211A; }
 
 @media (prefers-reduced-motion: reduce){
   .marker-link::before{ transition:none; }
@@ -2116,3 +2100,47 @@ main,
 }
 .linesin__line{ display:block; }
 .linesin__plain{ display:block; }
+
+/* ---- D1: what arrives with each package ---- */
+.package__top{
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+  padding-bottom:.75rem;
+  border-bottom:2px solid var(--ink);
+}
+.package__mark{ display:block; flex:none; }
+.package__mark img{ display:block; width:1.15rem; height:1.15rem; object-fit:contain; }
+.package__top .package__num{ margin-left:auto; }
+
+.package__label{
+  font-family:var(--mono);
+  font-size:.62rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--ink-3);
+}
+.package__gets{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  gap:.45rem;
+}
+.package__gets li{
+  display:grid;
+  grid-template-columns:.95rem 1fr;
+  gap:.6rem;
+  align-items:start;
+  font-size:.9rem;
+  line-height:1.45;
+}
+.package__gets picture{ display:block; }
+.package__gets img{
+  display:block;
+  width:.95rem;
+  height:.95rem;
+  object-fit:contain;
+  margin-top:.3em;
+}
