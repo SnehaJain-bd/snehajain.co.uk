@@ -73,7 +73,10 @@ export default function ServicesPage() {
                       </ul>
                     </>
                   ) : null}
-                  <div className="package__meta">Timeline: to confirm</div>
+                  <div className="package__meta">
+                    <span>{p.timeline}</span>
+                    <span className="package__price">{p.price}</span>
+                  </div>
                 </StaggerItem>
               ))}
             </Stagger>

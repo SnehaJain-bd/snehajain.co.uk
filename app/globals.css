@@ -1999,6 +1999,17 @@ main,
   border-top:1px solid var(--line);
   padding-top:1rem;
   margin-top:auto;
+  /* Timeline at one end, price at the other. They are the two questions
+     a founder is actually asking, so they get a line to themselves. */
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:1rem;
+}
+.package__price{
+  color:var(--ink);
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
 }
 
 .steps{
