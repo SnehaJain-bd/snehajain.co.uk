@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Round four</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Work+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<style>
+  :root {
+    --paper:#FBF9F4; --surface:#F4F0E7; --ink:#2A211A; --muted:#6E6157;
+    --rule:#E3DCCE; --rule-strong:#CFC5B2; --yellow:#FFF176; --on-yellow:#2A211A;
+    --blue:#00A7E1; --link:#0077A8; --measure:68ch;
+    --ease-out:cubic-bezier(.22,.61,.36,1);
+    --ease-expo:cubic-bezier(.16,1,.3,1);
+    --ease-in-out:cubic-bezier(.45,.05,.35,1);
+    --ease-back:cubic-bezier(.34,1.56,.64,1);
+  }
+  @media (prefers-color-scheme:dark) {
+    :root:not([data-theme="light"]) {
+      --paper:#1B1510; --surface:#241D16; --ink:#F0EAE0; --muted:#AA9C8D;
+      --rule:#352C24; --rule-strong:#4A3E33; --link:#62C8EF;
+    }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:"Work Sans",ui-sans-serif,system-ui,sans-serif; line-height:1.65; -webkit-font-smoothing:antialiased; }
+  ::selection { background:var(--yellow); color:#2A211A; }
+  img { max-width:100%; display:block; }
+
+  .page { max-width:58rem; margin:0 auto; padding:clamp(2rem,6vw,4.5rem) clamp(1.15rem,5vw,2rem) 7rem; }
+  h1,h2,h3,h4,.display { font-family:Newsreader,Georgia,"Times New Roman",serif; font-weight:500; line-height:1.18; margin:0; text-wrap:balance; }
+  p { margin:0; max-width:var(--measure); }
+  a { color:var(--link); }
+
+  .eyebrow { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.8rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin:0; }
+  code { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.85em; background:var(--surface); border:1px solid var(--rule); border-radius:3px; padding:.1em .34em; }
+  mark { background:var(--yellow); color:var(--on-yellow); padding:.05em .24em; border-radius:2px; }
+
+  header.masthead { display:flex; flex-direction:column; gap:.9rem; padding-bottom:1.8rem; border-bottom:2px solid var(--ink); }
+  header.masthead h1 { font-size:clamp(2.2rem,6vw,3.1rem); letter-spacing:-.015em; }
+  header.masthead p { font-size:1.15rem; color:var(--muted); }
+
+  section { padding-top:3.4rem; display:flex; flex-direction:column; gap:1.1rem; }
+  section > h2 { font-size:clamp(1.7rem,4vw,2.2rem); }
+  section > .lede { color:var(--muted); margin-top:-.45rem; }
+  h3 { font-size:1.15rem; }
+  .note { color:var(--muted); font-size:.95rem; max-width:var(--measure); }
+  .note b { color:var(--ink); font-weight:500; }
+  ul.plain { margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:.7rem; max-width:var(--measure); }
+  ul.plain > li { padding-left:1.1rem; position:relative; }
+  ul.plain > li::before { content:""; position:absolute; left:0; top:.72em; width:.42rem; height:1px; background:var(--rule-strong); }
+
+  .bar-head { display:flex; flex-wrap:wrap; gap:.6rem 1rem; align-items:baseline; justify-content:space-between; margin-top:.8rem; }
+  .bar-head .name { display:flex; gap:.7rem; align-items:baseline; }
+  .key { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.78rem; font-weight:700; color:var(--muted); border-top:2px solid var(--ink); padding-top:.25rem; }
+  button.play { font:500 .78rem/1 "JetBrains Mono",ui-monospace,monospace; letter-spacing:.06em; text-transform:uppercase; color:var(--ink); background:transparent; border:1px solid var(--rule-strong); border-radius:999px; padding:.5rem .95rem; cursor:pointer; }
+  button.play:hover { background:var(--yellow); border-color:var(--yellow); color:var(--on-yellow); }
+  button.play:focus-visible, a:focus-visible { outline:2px solid var(--link); outline-offset:3px; }
+
+  .stage { position:relative; border:1px solid var(--rule); border-radius:8px; background:var(--paper); padding:clamp(1.1rem,3vw,1.8rem); overflow:hidden; }
+
+  /* ---------- mark alphabet ---------- */
+  .alpha { width:100%; border-collapse:collapse; font-size:.85rem; }
+  .alpha th { text-align:left; font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); font-weight:600; padding:.45rem .5rem; border-bottom:1px solid var(--rule-strong); }
+  .alpha td { padding:.4rem .5rem; border-bottom:1px solid var(--rule); vertical-align:middle; }
+  .alpha td.g { width:3rem; }
+  .alpha img { width:1.6rem; height:1.6rem; object-fit:contain; }
+  .alpha .n { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.78rem; color:var(--muted); font-variant-numeric:tabular-nums; }
+  .alpha .use { color:var(--muted); font-size:.85rem; }
+  .alpha tr.picked td { background:color-mix(in srgb, var(--yellow) 22%, transparent); }
+  .alpha-wrap { overflow-x:auto; }
+
+  .swatch-row { display:flex; gap:.4rem; align-items:center; }
+  .swatch-row img { width:1.35rem; height:1.35rem; object-fit:contain; }
+
+  /* ---------- proposals ---------- */
+  .props { display:grid; grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); gap:1rem; }
+  .prop { border:1px solid var(--rule); border-radius:8px; overflow:hidden; background:var(--surface); display:flex; flex-direction:column; }
+  .prop-frame { position:relative; height:9.5rem; background:var(--paper); display:flex; align-items:center; justify-content:center; padding:1rem; text-align:center; }
+  .prop-body { padding:.8rem 1rem 1rem; border-top:1px solid var(--rule); display:flex; flex-direction:column; gap:.25rem; }
+  .prop-body h4 { font-size:1rem; }
+  .prop-body p { font-size:.86rem; color:var(--muted); max-width:none; }
+  .prop-body .n { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.7rem; color:var(--muted); }
+
+  .qm-card { border:1px solid var(--rule); border-radius:8px; background:var(--surface); padding:.9rem 1rem; text-align:left; display:flex; flex-direction:column; gap:.5rem; width:100%; }
+  .qm-card img { width:1.7rem; }
+  .qm-card q { font-size:.84rem; quotes:none; }
+  .qm-card q:before, .qm-card q:after { content:none; }
+  .qm-card small { color:var(--muted); font-size:.74rem; }
+
+  .faq-line { display:flex; gap:.6rem; align-items:center; font-family:Newsreader,Georgia,serif; font-size:1.1rem; }
+  .faq-line img { width:1.5rem; }
+
+  .tick-list { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.45rem; text-align:left; font-size:.86rem; }
+  .tick-list li { display:flex; gap:.55rem; align-items:center; }
+  .tick-list img { width:1rem; flex:none; }
+
+  .brace-line { font-family:Newsreader,Georgia,serif; font-size:1rem; display:flex; gap:.5rem; align-items:center; flex-wrap:wrap; justify-content:center; }
+  .brace-line img { width:1.4rem; }
+
+  .divider-demo { display:flex; align-items:center; gap:.8rem; width:100%; }
+  .divider-demo span { flex:1; height:1px; background:var(--rule-strong); }
+  .divider-demo img { width:1.7rem; }
+
+  /* ---------- services options ---------- */
+  .sv-index { display:grid; grid-template-columns:1fr 1fr; gap:0 2rem; }
+  @media (max-width:40rem) { .sv-index { grid-template-columns:1fr; } }
+  .sv-index ol { list-style:none; margin:0; padding:0; }
+  .sv-index li { display:grid; grid-template-columns:1.9rem 1fr; gap:.7rem; padding:.62rem 0; border-bottom:1px solid var(--rule); }
+  .sv-index li:first-child { border-top:1px solid var(--rule); }
+  .sv-index .num { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.7rem; color:var(--muted); padding-top:.3rem; }
+  .sv-index b { font-weight:500; font-size:.98rem; }
+  .sv-index small { display:block; color:var(--muted); font-size:.8rem; }
+
+  .sv-stages { display:grid; grid-template-columns:repeat(auto-fit,minmax(13rem,1fr)); gap:1.4rem; }
+  .stage-col { display:flex; flex-direction:column; gap:.6rem; }
+  .stage-col .head { display:flex; gap:.55rem; align-items:center; padding-bottom:.5rem; border-bottom:2px solid var(--ink); }
+  .stage-col .head img { width:1.3rem; }
+  .stage-col .head b { font-family:Newsreader,Georgia,serif; font-weight:500; font-size:1.15rem; }
+  .stage-col .head small { color:var(--muted); font-size:.72rem; margin-left:auto; font-family:"JetBrains Mono",ui-monospace,monospace; }
+  .stage-col ul { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; }
+  .stage-col li { padding:.45rem 0; border-bottom:1px solid var(--rule); font-size:.9rem; }
+  .stage-col p.why { font-size:.8rem; color:var(--muted); margin-top:.2rem; }
+
+  .sv-big { display:flex; flex-direction:column; }
+  .sv-big .row { display:grid; grid-template-columns:2.2rem 1fr; gap:.8rem; align-items:baseline; padding:.5rem .2rem; border-bottom:1px solid var(--rule); cursor:default; transition:padding-left .3s var(--ease-out); }
+  .sv-big .row:first-child { border-top:1px solid var(--rule); }
+  .sv-big .row:hover { padding-left:.7rem; }
+  .sv-big .num { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.7rem; color:var(--muted); }
+  .sv-big b { font-family:Newsreader,Georgia,serif; font-weight:500; font-size:clamp(1.05rem,2.4vw,1.4rem); }
+  .sv-big .desc { grid-column:2; max-height:0; overflow:hidden; transition:max-height .4s var(--ease-expo); color:var(--muted); font-size:.85rem; }
+  .sv-big .row:hover .desc { max-height:4rem; }
+
+  .sv-band { overflow-x:auto; }
+  .sv-band ul { list-style:none; margin:0; padding:0 0 .6rem; display:flex; gap:.6rem; }
+  .sv-band li { flex:none; width:11rem; border:1px solid var(--rule); border-radius:8px; padding:.75rem .85rem; background:var(--surface); display:flex; flex-direction:column; gap:.2rem; }
+  .sv-band .num { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.68rem; color:var(--muted); }
+  .sv-band b { font-size:.95rem; font-weight:500; }
+  .sv-band small { color:var(--muted); font-size:.78rem; }
+
+  /* ---------- work hybrid ---------- */
+  .wg-feat { display:flex; flex-direction:column; gap:1.2rem; position:relative; }
+  .feat { display:grid; grid-template-columns:1.4fr 1fr; gap:1.2rem; align-items:center; text-decoration:none; color:inherit; }
+  .feat-media { aspect-ratio:3/2; border-radius:8px; overflow:hidden; }
+  .feat-media img { width:100%; height:100%; object-fit:cover; transition:transform .6s var(--ease-out); }
+  .feat:hover .feat-media img { transform:scale(1.05); }
+  .feat h4 { font-size:clamp(1.4rem,3.2vw,2rem); }
+  .feat p { color:var(--muted); font-size:.9rem; margin-top:.3rem; }
+  @media (max-width:38rem) { .feat { grid-template-columns:1fr; } }
+
+  .idx-list { position:relative; }
+  .idx-row { display:flex; justify-content:space-between; align-items:baseline; gap:1rem; padding:.75rem .2rem; border-bottom:1px solid var(--rule); text-decoration:none; color:inherit; position:relative; z-index:2; transition:padding-left .35s var(--ease-out), color .25s ease; }
+  .idx-row:first-child { border-top:1px solid var(--rule); }
+  .idx-row b { font-family:Newsreader,Georgia,serif; font-weight:500; font-size:clamp(1.15rem,2.8vw,1.6rem); }
+  .idx-row small { color:var(--muted); font-size:.78rem; }
+  .idx-list:hover .idx-row { color:var(--muted); }
+  .idx-list .idx-row:hover { color:var(--ink); padding-left:.8rem; }
+  .idx-preview { position:absolute; z-index:1; width:13rem; aspect-ratio:3/2; border-radius:8px; overflow:hidden; pointer-events:none; opacity:0; transform:translate(-50%,-50%) scale(.94); transition:opacity .3s var(--ease-out), transform .3s var(--ease-out); box-shadow:0 18px 40px rgba(42,33,26,.22); }
+  .idx-preview.show { opacity:1; transform:translate(-50%,-50%) scale(1); }
+  .idx-preview img { width:100%; height:100%; object-fit:cover; }
+
+  /* ---------- testimonial T6 + marker ---------- */
+  .solo { position:relative; min-height:12rem; list-style:none; margin:0; padding:0; }
+  .solo li { position:absolute; inset:0; opacity:0; pointer-events:none; transition:opacity .55s var(--ease-in-out); display:flex; flex-direction:column; gap:.8rem; }
+  .solo li.on { opacity:1; pointer-events:auto; }
+  .solo q { quotes:none; font-size:clamp(1rem,2.4vw,1.25rem); font-family:Newsreader,Georgia,serif; line-height:1.45; }
+  .solo q:before, .solo q:after { content:none; }
+  .solo .qm { width:2rem; }
+  .solo .by { margin-top:auto; display:flex; flex-direction:column; }
+  .solo .by b { font-size:.9rem; font-weight:500; }
+  .solo .by small { color:var(--muted); font-size:.78rem; }
+  .solo-dots { display:flex; gap:.45rem; justify-content:center; margin-top:1rem; }
+  .solo-dots button { width:.5rem; height:.5rem; border-radius:50%; border:0; background:var(--rule-strong); cursor:pointer; padding:0; transition:background .25s ease, transform .25s ease; }
+  .solo-dots button.on { background:var(--ink); transform:scale(1.25); }
+
+  .marker { position:relative; display:inline; }
+  .marker .ink { position:absolute; left:-.06em; right:-.06em; bottom:0; height:.44em; background:var(--yellow); transform-origin:left center; z-index:0; border-radius:2px; transform:scaleX(0); }
+  .solo li.on .marker .ink { animation:draw .55s var(--ease-out) .45s forwards; }
+  .marker .txt { position:relative; z-index:1; }
+  @keyframes draw { to { transform:scaleX(1); } }
+
+  .verdict { border-left:3px solid var(--yellow); background:var(--surface); padding:1rem 1.15rem; display:flex; flex-direction:column; gap:.55rem; max-width:var(--measure); }
+  .verdict p { max-width:none; }
+  .locked { border-left:3px solid var(--rule-strong); background:var(--surface); padding:1rem 1.15rem; display:flex; flex-direction:column; gap:.5rem; }
+  .locked p { max-width:none; font-size:.95rem; }
+  .locked .mono { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.85rem; }
+
+  footer { margin-top:4.5rem; padding-top:1.4rem; border-top:1px solid var(--rule); color:var(--muted); font-size:.94rem; }
+  @media (prefers-reduced-motion:reduce) { *{ animation-duration:.001ms !important; transition-duration:.001ms !important; } }
+</style>
+</head>
+<body>
+
+<main class="page">
+
+  <header class="masthead">
+    <p class="eyebrow">Working file, round four</p>
+    <h1>Round four</h1>
+    <p>Your marks turn out to be a proper alphabet. Plus four more service layouts, the work hybrid, and the testimonials as you described them.</p>
+  </header>
+
+  <section>
+    <h2>Locked so far</h2>
+    <div class="locked">
+      <p class="mono">field &middot; yellow &middot; 400 &middot; 0.50 &middot; 0.09 &middot; 50 &middot; F3 centred over stripes</p>
+      <p class="mono">scroll &middot; S2 staggered lists &middot; S4 line by line headings &middot; S5 case study covers</p>
+      <p class="mono">hover &middot; H2 + H3 work cards &middot; H5 buttons &middot; H6 links &middot; H7 sparingly &middot; H10 services</p>
+      <p class="mono">whimsy &middot; W1 W2 footer W4 W5 W9 W10 case studies</p>
+      <p class="mono">404 &middot; Asset 75 coffee, Asset 47 yellow</p>
+      <p><b>Still open:</b> the hero easing, E2 or E3 or E4.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Your marks are an alphabet</h2>
+    <p class="lede">Not 84 graphics. Twenty-one glyphs, each drawn in all four brand colours. That is a system, and it means any mark can be used anywhere without a colour problem.</p>
+
+    <div class="alpha-wrap">
+      <table class="alpha" id="alpha">
+        <thead>
+          <tr><th>Glyph</th><th>Blue</th><th>Yellow</th><th>White</th><th>Coffee</th><th>What I would use it for</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p class="note">Highlighted rows are the ones I am proposing below. Everything else stays available. <b>The pattern:</b> the fourteen core glyphs run blue 28, yellow 42, white 56, coffee 70, each in the same order; the seven extras run blue 84, yellow 91, white 98, coffee 105. So any glyph in any colour is a matter of adding 14, or 7, to a number you already know.</p>
+  </section>
+
+  <section>
+    <h2>Where the marks would go</h2>
+    <p class="lede">You are right that they should be used properly rather than sitting in a folder. These are the places where a mark does a job rather than decorating.</p>
+
+    <div class="props">
+
+      <div class="prop">
+        <div class="prop-frame">
+          <div class="qm-card">
+            <img src="../../brand-assets-backup/Brand Assets/Graphics/Asset 111@4x.png" alt="">
+            <q>Sneha is one of those rare people who just gets it.</q>
+            <small>Bhawika Kala, Mannchala Moodlab</small>
+          </div>
+        </div>
+        <div class="prop-body">
+          <span class="n">Asset 111 coffee &middot; 97 yellow</span>
+          <h4>Quote marks on testimonials</h4>
+          <p>Your idea, and the most obvious win. It replaces a typographic quote with a drawn one, which is the difference between using a font and having an identity.</p>
+        </div>
+      </div>
+
+      <div class="prop">
+        <div class="prop-frame">
+          <span class="faq-line">
+            <img src="../../brand-assets-backup/Brand Assets/Graphics/Asset 107@4x.png" alt="">
+            What founders ask
+          </span>
+        </div>
+        <div class="prop-body">
+          <span class="n">Asset 107 coffee &middot; 93 yellow</span>
+          <h4>The question mark on the FAQ</h4>
+          <p>A drawn question mark beside the FAQ heading. It is the one section whose subject has its own glyph, so not using it would be strange.</p>
+        </div>
+      </div>
+
+      <div class="prop">
+        <div class="prop-frame">
+          <ul class="tick-list">
+            <li><img src="../../brand-assets-backup/Brand Assets/Graphics/Asset 72@4x.png" alt="">Brand strategy session</li>
+            <li><img src="../../brand-assets-backup/Brand Assets/Graphics/Asset 72@4x.png" alt="">Full identity system</li>
+            <li><img src="../../brand-assets-backup/Brand Assets/Graphics/Asset 72@4x.png" alt="">Guidelines document</li>
+          </ul>
+        </div>
+        <div class="prop-body">
+          <span class="n">Asset 72 coffee &middot; 44 yellow</span>
+          <h4>Ticks on what is included</h4>
+          <p>Package deliverables currently use plain bullets. A drawn tick makes a list of inclusions feel like a promise rather than a spec.</p>
+        </div>
+      </div>
+
+      <div class="prop">
+        <div class="prop-frame">
+          <span class="brace-line">
+            <img src="../../brand-assets-backup/Brand Assets/Graphics/Asset 83@4x.png" alt="">
+            I started out as a software engineer
+          </span>
+        </div>
+        <div class="prop-body">
+          <span class="n">Asset 83 coffee &middot; 55 yellow</span>
+          <h4>Braces on the About page</h4>
+          <p>You have curly braces in your brand alphabet and you used to write code. Putting them beside that paragraph is a joke only some readers will get, which is the best kind.</p>
+        </div>
+      </div>
+
+      <div class="prop">
+        <div class="prop-frame">
+          <div class="divider-demo">
+            <span></span>
+            <img src="../../brand-assets-backup/Brand Assets/Graphics/Asset 79@4x.png" alt="">
+            <span></span>
+          </div>
+        </div>
+        <div class="prop-body">
+          <span class="n">Asset 79 coffee &middot; 51 yellow</span>
+          <h4>The ellipsis as a section break</h4>
+          <p>Three drawn dots between major sections, instead of a plain rule. Quiet, and it stops long pages reading as one undifferentiated scroll.</p>
+        </div>
+      </div>
+
+      <div class="prop">
+        <div class="prop-frame">
+          <span class="brace-line">
+            <img src="../../brand-assets-backup/Brand Assets/Graphics/Asset 78@4x.png" alt="">
+            Twenty plus clients
+          </span>
+        </div>
+        <div class="prop-body">
+          <span class="n">Asset 78 coffee &middot; 50 yellow</span>
+          <h4>The approximation mark on figures</h4>
+          <p>You write "twenty plus" and "more than half". You have a drawn <i>approximately</i> sign. It is a small piece of honesty made visible.</p>
+        </div>
+      </div>
+
+      <div class="prop">
+        <div class="prop-frame">
+          <span class="brace-line" style="font-size:1.6rem">
+            <img src="../../brand-assets-backup/Brand Assets/Graphics/Asset 70@4x.png" alt="" style="width:1.1rem">
+            Selected work
+          </span>
+        </div>
+        <div class="prop-body">
+          <span class="n">Asset 70 coffee &middot; 42 yellow</span>
+          <h4>The diamond that breathes, W1</h4>
+          <p>Already agreed. The diamond is the most neutral glyph in the set, which is what you want on a mark that appears beside many different headings.</p>
+        </div>
+      </div>
+
+      <div class="prop">
+        <div class="prop-frame">
+          <span class="brace-line">
+            <img src="../../brand-assets-backup/Brand Assets/Graphics/Asset 77@4x.png" alt="">
+            More than half come back
+          </span>
+        </div>
+        <div class="prop-body">
+          <span class="n">Asset 77 coffee &middot; 49 yellow</span>
+          <h4>Infinity on returning clients</h4>
+          <p>Optional, and slightly on the nose. Included because the glyph exists and the claim is about work that keeps coming back. Say no and I will not raise it again.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="verdict">
+      <p><b>A rule I would set now, before this gets away from us.</b></p>
+      <p>A mark earns its place when it means something: a question mark on questions, a tick on inclusions, braces on the engineering paragraph. The moment one is there because the space looked empty, the whole set stops reading as a language and starts reading as clip art. <b>One mark per section, maximum, and never two in the same eyeful.</b></p>
+    </div>
+  </section>
+
+  <section>
+    <h2>The work section, your hybrid</h2>
+    <p class="lede">WK3's layout with WK4's behaviour. One project leads, and the index below it previews on hover.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">WK5</span><h3>Featured, then an index that previews</h3></div></div>
+    <div class="stage">
+      <div class="wg-feat">
+        <a class="feat" href="#">
+          <span class="feat-media"><img src="../public/work/swirly/cover.jpg" alt=""></span>
+          <span><h4>Swirly</h4><p>A playful, contemporary ice cream brand built to reimagine how indulgence looks and feels.</p></span>
+        </a>
+        <div class="idx-list" data-index>
+          <span class="idx-preview"><img alt=""></span>
+          <a class="idx-row" href="#" data-cover="../public/work/asmi/cover.jpg"><b>Asmi</b><small>Clothing &middot; 2026</small></a>
+          <a class="idx-row" href="#" data-cover="../public/work/paloma/cover.jpg"><b>Paloma</b><small>Hospitality &middot; 2026</small></a>
+          <a class="idx-row" href="#" data-cover="../public/work/lumeya/cover.jpg"><b>Lumeya</b><small>Skincare &middot; 2026</small></a>
+          <a class="idx-row" href="#" data-cover="../public/work/sunlife-international/cover.jpg"><b>Sunlife International</b><small>Corporate &middot; 2026</small></a>
+        </div>
+      </div>
+    </div>
+    <p class="note">This is the better of the two, and not only as a compromise. Pure WK4 asks a first-time visitor to hover before they see any work at all, which is a lot of faith to ask for. Here the strongest project is on screen immediately and the discovery applies to the rest. It also solves the phone problem: with no pointer, the featured project still lands and the index is simply a list.</p>
+
+    <div class="verdict">
+      <p><b>One thing to decide:</b> whether the featured project is always Swirly, or whether it follows <code>order</code> so you can promote whatever you want to lead with by changing one number. I would do the latter. It costs nothing and it means the home page can be reshuffled without touching any code.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Services, four more</h2>
+    <p class="lede">Twelve services, and a lede that says the first five are where projects start.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">SV4</span><h3>A two column index, all twelve visible</h3></div></div>
+    <div class="stage">
+      <div class="sv-index">
+        <ol>
+          <li><span class="num">01</span><span><b>Brand Strategy</b><small>Positioning, audience, the argument</small></span></li>
+          <li><span class="num">02</span><span><b>Naming &amp; Tone of Voice</b><small>A name people remember</small></span></li>
+          <li><span class="num">03</span><span><b>Visual Identity</b><small>Built as a system</small></span></li>
+          <li><span class="num">04</span><span><b>Packaging Design</b><small>Structure and surface</small></span></li>
+          <li><span class="num">05</span><span><b>Brand Refresh</b><small>Keep the equity, lose the rest</small></span></li>
+          <li><span class="num">06</span><span><b>Brand Guidelines</b><small>So it survives other people</small></span></li>
+        </ol>
+        <ol>
+          <li><span class="num">07</span><span><b>Art Direction</b><small>Photography and image</small></span></li>
+          <li><span class="num">08</span><span><b>Web &amp; Digital Design</b><small>Sites and interfaces</small></span></li>
+          <li><span class="num">09</span><span><b>Campaign &amp; Social</b><small>Launches and always-on</small></span></li>
+          <li><span class="num">10</span><span><b>Presentation Design</b><small>Decks that hold up</small></span></li>
+          <li><span class="num">11</span><span><b>Editorial &amp; Print</b><small>Long form, on paper</small></span></li>
+          <li><span class="num">12</span><span><b>Workshops</b><small>Decisions made in a room</small></span></li>
+        </ol>
+      </div>
+    </div>
+    <p class="note">Compact, complete, and it reads as a capability list rather than twelve products competing. Half the height of the current grid. Says nothing about the first five though.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">SV5</span><h3>Grouped by when they happen</h3></div></div>
+    <div class="stage">
+      <div class="sv-stages">
+        <div class="stage-col">
+          <span class="head"><img src="../../brand-assets-backup/Brand Assets/Graphics/Asset 70@4x.png" alt=""><b>Decide</b><small>01&ndash;03</small></span>
+          <ul><li>Brand Strategy</li><li>Naming &amp; Tone of Voice</li><li>Workshops</li></ul>
+          <p class="why">What you stand for, who you are for, and why anyone should choose you.</p>
+        </div>
+        <div class="stage-col">
+          <span class="head"><img src="../../brand-assets-backup/Brand Assets/Graphics/Asset 73@4x.png" alt=""><b>Design</b><small>04&ndash;07</small></span>
+          <ul><li>Visual Identity</li><li>Packaging Design</li><li>Brand Refresh</li><li>Art Direction</li></ul>
+          <p class="why">Those decisions, made visible and built as a system rather than a mood.</p>
+        </div>
+        <div class="stage-col">
+          <span class="head"><img src="../../brand-assets-backup/Brand Assets/Graphics/Asset 75@4x.png" alt=""><b>Deploy</b><small>08&ndash;12</small></span>
+          <ul><li>Brand Guidelines</li><li>Web &amp; Digital Design</li><li>Campaign &amp; Social</li><li>Presentation Design</li><li>Editorial &amp; Print</li></ul>
+          <p class="why">Everything that has to hold together once other people start using it.</p>
+        </div>
+      </div>
+    </div>
+    <p class="note">This is the one that says what you actually believe. Your whole argument is that brands get designed before they get decided, and this layout puts <i>decide</i> first as a column heading. It also quietly explains why someone would buy more than one thing from you. Uses three marks as stage headers, which is within the one-per-section rule since they read as one device.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">SV6</span><h3>Large type, description on hover</h3></div></div>
+    <div class="stage">
+      <div class="sv-big">
+        <div class="row"><span class="num">01</span><span><b>Brand Strategy</b><span class="desc">Positioning, audience and the argument for your brand. Everything else is built on this.</span></span></div>
+        <div class="row"><span class="num">02</span><span><b>Naming &amp; Tone of Voice</b><span class="desc">A name people remember, and a way of speaking that sounds like you rather than like your category.</span></span></div>
+        <div class="row"><span class="num">03</span><span><b>Visual Identity</b><span class="desc">Logo, type, colour and imagery built as a system, so your brand looks like itself everywhere.</span></span></div>
+        <div class="row"><span class="num">04</span><span><b>Packaging Design</b><span class="desc">Structure and surface, designed for the shelf and for the hand.</span></span></div>
+        <div class="row"><span class="num">05</span><span><b>Brand Refresh</b><span class="desc">Keep the equity you have built, lose what is holding it back.</span></span></div>
+      </div>
+    </div>
+    <p class="note">Speaks the same language as the work index, so the home page would have one consistent behaviour: names first, detail on reach. The catch is that on a phone there is no hover, so every description has to be open, and then it is simply SV1 again in a taller shape.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">SV7</span><h3>A band that scrolls sideways</h3></div></div>
+    <div class="stage">
+      <div class="sv-band">
+        <ul>
+          <li><span class="num">01</span><b>Brand Strategy</b><small>The argument for your brand</small></li>
+          <li><span class="num">02</span><b>Naming &amp; Tone</b><small>A name people remember</small></li>
+          <li><span class="num">03</span><b>Visual Identity</b><small>Built as a system</small></li>
+          <li><span class="num">04</span><b>Packaging</b><small>Structure and surface</small></li>
+          <li><span class="num">05</span><b>Brand Refresh</b><small>Keep the equity</small></li>
+          <li><span class="num">06</span><b>Guidelines</b><small>So it survives</small></li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">Drag it sideways. Compact and it feels alive, but horizontal scrolling hides things: most people will see four services and assume that is all of them. I would not choose this for a list you want read.</p>
+
+    <div class="verdict">
+      <p><b>My reading, now that there are seven:</b> SV5. It is the only layout that argues rather than lists, and the argument is one you have already written on the About page and in the approach section. SV4 is the safe pick if SV5 feels like too much structure.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Testimonials, T6 with the marker</h2>
+    <p class="lede">One at a time, full quote, with the highlighter landing on the phrase that sells. Watch it cycle, or press the dots.</p>
+
+    <div class="stage">
+      <ul class="solo" id="solo">
+        <li class="on">
+          <img class="qm" src="../../brand-assets-backup/Brand Assets/Graphics/Asset 111@4x.png" alt="">
+          <q>Sneha is one of those rare people who <span class="marker"><span class="ink" aria-hidden="true"></span><span class="txt">just gets it</span></span>: you don&rsquo;t have to explain the brief twice, you don&rsquo;t have to chase for updates, and you definitely don&rsquo;t have to worry about the output.</q>
+          <span class="by"><b>Bhawika Kala</b><small>Founder, Mannchala Moodlab</small></span>
+        </li>
+        <li>
+          <img class="qm" src="../../brand-assets-backup/Brand Assets/Graphics/Asset 111@4x.png" alt="">
+          <q>I absolutely loved how detailed and thorough Sneha&rsquo;s work is. Each detail is <span class="marker"><span class="ink" aria-hidden="true"></span><span class="txt">well thought of, clean</span></span>. I just want to applaud her commendable work.</q>
+          <span class="by"><b>Twinkle Lohia</b><small>Managing Director, Sunlife International</small></span>
+        </li>
+        <li>
+          <img class="qm" src="../../brand-assets-backup/Brand Assets/Graphics/Asset 111@4x.png" alt="">
+          <q>She showcased an <span class="marker"><span class="ink" aria-hidden="true"></span><span class="txt">exceptional grasp of my requirements</span></span>, delivering high-quality work within the promised timeline, and provided valuable suggestions that enhanced the overall design.</q>
+          <span class="by"><b>Shruti Patki</b><small>Founder, Asmi</small></span>
+        </li>
+      </ul>
+      <div class="solo-dots" id="soloDots"></div>
+    </div>
+
+    <ul class="plain">
+      <li><b>The marker redraws on every quote</b>, so the yellow is the thing that signals a new one has arrived. That is what makes the change feel deliberate rather than a slideshow ticking over.</li>
+      <li><b>It pauses when you hover</b>, so nobody loses a quote halfway through reading it.</li>
+      <li><b>Timing:</b> currently five seconds each. The longest quote takes about eleven seconds to read carefully, so I would rather it advanced slowly, or only on click. Tell me which.</li>
+      <li><b>The quote mark is Asset 111</b>, coffee for light and 97 yellow for dark.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>What I need back</h2>
+    <ul class="plain">
+      <li>Hero easing: <b>E2, E3 or E4</b></li>
+      <li>Services: <b>SV2, SV4, SV5, SV6 or SV7</b></li>
+      <li>Testimonial timing: <b>five seconds, slower, or click only</b></li>
+      <li>Featured project: <b>always Swirly, or whichever has the lowest order</b></li>
+      <li>Any marks from the table you want added or dropped</li>
+    </ul>
+    <p class="note">Work is settled as WK5, testimonials as T6 with the marker. After this I stop making files and build it.</p>
+  </section>
+
+  <footer>
+    <p>A working file, not part of the site. Earlier rounds: <code>animation-lab.html</code>, <code>animation-menu.html</code>, <code>animation-round2.html</code>, <code>animation-round3.html</code>.</p>
+  </footer>
+
+</main>
+
+<script>
+(function () {
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var G = '../../brand-assets-backup/Brand Assets/Graphics/Asset ';
+
+  /* ---------- the alphabet table ----------
+     Fourteen core glyphs start at blue 28, yellow 42, white 56, coffee 70.
+     Seven extras start at blue 84, yellow 91, white 98, coffee 105. */
+  var core = ['diamond','hash','tick','square','S curve','ring','chevron','infinity','approximately','ellipsis','ampersand','brace right','brace left','braces'];
+  var extra = ['heart','tick, bold','question','blob','triangle','asterisk','quote marks'];
+  var uses = {
+    'diamond':'Section headings, the mark that breathes',
+    'ring':'The 404 zero, settled',
+    'question':'The FAQ heading',
+    'tick':'Package inclusions',
+    'braces':'The About page, engineering paragraph',
+    'ellipsis':'Section breaks',
+    'approximately':'Figures like twenty plus',
+    'quote marks':'Testimonial cards',
+    'infinity':'Returning clients, optional',
+    'heart':'Footer sign off',
+    'square':'Design, as a stage header',
+    'blob':'Solid, not a ring, so not the 404'
+  };
+  var picked = { 'diamond':1,'ring':1,'question':1,'tick':1,'braces':1,'ellipsis':1,'approximately':1,'quote marks':1,'heart':1 };
+
+  var body = document.querySelector('#alpha tbody');
+  function row(name, blue, yellow, white, coffee) {
+    var tr = document.createElement('tr');
+    if (picked[name]) tr.className = 'picked';
+    var cells = [];
+    cells.push('<td class="g">' + name + '</td>');
+    [blue, yellow, white, coffee].forEach(function (n) {
+      cells.push('<td><span class="swatch-row"><img loading="lazy" src="' + G + n + '@4x.png" alt=""><span class="n">' + n + '</span></span></td>');
+    });
+    cells.push('<td class="use">' + (uses[name] || '') + '</td>');
+    tr.innerHTML = cells.join('');
+    body.appendChild(tr);
+  }
+  core.forEach(function (name, i) { row(name, 28 + i, 42 + i, 56 + i, 70 + i); });
+  extra.forEach(function (name, i) { row(name, 84 + i, 91 + i, 98 + i, 105 + i); });
+
+  /* ---------- WK5: the cover follows the pointer ---------- */
+  document.querySelectorAll('[data-index]').forEach(function (list) {
+    var preview = list.querySelector('.idx-preview');
+    var img = preview.querySelector('img');
+    list.querySelectorAll('.idx-row').forEach(function (r) {
+      r.addEventListener('pointerenter', function () {
+        img.src = r.getAttribute('data-cover');
+        preview.classList.add('show');
+      });
+      r.addEventListener('click', function (e) { e.preventDefault(); });
+    });
+    list.addEventListener('pointermove', function (e) {
+      var b = list.getBoundingClientRect();
+      preview.style.left = (e.clientX - b.left) + 'px';
+      preview.style.top = (e.clientY - b.top) + 'px';
+    });
+    list.addEventListener('pointerleave', function () { preview.classList.remove('show'); });
+  });
+
+  /* ---------- T6 with the marker ---------- */
+  var solo = document.getElementById('solo');
+  var dots = document.getElementById('soloDots');
+  if (solo && dots) {
+    var items = Array.prototype.slice.call(solo.children);
+    var at = 0, timer = null, paused = false;
+
+    items.forEach(function (_, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('aria-label', 'Testimonial ' + (i + 1));
+      if (i === 0) b.className = 'on';
+      b.addEventListener('click', function () { show(i); restart(); });
+      dots.appendChild(b);
+    });
+
+    function show(i) {
+      at = i;
+      items.forEach(function (li, n) {
+        li.classList.toggle('on', n === i);
+        if (n === i) {
+          // restart the marker so the yellow redraws on every quote
+          var ink = li.querySelector('.ink');
+          if (ink) { ink.style.animation = 'none'; void ink.offsetWidth; ink.style.animation = ''; }
+        }
+      });
+      Array.prototype.forEach.call(dots.children, function (d, n) { d.classList.toggle('on', n === i); });
+    }
+    function restart() {
+      if (timer) clearInterval(timer);
+      if (reduced) return;
+      timer = setInterval(function () { if (!paused) show((at + 1) % items.length); }, 5000);
+    }
+    solo.addEventListener('pointerenter', function () { paused = true; });
+    solo.addEventListener('pointerleave', function () { paused = false; });
+    restart();
+  }
+})();
+</script>
+
+</body>
+</html>
