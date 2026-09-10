@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Round six</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Work+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<style>
+  :root {
+    --paper:#FBF9F4; --paper-2:#F4F0E7; --paper-3:#EDE7DA; --ink:#2A211A;
+    --ink-2:#6C5F54; --ink-3:#7A7168; --line:#E3DDD0; --line-2:#D3CABA;
+    --yellow:#FFF176; --yellow-soft:#FEFBE0; --blue:#00A7E1; --link:#0077A8;
+    --measure:68ch; --radius:14px; --radius-sm:8px;
+    --ease:cubic-bezier(.22,.61,.36,1);
+    --ease-expo:cubic-bezier(.16,1,.3,1);
+  }
+  @media (prefers-color-scheme:dark) {
+    :root:not([data-theme="light"]) {
+      --paper:#1A1512; --paper-2:#221C17; --paper-3:#2A211A; --ink:#FBF9F4;
+      --ink-2:#B3A99D; --ink-3:#8A7F73; --line:#3A312A; --line-2:#4A4037;
+      --yellow-soft:#332E17; --link:#4CC5EF;
+    }
+    .mk { filter:invert(1) brightness(1.7); }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:"Work Sans",ui-sans-serif,system-ui,sans-serif; line-height:1.62; -webkit-font-smoothing:antialiased; }
+  ::selection { background:var(--yellow); color:#2A211A; }
+  img { max-width:100%; display:block; }
+
+  .page { max-width:62rem; margin:0 auto; padding:clamp(2rem,6vw,4.5rem) clamp(1.15rem,5vw,2rem) 7rem; }
+  h1,h2,h3,h4 { font-family:Newsreader,Georgia,"Times New Roman",serif; font-weight:500; line-height:1.16; margin:0; text-wrap:balance; }
+  p { margin:0; max-width:var(--measure); }
+  a { color:var(--link); }
+  .eyebrow { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.8rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin:0; }
+  code { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.85em; background:var(--paper-2); border:1px solid var(--line); border-radius:3px; padding:.1em .34em; }
+
+  header.masthead { display:flex; flex-direction:column; gap:.9rem; padding-bottom:1.8rem; border-bottom:2px solid var(--ink); }
+  header.masthead h1 { font-size:clamp(2.2rem,6vw,3.1rem); letter-spacing:-.015em; }
+  header.masthead p { font-size:1.15rem; color:var(--ink-2); }
+
+  section { padding-top:3.4rem; display:flex; flex-direction:column; gap:1.1rem; }
+  section > h2 { font-size:clamp(1.7rem,4vw,2.2rem); }
+  section > .lede { color:var(--ink-2); margin-top:-.45rem; }
+  h3 { font-size:1.15rem; }
+  .note { color:var(--ink-2); font-size:.95rem; max-width:var(--measure); }
+  .note b { color:var(--ink); font-weight:500; }
+
+  .bar-head { display:flex; flex-wrap:wrap; gap:.6rem 1rem; align-items:baseline; justify-content:space-between; margin-top:1.4rem; }
+  .bar-head .name { display:flex; gap:.7rem; align-items:baseline; }
+  .key { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.78rem; font-weight:700; color:var(--ink-2); border-top:2px solid var(--ink); padding-top:.25rem; }
+  .stage { position:relative; border:1px solid var(--line); border-radius:var(--radius); background:var(--paper); padding:clamp(1.2rem,3vw,2rem); overflow:hidden; }
+
+  .warn { border-left:3px solid var(--blue); background:var(--paper-2); padding:1rem 1.15rem; max-width:var(--measure); font-size:.95rem; }
+  .verdict { border-left:3px solid var(--yellow); background:var(--paper-2); padding:1rem 1.15rem; display:flex; flex-direction:column; gap:.55rem; max-width:var(--measure); }
+  .verdict p { max-width:none; }
+
+  .mk { object-fit:contain; }
+
+  /* ================= P3 with deliverables ================= */
+  .pk { display:grid; grid-template-columns:repeat(auto-fit,minmax(17rem,1fr)); gap:1rem; list-style:none; margin:0; padding:0; }
+  .pk-card { border:1px solid var(--line); border-radius:var(--radius); background:var(--paper); padding:1.4rem; display:flex; flex-direction:column; gap:.8rem; transition:border-color .3s var(--ease); }
+  .pk-card:hover { border-color:var(--ink); }
+  .pk-top { display:flex; align-items:center; gap:.6rem; padding-bottom:.7rem; border-bottom:2px solid var(--ink); }
+  .pk-top img { width:1.25rem; height:1.25rem; }
+  .pk-top h4 { font-size:1.2rem; }
+  .pk-leave { font-family:Newsreader,Georgia,serif; font-size:1.15rem; line-height:1.35; }
+  .pk-who { font-size:.86rem; color:var(--ink-2); }
+  .pk-label { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); }
+  .pk-meta { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); margin-top:auto; padding-top:.85rem; border-top:1px solid var(--line); }
+
+  /* D1 ticks */
+  .pk-ticks { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.4rem; }
+  .pk-ticks li { display:grid; grid-template-columns:.95rem 1fr; gap:.55rem; align-items:start; font-size:.88rem; }
+  .pk-ticks img { width:.95rem; height:.95rem; margin-top:.32em; }
+
+  /* D2 a plain hairline list */
+  .pk-rows { list-style:none; margin:0; padding:0; }
+  .pk-rows li { font-size:.88rem; padding:.45rem 0; border-bottom:1px solid var(--line); }
+  .pk-rows li:first-child { border-top:1px solid var(--line); }
+
+  /* D3 a run-on line */
+  .pk-run { font-size:.88rem; color:var(--ink-2); }
+  .pk-run b { color:var(--ink); font-weight:500; }
+
+  /* D4 opens */
+  .pk-more { border:0; background:none; padding:0; cursor:pointer; font:inherit; color:inherit; display:flex; align-items:center; gap:.5rem; text-align:left; }
+  .pk-more .n { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3); }
+  .pk-more .plus { margin-left:auto; color:var(--ink-3); transition:transform .4s cubic-bezier(.34,1.56,.64,1); }
+  .pk-more[aria-expanded="true"] .plus { transform:rotate(135deg); }
+  .pk-panel { max-height:0; overflow:hidden; transition:max-height .45s var(--ease-expo); }
+  .pk-panel.open { max-height:16rem; }
+
+  /* ================= work page ================= */
+  .wk-tag { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.66rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); }
+
+  /* W1 overlapping type */
+  .ov { display:flex; flex-direction:column; gap:3.5rem; }
+  .ov-item { position:relative; text-decoration:none; color:inherit; display:block; }
+  .ov-media { width:82%; aspect-ratio:16/10; border-radius:var(--radius); overflow:hidden; border:1px solid var(--line); }
+  .ov-item:nth-child(even) .ov-media { margin-left:auto; }
+  .ov-media img { width:100%; height:100%; object-fit:cover; transition:transform .7s var(--ease); }
+  .ov-item:hover .ov-media img { transform:scale(1.04); }
+  .ov-cap { position:absolute; bottom:-1.4rem; right:0; text-align:right; }
+  .ov-item:nth-child(even) .ov-cap { right:auto; left:0; text-align:left; }
+  .ov-cap h4 { font-size:clamp(2rem,6vw,3.6rem); letter-spacing:-.025em; line-height:1; }
+  .ov-cap .wk-tag { display:block; margin-top:.35rem; }
+
+  /* W2 staggered grid */
+  .stag { display:grid; grid-template-columns:repeat(12,1fr); gap:1.2rem 1.4rem; align-items:start; }
+  .stag a { text-decoration:none; color:inherit; display:flex; flex-direction:column; gap:.55rem; }
+  .stag img { width:100%; border-radius:var(--radius); border:1px solid var(--line); object-fit:cover; }
+  .stag h4 { font-size:1.3rem; }
+  .s1 { grid-column:1 / span 7; }
+  .s1 img { aspect-ratio:4/3; }
+  .s2 { grid-column:9 / span 4; margin-top:4rem; }
+  .s2 img { aspect-ratio:3/4; }
+  .s3 { grid-column:2 / span 4; margin-top:1rem; }
+  .s3 img { aspect-ratio:1/1; }
+  .s4 { grid-column:7 / span 6; margin-top:-2rem; }
+  .s4 img { aspect-ratio:3/2; }
+  .s5 { grid-column:3 / span 8; }
+  .s5 img { aspect-ratio:16/9; }
+  @media (max-width:46rem) {
+    .stag { grid-template-columns:1fr; }
+    .stag > * { grid-column:1 !important; margin-top:0 !important; }
+  }
+
+  /* W3 sticky title */
+  .sticky-wrap { display:grid; grid-template-columns:1fr 1.4fr; gap:2.5rem; align-items:start; }
+  .sticky-side { position:sticky; top:1.5rem; display:flex; flex-direction:column; gap:.5rem; }
+  .sticky-side h4 { font-size:clamp(1.8rem,4vw,2.6rem); }
+  .sticky-side p { font-size:.92rem; color:var(--ink-2); }
+  .sticky-shots { display:flex; flex-direction:column; gap:1rem; }
+  .sticky-shots img { width:100%; border-radius:var(--radius); border:1px solid var(--line); aspect-ratio:4/3; object-fit:cover; }
+  @media (max-width:44rem) { .sticky-wrap { grid-template-columns:1fr; } .sticky-side { position:static; } }
+
+  /* W4 dossier */
+  .doss { display:flex; flex-direction:column; }
+  .doss-item { display:grid; grid-template-columns:1.1fr 1fr; gap:1.6rem; padding:1.8rem 0; border-top:1px solid var(--line); text-decoration:none; color:inherit; align-items:center; }
+  .doss-item:last-child { border-bottom:1px solid var(--line); }
+  .doss-media { aspect-ratio:3/2; border-radius:var(--radius); overflow:hidden; border:1px solid var(--line); }
+  .doss-media img { width:100%; height:100%; object-fit:cover; }
+  .doss-body h4 { font-size:clamp(1.5rem,3.2vw,2.1rem); margin-bottom:.6rem; }
+  .doss-facts { display:grid; grid-template-columns:auto 1fr; gap:.3rem 1rem; margin:0; font-size:.82rem; }
+  .doss-facts dt { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); padding-top:.2em; }
+  .doss-facts dd { margin:0; }
+  @media (max-width:44rem) { .doss-item { grid-template-columns:1fr; } }
+
+  /* W5 numbered spreads */
+  .spread { display:flex; flex-direction:column; gap:2.5rem; }
+  .spread-item { text-decoration:none; color:inherit; display:grid; grid-template-columns:3.5rem 1fr; gap:1.4rem; }
+  .spread-n { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.7rem; color:var(--ink-3); border-top:2px solid var(--ink); padding-top:.5rem; }
+  .spread-body { display:flex; flex-direction:column; gap:.9rem; }
+  .spread-head { display:flex; flex-wrap:wrap; gap:.3rem 1rem; align-items:baseline; justify-content:space-between; }
+  .spread-head h4 { font-size:clamp(1.6rem,3.6vw,2.4rem); }
+  .spread-shots { display:grid; grid-template-columns:2fr 1fr; gap:.8rem; }
+  .spread-shots img { width:100%; height:100%; object-fit:cover; border-radius:var(--radius); border:1px solid var(--line); aspect-ratio:3/2; }
+  .spread-shots img:nth-child(2) { aspect-ratio:3/4; }
+  @media (max-width:44rem) { .spread-item { grid-template-columns:1fr; } .spread-shots { grid-template-columns:1fr; } .spread-shots img:nth-child(2) { display:none; } }
+
+  footer { margin-top:4.5rem; padding-top:1.4rem; border-top:1px solid var(--line); color:var(--ink-2); font-size:.94rem; }
+  @media (prefers-reduced-motion:reduce) { * { transition-duration:.001ms !important; } }
+</style>
+</head>
+<body>
+
+<main class="page">
+
+  <header class="masthead">
+    <p class="eyebrow">Working file, round six</p>
+    <h1>Round six</h1>
+    <p>P3 with the deliverables shown, four ways. Then five more work page layouts.</p>
+  </header>
+
+  <section>
+    <h2>U4 is on the site</h2>
+    <p class="lede">Pushed, so it is on the preview rather than in here. Hero, closing band, testimonials and the contact email all use it.</p>
+    <p class="note">One stroke of constant thickness with fully rounded terminals and a single gentle wave, stroked rather than filled. The old one was a filled lens that came to a point at each end, and a point at the end of a marker stroke is what read as a bulge. Look at it on the closing band first, since that is where it was worst.</p>
+  </section>
+
+  <section>
+    <h2>P3, with the deliverables</h2>
+    <p class="lede">You are right that a founder cannot judge a package without knowing what arrives. Same card in all four, only the deliverables treatment changes.</p>
+
+    <div class="warn">
+      <p><b>The deliverables below are mine, not yours.</b> I have written plausible ones from your service descriptions so the layouts can be judged at real length. Every one of them needs replacing with what you actually hand over, and none of it should go live until you have written it.</p>
+    </div>
+
+    <div class="bar-head"><div class="name"><span class="key">D1</span><h3>A tick list</h3></div></div>
+    <div class="stage">
+      <ul class="pk">
+        <li class="pk-card">
+          <span class="pk-top"><img class="mk" src="../public/img/marks/diamond-blue.png" alt=""><h4>Brand Strategy</h4></span>
+          <p class="pk-leave">You leave knowing what your brand says and why.</p>
+          <p class="pk-who">For founders with a product but no clear point of view yet.</p>
+          <span class="pk-label">What you get</span>
+          <ul class="pk-ticks">
+            <li><img class="mk" src="../public/img/marks/tick-blue.png" alt="">Positioning statement</li>
+            <li><img class="mk" src="../public/img/marks/tick-blue.png" alt="">Audience and category map</li>
+            <li><img class="mk" src="../public/img/marks/tick-blue.png" alt="">Messaging framework</li>
+            <li><img class="mk" src="../public/img/marks/tick-blue.png" alt="">Two working sessions</li>
+          </ul>
+          <div class="pk-meta">Timeline to confirm</div>
+        </li>
+        <li class="pk-card">
+          <span class="pk-top"><img class="mk" src="../public/img/marks/square-blue.png" alt=""><h4>Visual Identity</h4></span>
+          <p class="pk-leave">You leave with an identity you can use without me.</p>
+          <p class="pk-who">For founders whose strategy is set but whose look doesn&rsquo;t match it.</p>
+          <span class="pk-label">What you get</span>
+          <ul class="pk-ticks">
+            <li><img class="mk" src="../public/img/marks/tick-blue.png" alt="">Logo suite and marks</li>
+            <li><img class="mk" src="../public/img/marks/tick-blue.png" alt="">Type and colour system</li>
+            <li><img class="mk" src="../public/img/marks/tick-blue.png" alt="">Art direction for imagery</li>
+            <li><img class="mk" src="../public/img/marks/tick-blue.png" alt="">Guidelines document</li>
+          </ul>
+          <div class="pk-meta">Timeline to confirm</div>
+        </li>
+      </ul>
+    </div>
+    <p class="note">Your drawn tick, four times per card. It reads as a promise rather than a spec, and it puts one of your marks somewhere it genuinely means something. The risk is repetition: sixteen ticks on one page is a lot of the same shape.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">D2</span><h3>A hairline list</h3></div></div>
+    <div class="stage">
+      <ul class="pk">
+        <li class="pk-card">
+          <span class="pk-top"><img class="mk" src="../public/img/marks/diamond-blue.png" alt=""><h4>Brand Strategy</h4></span>
+          <p class="pk-leave">You leave knowing what your brand says and why.</p>
+          <p class="pk-who">For founders with a product but no clear point of view yet.</p>
+          <span class="pk-label">What you get</span>
+          <ul class="pk-rows">
+            <li>Positioning statement</li>
+            <li>Audience and category map</li>
+            <li>Messaging framework</li>
+            <li>Two working sessions</li>
+          </ul>
+          <div class="pk-meta">Timeline to confirm</div>
+        </li>
+        <li class="pk-card">
+          <span class="pk-top"><img class="mk" src="../public/img/marks/square-blue.png" alt=""><h4>Visual Identity</h4></span>
+          <p class="pk-leave">You leave with an identity you can use without me.</p>
+          <p class="pk-who">For founders whose strategy is set but whose look doesn&rsquo;t match it.</p>
+          <span class="pk-label">What you get</span>
+          <ul class="pk-rows">
+            <li>Logo suite and marks</li>
+            <li>Type and colour system</li>
+            <li>Art direction for imagery</li>
+            <li>Guidelines document</li>
+          </ul>
+          <div class="pk-meta">Timeline to confirm</div>
+        </li>
+      </ul>
+    </div>
+    <p class="note">The same information with nothing decorating it. Rules rather than ticks, which suits a page whose job is to be clear about money and scope. It also lets the deliverables run to five or six without the card becoming a wall of marks.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">D3</span><h3>One run-on line</h3></div></div>
+    <div class="stage">
+      <ul class="pk">
+        <li class="pk-card">
+          <span class="pk-top"><img class="mk" src="../public/img/marks/diamond-blue.png" alt=""><h4>Brand Strategy</h4></span>
+          <p class="pk-leave">You leave knowing what your brand says and why.</p>
+          <p class="pk-who">For founders with a product but no clear point of view yet.</p>
+          <p class="pk-run"><b>You get</b> a positioning statement, an audience and category map, a messaging framework, and two working sessions.</p>
+          <div class="pk-meta">Timeline to confirm</div>
+        </li>
+        <li class="pk-card">
+          <span class="pk-top"><img class="mk" src="../public/img/marks/square-blue.png" alt=""><h4>Visual Identity</h4></span>
+          <p class="pk-leave">You leave with an identity you can use without me.</p>
+          <p class="pk-who">For founders whose strategy is set but whose look doesn&rsquo;t match it.</p>
+          <p class="pk-run"><b>You get</b> a logo suite and marks, a type and colour system, art direction for imagery, and a guidelines document.</p>
+          <div class="pk-meta">Timeline to confirm</div>
+        </li>
+      </ul>
+    </div>
+    <p class="note">Shortest card of the four, and it reads like a person talking rather than an invoice. It is also the easiest to skim past, which is the opposite of what a deliverables list is for.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">D4</span><h3>Counted, and it opens</h3></div></div>
+    <div class="stage">
+      <ul class="pk" id="d4">
+        <li class="pk-card">
+          <span class="pk-top"><img class="mk" src="../public/img/marks/diamond-blue.png" alt=""><h4>Brand Strategy</h4></span>
+          <p class="pk-leave">You leave knowing what your brand says and why.</p>
+          <p class="pk-who">For founders with a product but no clear point of view yet.</p>
+          <button class="pk-more" type="button" aria-expanded="false"><span class="n">Four deliverables</span><span class="plus">+</span></button>
+          <div class="pk-panel">
+            <ul class="pk-rows">
+              <li>Positioning statement</li>
+              <li>Audience and category map</li>
+              <li>Messaging framework</li>
+              <li>Two working sessions</li>
+            </ul>
+          </div>
+          <div class="pk-meta">Timeline to confirm</div>
+        </li>
+        <li class="pk-card">
+          <span class="pk-top"><img class="mk" src="../public/img/marks/square-blue.png" alt=""><h4>Visual Identity</h4></span>
+          <p class="pk-leave">You leave with an identity you can use without me.</p>
+          <p class="pk-who">For founders whose strategy is set but whose look doesn&rsquo;t match it.</p>
+          <button class="pk-more" type="button" aria-expanded="false"><span class="n">Four deliverables</span><span class="plus">+</span></button>
+          <div class="pk-panel">
+            <ul class="pk-rows">
+              <li>Logo suite and marks</li>
+              <li>Type and colour system</li>
+              <li>Art direction for imagery</li>
+              <li>Guidelines document</li>
+            </ul>
+          </div>
+          <div class="pk-meta">Timeline to confirm</div>
+        </li>
+      </ul>
+    </div>
+    <p class="note">Cards stay the same height whatever the package includes, and the count is visible without opening anything. But a deliverables list is the thing a founder came to read, and this hides it behind a click.</p>
+
+    <div class="verdict">
+      <p><b>My reading:</b> D2. On a page about scope and money, the plain list is the honest one, and it survives a package growing to six deliverables where the ticks would not. D1 if you want the warmth, and then only if the tick appears nowhere else on the page.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>The work page, five more</h2>
+    <p class="lede">Five projects, a page whose only job is to make someone open one of them.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">W1</span><h3>Type overlapping the image</h3></div></div>
+    <div class="stage">
+      <div class="ov">
+        <a class="ov-item" href="#">
+          <span class="ov-media"><img src="../public/work/swirly/cover.jpg" alt=""></span>
+          <span class="ov-cap"><h4>Swirly</h4><span class="wk-tag">Ice cream &middot; 2026</span></span>
+        </a>
+        <a class="ov-item" href="#">
+          <span class="ov-media"><img src="../public/work/paloma/cover.jpg" alt=""></span>
+          <span class="ov-cap"><h4>Paloma</h4><span class="wk-tag">Hospitality &middot; 2026</span></span>
+        </a>
+      </div>
+    </div>
+    <p class="note">The image stops short of the page and the name hangs off its corner, alternating side to side. Type at that size becomes the structure of the page rather than a label under a picture. It is the most editorial of everything here and it needs your covers to be strong, which they are.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">W2</span><h3>A staggered grid</h3></div></div>
+    <div class="stage">
+      <div class="stag">
+        <a class="s1" href="#"><img src="../public/work/swirly/cover.jpg" alt=""><h4>Swirly</h4><span class="wk-tag">Ice cream</span></a>
+        <a class="s2" href="#"><img src="../public/work/paloma/cover.jpg" alt=""><h4>Paloma</h4><span class="wk-tag">Hospitality</span></a>
+        <a class="s3" href="#"><img src="../public/work/asmi/cover.jpg" alt=""><h4>Asmi</h4><span class="wk-tag">Clothing</span></a>
+        <a class="s4" href="#"><img src="../public/work/lumeya/cover.jpg" alt=""><h4>Lumeya</h4><span class="wk-tag">Skincare</span></a>
+        <a class="s5" href="#"><img src="../public/work/sunlife-international/cover.jpg" alt=""><h4>Sunlife International</h4><span class="wk-tag">Corporate</span></a>
+      </div>
+    </div>
+    <p class="note">Every project a different size and shape, placed on a twelve column grid rather than in rows. It reads as a designer arranging a spread instead of a system filling slots, which is the argument your whole site makes. The catch is that it is hand placed: adding a sixth project means deciding where it goes rather than it appearing.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">W3</span><h3>Sticky title, work scrolls past</h3></div></div>
+    <div class="stage">
+      <div class="sticky-wrap">
+        <div class="sticky-side">
+          <span class="wk-tag">01 &middot; Ice cream &middot; 2026</span>
+          <h4>Swirly</h4>
+          <p>A playful, contemporary ice cream brand built to reimagine how indulgence looks and feels.</p>
+        </div>
+        <div class="sticky-shots">
+          <img src="../public/work/swirly/cover.jpg" alt="">
+          <img src="../public/work/swirly/cafe-storefront.jpg" alt="">
+          <img src="../public/work/swirly/outdoor-ad.jpg" alt="">
+        </div>
+      </div>
+    </div>
+    <p class="note">Scroll inside the page and the name holds while the work moves past it. Each project gets three shots instead of one, so the work page starts doing some of the job the case study does. The most generous option, and the longest.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">W4</span><h3>A dossier</h3></div></div>
+    <div class="stage">
+      <div class="doss">
+        <a class="doss-item" href="#">
+          <span class="doss-media"><img src="../public/work/asmi/cover.jpg" alt=""></span>
+          <span class="doss-body">
+            <h4>Asmi</h4>
+            <dl class="doss-facts">
+              <dt>Client</dt><dd>Shruti Patki</dd>
+              <dt>Sector</dt><dd>Clothing</dd>
+              <dt>Year</dt><dd>2026</dd>
+              <dt>Services</dt><dd>Brand Strategy, Visual Identity, Packaging</dd>
+            </dl>
+          </span>
+        </a>
+        <a class="doss-item" href="#">
+          <span class="doss-media"><img src="../public/work/sunlife-international/cover.jpg" alt=""></span>
+          <span class="doss-body">
+            <h4>Sunlife International</h4>
+            <dl class="doss-facts">
+              <dt>Client</dt><dd>Twinkle Lohia</dd>
+              <dt>Sector</dt><dd>Corporate</dd>
+              <dt>Year</dt><dd>2026</dd>
+              <dt>Services</dt><dd>Brand Identity, Stationery</dd>
+            </dl>
+          </span>
+        </a>
+      </div>
+    </div>
+    <p class="note">The facts that are already at the top of every case study, brought forward. It suits a visitor who is checking whether you have worked in their category, which is what a lot of founders are actually doing on a work page. Cooler and more professional, less seductive.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">W5</span><h3>Numbered spreads</h3></div></div>
+    <div class="stage">
+      <div class="spread">
+        <a class="spread-item" href="#">
+          <span class="spread-n">01</span>
+          <span class="spread-body">
+            <span class="spread-head"><h4>Swirly</h4><span class="wk-tag">Visual Identity &middot; Packaging</span></span>
+            <span class="spread-shots">
+              <img src="../public/work/swirly/cover.jpg" alt="">
+              <img src="../public/work/swirly/strawberry-tub.jpg" alt="">
+            </span>
+          </span>
+        </a>
+        <a class="spread-item" href="#">
+          <span class="spread-n">02</span>
+          <span class="spread-body">
+            <span class="spread-head"><h4>Paloma</h4><span class="wk-tag">Brand Strategy &middot; Visual Identity</span></span>
+            <span class="spread-shots">
+              <img src="../public/work/paloma/cover.jpg" alt="">
+              <img src="../public/work/paloma/tote.jpg" alt="">
+            </span>
+          </span>
+        </a>
+      </div>
+    </div>
+    <p class="note">Two images per project, one wide and one tall, under a numbered rule. It gives a hint of range without the length of W3, and unlike W2 it is a system, so a sixth project needs no decision from you. This is the one I would build.</p>
+
+    <div class="verdict">
+      <p><b>My reading:</b> W5 for the work page and W1 if you want the site to be remembered. W2 is the most beautiful and the only one that will fight you every time you add a project, which over a career is a real cost.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>What I need back</h2>
+    <p>Deliverables: <b>D1, D2, D3 or D4</b>. Work page: <b>W1 to W5</b>, or F1 to F3 from round five.</p>
+    <p class="note">And the real deliverables, whenever you have them. Everything in this file is a placeholder I wrote.</p>
+  </section>
+
+  <footer>
+    <p>A working file, not part of the site.</p>
+  </footer>
+
+</main>
+
+<script>
+  document.querySelectorAll('#d4 .pk-more').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var open = b.getAttribute('aria-expanded') === 'true';
+      b.setAttribute('aria-expanded', String(!open));
+      var panel = b.nextElementSibling;
+      if (panel) panel.classList.toggle('open', !open);
+    });
+  });
+</script>
+
+</body>
+</html>
