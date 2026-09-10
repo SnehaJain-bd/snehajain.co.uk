@@ -680,7 +680,6 @@ details.qa[open] summary{ font-weight:500; }
   max-width:18ch;
   margin:0 auto 1.75rem;
 }
-.cta-band__title .mark{ background:var(--yellow); color:#2A211A; }
 .cta-band__lede{
   max-width:46ch;
   margin:0 auto 2.5rem;
@@ -1427,11 +1426,10 @@ figcaption{
    A soft wash of yellow that follows the pointer, so the page is
    never completely still anywhere.
 
-   One pointer listener in CursorField writes --fx and --fy onto the
-   root element. Two layers read them: the fixed one below, which sits
-   behind the whole page, and .hero__field, which sits above the hero
-   stripes rather than behind them, because an opaque background would
-   otherwise hide it.
+   One loop in CursorField drives every layer on the page: the fixed
+   one below, which sits behind the whole page, and the local copies in
+   sections whose own opaque background would otherwise hide it, the
+   hero above its stripes and the closing band above its dark ground.
 
    Yellow only. Blue is easier to see on off-white and that is exactly
    the trap: it would be visible because it is foreign, and the rest of
@@ -1448,10 +1446,6 @@ figcaption{
      over dark coffee stops reading as light falling on paper and starts
      reading as something glowing in the dark. */
   --field-tint: var(--yellow);
-  /* Written by CursorField. These are the resting values used before
-     the first frame, and the final values under reduced motion. */
-  --fx: 50%;
-  --fy: 38%;
 }
 
 .cursor-field{

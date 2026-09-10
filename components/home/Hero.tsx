@@ -12,9 +12,9 @@ import { FieldLayers } from '@/components/motion/CursorField';
   buttons at 1.42. The marker is the only thing that moves, which is why
   it lands.
 
-  hero__field is the cursor light sitting above the stripes rather than
-  behind them. It reads --fx and --fy, which CursorField writes onto the
-  root element from a single pointer listener.
+  The hero carries its own copy of the light, because its stripes are an
+  opaque background and would otherwise hide the page-wide one. Both are
+  driven by the same loop, so they move together.
 */
 export default function Hero() {
   return (
