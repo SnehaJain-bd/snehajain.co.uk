@@ -2036,18 +2036,33 @@ main,
 .section--lit{ position:relative; isolation:isolate; }
 .section--lit > .wrap{ position:relative; z-index:1; }
 
+/* Dark in light mode, so its light has to go pale too. Dark mode and
+   the closing band were told this; this one was missed, and yellow over
+   dark coffee glows rather than falls wherever it happens. */
+.section--dark{ --field-tint:#FBF9F4; --field-strength:.2; }
+
+/* The bar keeps its height whether or not the clock has rendered, and
+   the clock keeps its width, so nothing shuffles when the time lands. */
+.status-bar__clock{
+  display:inline-block;
+  min-width:4.4ch;
+  font-variant-numeric:tabular-nums;
+}
+.status-bar__inner{ min-height:2.4rem; }
+
 /* The braces sitting beside the engineering paragraph on the About page.
    Aligned to the cap height rather than the line box, so it reads as
    punctuation set into the heading rather than an icon bolted in front. */
-.story__mark{ display:inline-block; vertical-align:-.06em; }
+/* At .62em they read as specks rather than punctuation. */
+.story__mark{ display:inline-block; vertical-align:-.16em; }
 .story__mark img{
   display:block;
-  width:.62em;
-  height:.62em;
+  width:.92em;
+  height:.92em;
   object-fit:contain;
 }
-.story__mark--open{ margin-right:.28em; }
-.story__mark--close{ margin-left:.24em; }
+.story__mark--open{ margin-right:.2em; }
+.story__mark--close{ margin-left:.16em; }
 
 /* H7: the highlighter sweeping behind a link on hover. Deliberately not
    on every link, only the ones worth reaching for. */

@@ -36,7 +36,11 @@ function Clock() {
     return () => clearInterval(id);
   }, []);
 
-  return <span suppressHydrationWarning>{now || ' '}</span>;
+  return (
+    <span className="status-bar__clock" suppressHydrationWarning>
+      {now || ' '}
+    </span>
+  );
 }
 
 export default function Header() {
@@ -77,6 +81,10 @@ export default function Header() {
     pill.style.width = el.offsetWidth + 'px';
     pill.style.transform = 'translateX(' + el.offsetLeft + 'px)';
     pill.style.opacity = '1';
+  }, []);
+
+  const hidePill = useCallback(() => {
+    if (pillRef.current) pillRef.current.style.opacity = '0';
   }, []);
 
   const settle = useCallback(() => {
@@ -167,7 +175,13 @@ export default function Header() {
                 {item.label}
               </Link>
             ))}
-            <Link className="nav__cta" href="/contact">
+            <Link
+              className="nav__cta"
+              href="/contact"
+              onPointerEnter={hidePill}
+              onFocus={hidePill}
+              onBlur={settle}
+            >
               Start a project
             </Link>
           </nav>
