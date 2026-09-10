@@ -5,6 +5,7 @@ import { Highlight, Reveal } from '@/components/motion/primitives';
 export default function CtaBand({ lead = 'Tell me what you’re' }: { lead?: string }) {
   return (
     <section className="cta-band">
+      <span className="cta-band__field" aria-hidden="true" />
       <div className="wrap">
         <Reveal as="div">
           <h2 className="cta-band__title">

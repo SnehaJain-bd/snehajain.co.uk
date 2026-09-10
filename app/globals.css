@@ -480,7 +480,7 @@ p:not([class]):last-child{ margin-bottom:0; }
   letter-spacing:-.022em;
   margin:0 0 1.15rem;
 }
-.hero__title span{ display:block; }
+.hero__title > span{ display:block; }
 
 .hero__sub{
   font-family:var(--body);
@@ -1440,6 +1440,10 @@ figcaption{
   --field-size: 400px;
   --field-blur: 50px;
   --field-strength: .5;
+  /* Yellow on the off-white ground, off-white on anything dark. Yellow
+     over dark coffee stops reading as light falling on paper and starts
+     reading as something glowing in the dark. */
+  --field-tint: var(--yellow);
   /* Written by CursorField. These are the resting values used before
      the first frame, and the final values under reduced motion. */
   --fx: 50%;
@@ -1454,25 +1458,31 @@ figcaption{
   opacity:var(--field-strength);
   background:radial-gradient(
     var(--field-size) var(--field-size) at var(--fx) var(--fy),
-    var(--yellow) 0%,
+    var(--field-tint) 0%,
     transparent 64%
   );
   filter:blur(var(--field-blur));
 }
 
 /* The field is fixed at z-index 0, so everything that should sit in
-   front of it needs a stacking position of its own. */
+   front of it needs a stacking position of its own.
+
+   7. The header and footer keep it out entirely. The header was letting
+   it through because it is only 88 percent opaque, so it is solid now:
+   the light belongs to the page, not to the furniture around it. */
 .site-head,
 main,
 .site-foot,
 .skip{ position:relative; z-index:1; }
+.site-head{ background:var(--paper); }
 
 /* ---- the hero ---- */
 
 /* Its own copy of the light, above the stripes. Same variables, so it
    moves with the fixed one rather than lagging behind it. */
 .hero{ position:relative; isolation:isolate; }
-.hero__field{
+.hero__field,
+.cta-band__field{
   position:absolute;
   inset:0;
   z-index:0;
@@ -1480,11 +1490,22 @@ main,
   opacity:var(--field-strength);
   background:radial-gradient(
     var(--field-size) var(--field-size) at var(--fx) var(--fy),
-    var(--yellow) 0%,
+    var(--field-tint) 0%,
     transparent 64%
   );
   filter:blur(var(--field-blur));
 }
+
+/* The closing band is dark in both themes, so it carries its own pale
+   light and sits above the page-wide one rather than being painted
+   over by it. */
+.cta-band{
+  position:relative;
+  isolation:isolate;
+  --field-tint:#FBF9F4;
+  --field-strength:.22;
+}
+.cta-band > .wrap{ position:relative; z-index:1; }
 .hero .wrap{ position:relative; z-index:1; }
 
 /* Centred, because the right hand side was empty and the light reads
@@ -1497,9 +1518,9 @@ main,
 .hero--centred .hero__actions{ justify-content:center; }
 
 @media (prefers-color-scheme: dark){
-  /* Yellow on dark coffee is high contrast, so the same setting that
-     reads as daylight reads as a lamp at night. */
-  :root{ --field-strength:.28; }
+  /* Off-white rather than yellow, and quieter: on a dark ground the
+     same strength that reads as daylight reads as a lamp. */
+  :root{ --field-tint:#FBF9F4; --field-strength:.22; }
 }
 
 @media (prefers-reduced-motion: reduce){
@@ -1532,13 +1553,11 @@ main,
 .stage-col__mark{ display:block; flex:none; }
 .stage-col__mark img{
   display:block; width:1.35rem; height:1.35rem; object-fit:contain;
-  filter:saturate(.15);
-  transition:filter .5s var(--ease), transform .5s var(--ease);
+  transition:transform .5s cubic-bezier(.34,1.56,.64,1);
 }
 .stage-col:hover .stage-col__mark img,
 .stage-col:focus-within .stage-col__mark img{
-  filter:saturate(1);
-  transform:rotate(-8deg) scale(1.08);
+  transform:rotate(-10deg) scale(1.14) translateY(-2px);
 }
 .stage-col__blurb{
   color:var(--ink-3);
@@ -1670,8 +1689,10 @@ main,
 .solo__item:not(:first-child){ position:absolute; inset:0; }
 .solo__item.is-on{ opacity:1; visibility:visible; }
 
-.solo__qm{ display:block; }
-.solo__qm img{ display:block; width:1.9rem; height:auto; }
+/* Large enough to be a piece of the design rather than a small round
+   thing beside a name, which read as a broken avatar. */
+.solo__qm{ display:block; margin-bottom:.35rem; }
+.solo__qm img{ display:block; width:clamp(2.6rem,5vw,3.6rem); height:auto; }
 
 .solo__quote{
   margin:0;
@@ -1781,7 +1802,9 @@ main,
 }
 /* The eyebrow already draws its own brackets. With a mark in front the
    opening bracket would read as punctuation around punctuation. */
-.eyebrow:has(.eyebrow__mark)::before{ content:none; }
+.eyebrow:has(.eyebrow__mark)::before,
+.eyebrow:has(.eyebrow__mark)::after{ content:none; }
+.eyebrow:has(.eyebrow__mark){ gap:.6rem; }
 
 /* ---- the FAQ question mark, and W4: the plus that springs ---- */
 .faq-group__mark{ display:inline-block; flex:none; }
