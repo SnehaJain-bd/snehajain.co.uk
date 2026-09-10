@@ -1568,3 +1568,92 @@ figcaption{
 @media (max-width:640px){ .case-cover{ aspect-ratio:4/3; } }
 
 .case-intro__tag + .case-intro__tag{ margin-left:0; }
+
+/* =========================================================
+   30. THE CURSOR FIELD, AND THE CENTRED HERO
+
+   A soft wash of yellow that follows the pointer, so the page is
+   never completely still anywhere.
+
+   One pointer listener in CursorField writes --fx and --fy onto the
+   root element. Two layers read them: the fixed one below, which sits
+   behind the whole page, and .hero__field, which sits above the hero
+   stripes rather than behind them, because an opaque background would
+   otherwise hide it.
+
+   Yellow only. Blue is easier to see on off-white and that is exactly
+   the trap: it would be visible because it is foreign, and the rest of
+   the site barely reaches for it.
+
+   Chosen on the dials: size 400, strength 0.50, lag 0.09, softness 50.
+   ========================================================= */
+
+:root{
+  --field-size: 400px;
+  --field-blur: 50px;
+  --field-strength: .5;
+  /* Written by CursorField. These are the resting values used before
+     the first frame, and the final values under reduced motion. */
+  --fx: 50%;
+  --fy: 38%;
+}
+
+.cursor-field{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  opacity:var(--field-strength);
+  background:radial-gradient(
+    var(--field-size) var(--field-size) at var(--fx) var(--fy),
+    var(--yellow) 0%,
+    transparent 64%
+  );
+  filter:blur(var(--field-blur));
+}
+
+/* The field is fixed at z-index 0, so everything that should sit in
+   front of it needs a stacking position of its own. */
+.site-head,
+main,
+.site-foot,
+.skip{ position:relative; z-index:1; }
+
+/* ---- the hero ---- */
+
+/* Its own copy of the light, above the stripes. Same variables, so it
+   moves with the fixed one rather than lagging behind it. */
+.hero{ position:relative; isolation:isolate; }
+.hero__field{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  opacity:var(--field-strength);
+  background:radial-gradient(
+    var(--field-size) var(--field-size) at var(--fx) var(--fy),
+    var(--yellow) 0%,
+    transparent 64%
+  );
+  filter:blur(var(--field-blur));
+}
+.hero .wrap{ position:relative; z-index:1; }
+
+/* Centred, because the right hand side was empty and the light reads
+   better with room on both sides of the words. This is the only page
+   on the site that centres, which is deliberate rather than an
+   oversight: it is the one place with nothing else to balance. */
+.hero--centred{ text-align:center; }
+.hero--centred .hero__title{ margin-inline:auto; }
+.hero--centred .hero__sub{ margin-inline:auto; }
+.hero--centred .hero__actions{ justify-content:center; }
+
+@media (prefers-color-scheme: dark){
+  /* Yellow on dark coffee is high contrast, so the same setting that
+     reads as daylight reads as a lamp at night. */
+  :root{ --field-strength:.28; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .cursor-field, .hero__field{ opacity:calc(var(--field-strength) * .6); }
+}

@@ -3,6 +3,7 @@ import { Work_Sans } from 'next/font/google';
 import Header from '@/components/site/Header';
 import Footer from '@/components/site/Footer';
 import MotionProvider from '@/components/motion/MotionProvider';
+import CursorField from '@/components/motion/CursorField';
 import { site } from '@/content/site';
 import './globals.css';
 
@@ -73,6 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         <MotionProvider>
+          <CursorField />
           <Header />
           {children}
           <Footer />
