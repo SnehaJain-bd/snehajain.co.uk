@@ -176,10 +176,19 @@ function galleryFiles(slug: string): string[] {
   return files.filter((f) => f !== cover);
 }
 
-/* A name in a pick is a filename without its extension. A leading
-   number is optional, so "box" finds 01-box.jpg just as well. */
-const stem = (f: string) => f.replace(IMAGE_EXT, '').toLowerCase();
-const bare = (f: string) => stem(f).replace(/^[0-9]+[-_]*/, '');
+/* A name in a pick is a filename without its extension, compared
+   loosely on purpose. Case, spaces, hyphens and underscores are all
+   levelled, so "pattern detail", "Pattern_Detail" and "pattern-detail"
+   all find pattern-detail.jpg. A leading number is optional too, so
+   "box" finds 01-box.jpg. Writing prose should not mean remembering
+   punctuation. */
+const stem = (f: string) =>
+  f
+    .replace(IMAGE_EXT, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+const bare = (f: string) => stem(f).replace(/^[0-9]+-*/, '');
 
 function matchFile(files: string[], name: string): string | null {
   const want = stem(name.trim());
