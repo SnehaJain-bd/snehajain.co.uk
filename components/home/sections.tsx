@@ -38,7 +38,7 @@ export function Approach() {
         <SectionHead
           mark="braces"
           eyebrow="Approach"
-          title="Most brands get designed before they get decided."
+          lines="Most brands get designed before they get decided."
           lede={
             <>
               Nobody chooses a brand because <strong>the logo is nice</strong>.

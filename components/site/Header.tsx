@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, m, useReducedMotion } from 'motion/react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { nav, site } from '@/content/site';
 
 /*
@@ -62,6 +62,45 @@ export default function Header() {
   const isCurrent = (href: string) =>
     href === '/' ? pathname === '/' : pathname.startsWith(href);
 
+  /*
+    The pill rests on the current page and follows the pointer while it
+    is over the nav. Width and position are read from the item itself,
+    so it stays right whatever the labels say and whatever the font
+    ends up measuring once Typekit has loaded.
+  */
+  const navRef = useRef<HTMLElement>(null);
+  const pillRef = useRef<HTMLSpanElement>(null);
+
+  const moveTo = useCallback((el: HTMLElement | null) => {
+    const pill = pillRef.current;
+    if (!pill || !el) return;
+    pill.style.width = el.offsetWidth + 'px';
+    pill.style.transform = 'translateX(' + el.offsetLeft + 'px)';
+    pill.style.opacity = '1';
+  }, []);
+
+  const settle = useCallback(() => {
+    const nav = navRef.current;
+    const pill = pillRef.current;
+    if (!nav || !pill) return;
+    const current = nav.querySelector<HTMLElement>('[aria-current="page"]');
+    if (current) {
+      moveTo(current);
+    } else {
+      // no nav item matches this page, so there is nothing to rest on
+      pill.style.opacity = '0';
+    }
+  }, [moveTo]);
+
+  useEffect(() => {
+    settle();
+    // Loretta arrives from Typekit after first paint and changes the
+    // widths, so measure again once the fonts are in.
+    if (document.fonts?.ready) document.fonts.ready.then(settle);
+    window.addEventListener('resize', settle);
+    return () => window.removeEventListener('resize', settle);
+  }, [settle, pathname]);
+
   return (
     <>
       <div className="status-bar" id="top">
@@ -108,12 +147,22 @@ export default function Header() {
             <span />
           </button>
 
-          <nav id="nav" className="nav nav--desktop" aria-label="Primary">
+          <nav
+            id="nav"
+            className="nav nav--desktop"
+            aria-label="Primary"
+            ref={navRef}
+            onPointerLeave={settle}
+          >
+            <span className="nav__pill" ref={pillRef} aria-hidden="true" />
             {nav.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 aria-current={isCurrent(item.href) ? 'page' : undefined}
+                onPointerEnter={(e) => moveTo(e.currentTarget)}
+                onFocus={(e) => moveTo(e.currentTarget)}
+                onBlur={settle}
               >
                 {item.label}
               </Link>

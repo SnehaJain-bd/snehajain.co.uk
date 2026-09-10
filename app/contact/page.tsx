@@ -37,7 +37,10 @@ export default function ContactPage() {
               <dl className="contact__ways">
                 <dt>Email</dt>
                 <dd>
-                  <a className="contact__mail" href={`mailto:${site.email}?subject=Project%20enquiry`}>
+                  <a
+                    className="contact__mail marker-link"
+                    href={`mailto:${site.email}?subject=Project%20enquiry`}
+                  >
                     {site.email}
                   </a>
                 </dd>
