@@ -1485,11 +1485,24 @@ figcaption{
    7. The header and footer keep it out entirely. The header was letting
    it through because it is only 88 percent opaque, so it is solid now:
    the light belongs to the page, not to the furniture around it. */
-.site-head,
 main,
-.site-foot,
-.skip{ position:relative; z-index:1; }
-.site-head{ background:var(--paper); }
+.site-foot{ position:relative; z-index:1; }
+
+/* The status bar sits above the header and was static, so the light
+   drew straight over it. That was the glow at the top of the page. */
+.status-bar{ position:relative; z-index:101; }
+
+/* The header is already sticky at z-index 100, which is above the
+   light. It only needed to stop being see-through. Its position must
+   not be touched here: naming it in the rule above turned it from
+   sticky into relative and quietly unstuck the whole header. Nor .skip,
+   which is absolute and would have started taking up space in the flow
+   at minus nine thousand pixels. */
+.site-head{
+  background:var(--paper);
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+}
 
 /* ---- the hero ---- */
 
