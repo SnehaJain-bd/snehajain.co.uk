@@ -18,6 +18,7 @@ export default async function Home() {
         <section className="section" id="work">
           <div className="wrap">
             <SectionHead
+              mark="diamond"
               eyebrow="Work"
               title="The decision behind each project."
               lede="What each brand had to work out before any of it could look like this."

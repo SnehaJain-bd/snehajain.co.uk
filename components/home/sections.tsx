@@ -269,7 +269,11 @@ export function Faq({ stripes = false }: { stripes?: boolean }) {
   return (
     <section className={`section${stripes ? ' section--stripes' : ''}`} id="faq">
       <div className="wrap">
-        <SectionHead eyebrow="Questions" title="What founders ask before they hire me." />
+        <SectionHead
+          eyebrow="Questions"
+          title="What founders ask before they hire me."
+          mark="question"
+        />
         <Reveal className="faq-groups">
           {faq.map((group, gi) => (
             <div className="faq-group" key={group.title}>

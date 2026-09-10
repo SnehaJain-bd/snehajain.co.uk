@@ -474,6 +474,49 @@
       </table>
     </div>
     <p>The rest of the name becomes the alt text a screen reader announces, so <code>pattern-detail.jpg</code> is read aloud as "Asmi, pattern detail". Numbers and the word <em>wide</em> are stripped out of that automatically. Renaming a file reorders the page.</p>
+
+    <h3>Exporting: what actually matters</h3>
+    <p>The pipeline handles resizing, compression and format. These are the things it cannot fix for you, so they have to be right on the way in.</p>
+
+    <ol class="steps">
+      <li>
+        <h3>Never upscale</h3>
+        <p>This is the only one that cannot be undone. Enlarging a small export invents pixels that carry no detail, and no amount of processing gets it back. A 4096px file exported from a 1000px original is worse than the 1000px original, because it is four times the size and exactly as soft.</p>
+        <p>The tell is file size against dimensions. A genuine 4000px photograph is several megabytes. If a 4000px file is under half a megabyte, it has been upscaled.</p>
+      </li>
+      <li>
+        <h3>Export at 2000px on the long edge, or larger</h3>
+        <p>2000px is where the pipeline caps, so anything above that is trimmed and anything below is served at whatever it is. Retina screens draw two device pixels per CSS pixel, which is why a 1000px image looks soft in a 1000px slot.</p>
+        <p>Larger than 2000 is fine and costs you nothing, since it never reaches the repo.</p>
+      </li>
+      <li>
+        <h3>Give the cover room to be cropped</h3>
+        <p>Covers are cropped to 3:2. Anything important near the top or bottom edge will be cut, so leave space around the subject rather than filling the frame. If the composition cannot survive that, name the file <code>cover-attention.jpg</code> and the crop finds the busiest part instead.</p>
+      </li>
+      <li>
+        <h3>Export in sRGB</h3>
+        <p>Not Adobe RGB or Display P3. Browsers assume sRGB when a file has no profile, so a wide-gamut export renders flat and slightly grey. If your reds look muted on the live site but fine in Illustrator, this is why.</p>
+      </li>
+      <li>
+        <h3>PNG for flat colour, JPEG for photographs</h3>
+        <p>Packaging renders, logos, anything with large areas of one colour: PNG. Photographs and anything with gradients or grain: JPEG at high quality. The pipeline converts everything to JPEG for the web anyway, so this is about giving it a clean original rather than one that has already been through lossy compression once.</p>
+      </li>
+    </ol>
+
+    <div class="callout">
+      <p><strong>Do not put words inside an image.</strong> Text baked into a picture cannot be read by a screen reader, cannot be found by search, does not resize with the rest of the page, and goes blurry on the exact screens where type should be sharpest. A pack shot with the brand name on the packaging is fine, that is the product. A caption or a heading set inside a JPEG is not.</p>
+    </div>
+
+    <h3>Rough weights to expect</h3>
+    <p>After <code>npm run images</code>, a 2000px file lands somewhere between 50 KB and 500 KB depending on how much detail it holds. A flat packaging render compresses to almost nothing; a busy photograph with texture does not.</p>
+    <ul class="plain">
+      <li><b>Under 30 KB at 2000px</b> usually means the source was upscaled or already over-compressed.</li>
+      <li><b>Over 600 KB</b> is worth a look. Usually it is noise or film grain, which compresses badly and is rarely doing any work at web size.</li>
+      <li><b>The whole of <code>public/work/</code></b> is around 7 MB for five projects. If that doubles without the number of projects doubling, something went in at the wrong size.</li>
+    </ul>
+
+    <h3>Alt text, in one line</h3>
+    <p>The filename becomes the alt text, so name files as though describing them to someone on the phone. <code>strawberry-tub.jpg</code> is good. <code>IMG_4471.jpg</code> is read aloud exactly as it looks. Purely decorative images should have empty alt text rather than a description, but nothing in <code>public/work/</code> is decorative: it is all the work.</p>
   </section>
 
   <section>

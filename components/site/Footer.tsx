@@ -1,11 +1,17 @@
 import Link from 'next/link';
 import { site } from '@/content/site';
+import Mark from '@/components/site/Mark';
 
 const arrow = <span className="arw">&rarr;</span>;
 
 export default function Footer() {
   return (
     <footer className="site-foot">
+      <div className="foot-marks" aria-hidden="true">
+        <Mark name="asterisk" size={24} />
+        <Mark name="ellipsis" size={24} />
+        <Mark name="heart" size={24} />
+      </div>
       <div className="wrap">
         <div className="foot-grid">
           <div className="foot-col">

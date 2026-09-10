@@ -4,7 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import CtaBand from '@/components/site/CtaBand';
-import ParallaxImage from '@/components/motion/ParallaxImage';
+import ScrollProgress from '@/components/motion/ScrollProgress';
+import CoverSettle from '@/components/motion/CoverSettle';
 import { Reveal } from '@/components/motion/primitives';
 import Gallery from '@/components/work/Gallery';
 import {
@@ -82,14 +83,16 @@ export default async function CaseStudy({ params }: Params) {
 
   return (
     <>
+      <ScrollProgress />
       <main id="main">
-        <ParallaxImage
+        {/* The cover sits in a fixed 3:2 frame with spare image on every
+            side, so settling from 108 percent spends what is already
+            being cropped. It replaces the drift rather than joining it:
+            two motions on one image is one too many. */}
+        <CoverSettle
           className="case-cover"
           src={project!.cover}
           alt={project!.coverAlt}
-          sizes="100vw"
-          priority
-          amount={36}
         />
 
         <section className="case-intro">
