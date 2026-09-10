@@ -101,9 +101,31 @@ export default function CursorField() {
     let raf = 0;
     let drift = 0;
 
+    /* Light follows a hand. A hand that has stopped is not asking for
+       it, and a click is someone attending to something else. */
+    const IDLE_AFTER = 550;
+    let lastMove = 0;
+    let idle = true;
+
+    const setIdle = (next: boolean) => {
+      if (next === idle) return;
+      idle = next;
+      for (const f of fields) f.root.classList.toggle('is-idle', next);
+    };
+
     const onMove = (e: PointerEvent) => {
       tx = e.clientX;
       ty = e.clientY;
+      lastMove = performance.now();
+      setIdle(false);
+    };
+    const onDown = () => {
+      lastMove = 0;
+      setIdle(true);
+    };
+    const onLeave = () => {
+      lastMove = 0;
+      setIdle(true);
     };
 
     const frame = () => {
@@ -111,6 +133,8 @@ export default function CursorField() {
         drift += 0.0035;
         tx = window.innerWidth * (0.5 + Math.sin(drift) * 0.26);
         ty = window.innerHeight * (0.42 + Math.cos(drift * 0.8) * 0.2);
+      } else if (!idle && performance.now() - lastMove > IDLE_AFTER) {
+        setIdle(true);
       }
 
       for (const f of fields) {
@@ -120,12 +144,15 @@ export default function CursorField() {
           l.x += dx;
           l.y += dy;
 
-          const want = Math.min(Math.hypot(dx, dy) / 22, 1);
-          l.s += (want - l.s) * 0.12;
+          /* Enough deformation to read as liquid, not so much that it
+             becomes a line with a glow, which is what a hard stretch
+             looks like once the blob is soft and blurred. */
+          const want = Math.min(Math.hypot(dx, dy) / 34, 1);
+          l.s += (want - l.s) * 0.1;
 
           const angle = Math.atan2(dy, dx);
-          const along = 1 + l.s * 1.15;
-          const across = 1 - l.s * 0.34;
+          const along = 1 + l.s * 0.5;
+          const across = 1 - l.s * 0.16;
 
           l.el.style.transform =
             `translate3d(${(l.x - f.left).toFixed(1)}px, ${(l.y - f.top).toFixed(1)}px, 0) ` +
@@ -137,16 +164,25 @@ export default function CursorField() {
     };
 
     measure();
+    setIdle(!fine ? false : true);
     window.addEventListener('scroll', measure, { passive: true });
     window.addEventListener('resize', measure);
-    if (fine) window.addEventListener('pointermove', onMove, { passive: true });
+    if (fine) {
+      window.addEventListener('pointermove', onMove, { passive: true });
+      window.addEventListener('pointerdown', onDown, { passive: true });
+      document.addEventListener('pointerleave', onLeave);
+    }
     raf = requestAnimationFrame(frame);
 
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener('scroll', measure);
       window.removeEventListener('resize', measure);
-      if (fine) window.removeEventListener('pointermove', onMove);
+      if (fine) {
+        window.removeEventListener('pointermove', onMove);
+        window.removeEventListener('pointerdown', onDown);
+        document.removeEventListener('pointerleave', onLeave);
+      }
     };
   }, [still]);
 

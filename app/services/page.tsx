@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import CtaBand from '@/components/site/CtaBand';
 import SectionHead from '@/components/site/SectionHead';
+import Mark from '@/components/site/Mark';
 import { Services, Faq } from '@/components/home/sections';
 import { Reveal, Stagger, StaggerItem } from '@/components/motion/primitives';
 import { packages } from '@/content/services';
@@ -13,7 +14,12 @@ export const metadata: Metadata = {
 };
 
 const steps = [
-  { n: 1, title: 'Two lines', body: 'Send me two lines about your product. That is genuinely enough to start.' },
+  {
+    n: 1,
+    title: 'A short message',
+    body:
+      'Tell me what you make, who it is for, and what is not working yet. A paragraph is plenty, and the more you can say the less we spend the call working it out.',
+  },
   { n: 2, title: 'A short call', body: 'We get on a call and work out what you actually need, and what you don’t.' },
   { n: 3, title: 'One page', body: 'I send one page with scope, price and timeline. The price never changes after that.' },
 ];
@@ -25,7 +31,10 @@ export default function ServicesPage() {
         <section className="page-hero">
           <div className="wrap">
             <Reveal>
-              <p className="eyebrow">Services</p>
+              <p className="eyebrow">
+                <Mark name="diamond" size={12} className="eyebrow__mark" />
+                Services
+              </p>
               <h1 className="page-hero__title">Four packages.</h1>
               <p className="page-hero__lede">
                 Every package is a starting point. We shape the scope around what you need,
@@ -56,6 +65,7 @@ export default function ServicesPage() {
         <section className="section">
           <div className="wrap">
             <SectionHead
+              mark="triangle"
               eyebrow="How it starts"
               title="Three steps, no mystery"
               lede={<>No brief needed. <strong>Making the brief is my job.</strong></>}

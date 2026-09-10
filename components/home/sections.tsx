@@ -5,6 +5,7 @@ import SectionHead from '@/components/site/SectionHead';
 import { Reveal, Stagger, StaggerItem } from '@/components/motion/primitives';
 import Mark, { type MarkName } from '@/components/site/Mark';
 import WorkIndex from '@/components/home/WorkIndex';
+import { FieldLayers } from '@/components/motion/CursorField';
 import TestimonialCarousel from '@/components/home/TestimonialCarousel';
 import { services, stages, type Stage } from '@/content/services';
 import { faq } from '@/content/faq';
@@ -31,9 +32,11 @@ export function Strip() {
 
 export function Approach() {
   return (
-    <section className="section section--dark" id="approach">
+    <section className="section section--dark section--lit" id="approach">
+      <FieldLayers local />
       <div className="wrap">
         <SectionHead
+          mark="braces"
           eyebrow="Approach"
           title="Most brands get designed before they get decided."
           lede={
@@ -73,9 +76,11 @@ export function Approach() {
 
 export function Services({ alt = true }: { alt?: boolean }) {
   return (
-    <section className={`section${alt ? ' section--alt' : ''}`} id="services">
+    <section className={`section section--lit${alt ? ' section--alt' : ''}`} id="services">
+      <FieldLayers local />
       <div className="wrap">
         <SectionHead
+          mark="asterisk"
           eyebrow="Services"
           title="Twelve services. One job: getting your brand chosen."
           lede={
@@ -251,6 +256,7 @@ export function Testimonials() {
     <section className="section" id="voices">
       <div className="wrap">
         <SectionHead
+          mark="quotes"
           eyebrow="Social proof"
           title="What clients say."
           lede="Founders I’ve worked with, in their words."
@@ -267,7 +273,8 @@ export function Testimonials() {
 
 export function Faq({ stripes = false }: { stripes?: boolean }) {
   return (
-    <section className={`section${stripes ? ' section--stripes' : ''}`} id="faq">
+    <section className={`section section--lit${stripes ? ' section--stripes' : ''}`} id="faq">
+      <FieldLayers local />
       <div className="wrap">
         <SectionHead
           eyebrow="Questions"

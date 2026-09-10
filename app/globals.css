@@ -45,6 +45,12 @@
      and then crawls, so the element appears and then lingers. A fade
      has to start slowly. */
   --ease-inout: cubic-bezier(.45,.05,.35,1);
+
+  /* The highlighter stroke: uneven top and bottom, tapered at both ends,
+     sloping very slightly. Used as a mask so the colour still comes from
+     the palette rather than being baked into the artwork. A rectangle
+     with rounded corners reads as a UI element; this reads as a pen. */
+  --swipe: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40' preserveAspectRatio='none'%3E%3Cpath d='M4 25 C28 12 66 18 108 13 C146 9 176 13 195 19 C199 21 199 27 194 29 C168 37 118 33 78 35 C48 36 19 34 6 31 C1 30 1 27 4 25 Z' fill='black'/%3E%3C/svg%3E");
 }
 
 @media (prefers-color-scheme: dark){
@@ -910,6 +916,10 @@ details.qa[open] summary{ font-weight:500; }
 .case-body strong{ color:var(--ink); font-weight:500; }
 figure{ margin:0; }
 figure img{ border-radius:var(--radius); border:1px solid var(--line); }
+/* Brand marks and the logo are drawn artwork, not photographs. They are
+   always inside a <picture> because they switch on the colour scheme,
+   which makes that a reliable way to say "never frame this". */
+picture img{ border:0; border-radius:0; }
 figcaption{
   font-family:var(--mono);
   font-size:.7rem;
@@ -1336,14 +1346,19 @@ figcaption{
    highlighter does and what a solid fill does not. */
 .mark-draw__ink{
   position:absolute;
-  left:0;
-  right:0;
-  bottom:.06em;
-  height:.42em;
+  left:-.1em;
+  right:-.12em;
+  bottom:.02em;
+  height:.4em;
   background:var(--yellow);
-  border-radius:2px;
   transform-origin:left center;
   z-index:-1;
+  -webkit-mask-image:var(--swipe);
+  mask-image:var(--swipe);
+  -webkit-mask-size:100% 100%;
+  mask-size:100% 100%;
+  -webkit-mask-repeat:no-repeat;
+  mask-repeat:no-repeat;
 }
 .mark-draw__text{ position:relative; }
 
@@ -1455,7 +1470,10 @@ figcaption{
   pointer-events:none;
   overflow:hidden;
   opacity:var(--field-strength);
+  transition:opacity .5s var(--ease-inout);
 }
+/* Light follows a hand. A hand that has stopped is not asking for it. */
+.cursor-field.is-idle{ opacity:0; }
 /* Inside a section that has its own opaque ground, so the light is not
    hidden behind it. Offset by its own position in the script. */
 .cursor-field--local{ position:absolute; }
@@ -1900,4 +1918,133 @@ main,
   .eyebrow__mark img,
   .foot-marks picture{ animation:none; }
   .textlink{ transition:none; }
+}
+
+
+/* =========================================================
+   33. PACKAGES AND THE THREE STEPS
+
+   Both live on /services and both were lost when the twelve service
+   cells and the testimonial cards were deleted: that removal ran from
+   one selector to the next section comment and took everything in
+   between with it, including these. Restored exactly as they were.
+   ========================================================= */
+
+.packages{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(300px,1fr));
+  gap:clamp(1.25rem,2.5vw,1.75rem);
+  list-style:none; margin:0; padding:0;
+}
+.package{
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:clamp(1.6rem,3vw,2.3rem);
+  background:var(--paper);
+  display:flex;
+  flex-direction:column;
+  gap:1.1rem;
+  transition:border-color .3s var(--ease), transform .35s var(--ease);
+}
+.package:hover{ border-color:var(--ink); transform:translateY(-4px); }
+.package__num{
+  font-family:var(--mono);
+  font-size:.7rem;
+  letter-spacing:.14em;
+  color:var(--ink-3);
+}
+.package__num::before{ content:"("; }
+.package__num::after{ content:")"; }
+.package h3{ font-size:1.75rem; font-weight:500; }
+.package__who{
+  font-family:var(--head);
+  font-size:1.08rem;
+  line-height:1.4;
+  color:var(--ink-2);
+  margin:0;
+}
+.package__leave{
+  margin:0;
+  font-size:.98rem;
+  padding:.9rem 1.1rem;
+  background:var(--yellow-soft);
+  border-left:3px solid var(--yellow);
+  border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+}
+.package__meta{
+  font-family:var(--mono);
+  font-size:.66rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--ink-2);
+  border-top:1px solid var(--line);
+  padding-top:1rem;
+  margin-top:auto;
+}
+
+.steps{
+  list-style:none; margin:0; padding:0;
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(230px,1fr));
+  gap:clamp(1.25rem,2.5vw,2rem);
+}
+.step{
+  display:flex;
+  flex-direction:column;
+  gap:.7rem;
+  padding-top:1.5rem;
+  border-top:2px solid var(--ink);
+}
+.step__num{ font-family:var(--mono); font-size:.72rem; color:var(--ink-2); }
+.step__num::before{ content:"("; }
+.step__num::after{ content:")"; }
+.step h3{ font-size:1.55rem; font-weight:500; }
+.step p{ color:var(--ink-2); font-size:.94rem; margin:0; }
+
+/* A section with its own opaque ground carries its own copy of the
+   light, so it is not simply hidden behind that ground. */
+.section--lit{ position:relative; isolation:isolate; }
+.section--lit > .wrap{ position:relative; z-index:1; }
+
+/* The braces sitting beside the engineering paragraph on the About page.
+   Aligned to the cap height rather than the line box, so it reads as
+   punctuation set into the heading rather than an icon bolted in front. */
+.story__h2-mark{
+  display:flex;
+  align-items:baseline;
+  gap:.6rem;
+}
+.story__mark{ display:block; flex:none; transform:translateY(.18em); }
+.story__mark img{ display:block; width:1.15rem; height:1.15rem; object-fit:contain; }
+
+/* H7: the highlighter sweeping behind a link on hover. Deliberately not
+   on every link, only the ones worth reaching for. */
+.marker-link{
+  position:relative;
+  isolation:isolate;
+  padding:.02em .18em;
+  text-decoration:none;
+}
+.marker-link::before{
+  content:"";
+  position:absolute;
+  left:-.1em; right:-.12em; bottom:.02em;
+  height:.4em;
+  background:var(--yellow);
+  transform:scaleX(0);
+  transform-origin:left center;
+  transition:transform .45s var(--ease-inout);
+  z-index:-1;
+  -webkit-mask-image:var(--swipe);
+  mask-image:var(--swipe);
+  -webkit-mask-size:100% 100%;
+  mask-size:100% 100%;
+  -webkit-mask-repeat:no-repeat;
+  mask-repeat:no-repeat;
+}
+.marker-link:hover::before,
+.marker-link:focus-visible::before{ transform:scaleX(1); }
+
+@media (prefers-reduced-motion: reduce){
+  .marker-link::before{ transition:none; }
 }

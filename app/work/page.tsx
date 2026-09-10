@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import SectionHead from '@/components/site/SectionHead';
+import Mark from '@/components/site/Mark';
 import CtaBand from '@/components/site/CtaBand';
 import { WorkGrid } from '@/components/home/sections';
 import { Reveal } from '@/components/motion/primitives';
@@ -21,7 +22,10 @@ export default async function WorkPage() {
         <section className="page-hero">
           <div className="wrap">
             <Reveal>
-              <p className="eyebrow">Work</p>
+              <p className="eyebrow">
+                <Mark name="diamond" size={12} className="eyebrow__mark" />
+                Work
+              </p>
               <h1 className="page-hero__title">The decision behind each project.</h1>
               <p className="page-hero__lede">
                 What each brand had to work out before any of it could look like this.

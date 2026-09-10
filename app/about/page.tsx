@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import CtaBand from '@/components/site/CtaBand';
+import Mark from '@/components/site/Mark';
 import { Reveal } from '@/components/motion/primitives';
 
 export const metadata: Metadata = {
@@ -23,7 +24,10 @@ export default function AboutPage() {
         <section className="page-hero">
           <div className="wrap">
             <Reveal>
-              <p className="eyebrow">About</p>
+              <p className="eyebrow">
+                <Mark name="heart" size={12} className="eyebrow__mark" />
+                About
+              </p>
               <h1 className="page-hero__title">Hi, I’m Sneha.</h1>
             </Reveal>
           </div>
@@ -51,7 +55,10 @@ export default function AboutPage() {
                   sunsets and sky.
                 </p>
 
-                <h2>I started out as a software engineer.</h2>
+                <h2 className="story__h2-mark">
+                  <Mark name="braces" size={22} className="story__mark" />
+                  I started out as a software engineer.
+                </h2>
                 <p>
                   I was good at it. The problem was that almost nobody ever saw the work. It
                   shipped, it worked, and then it disappeared into a system somewhere. I

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import TallyEmbed from '@/components/contact/TallyEmbed';
 import { Reveal } from '@/components/motion/primitives';
 import { site } from '@/content/site';
+import Mark from '@/components/site/Mark';
 
 export const metadata: Metadata = {
   title: 'Start a project',
@@ -16,7 +17,10 @@ export default function ContactPage() {
       <section className="page-hero">
         <div className="wrap">
           <Reveal>
-            <p className="eyebrow">Contact</p>
+            <p className="eyebrow">
+              <Mark name="ellipsis" size={12} className="eyebrow__mark" />
+              Contact
+            </p>
             <h1 className="page-hero__title">Tell me what you’re building.</h1>
             <p className="page-hero__lede">
               Send a short message about your business. If it looks like a fit, we’ll book a
