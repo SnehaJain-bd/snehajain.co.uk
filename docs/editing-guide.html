@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root { color-scheme: light dark; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    img { max-width: 100%; }
+    [hidden] { display: none !important; }
+  </style>
+  <title>Editing snehajain.co.uk</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Work+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
+  
+  <style>
+    /* ---- tokens -------------------------------------------------------
+       Taken from the site's own palette in app/globals.css so this page
+       reads as part of the same thing: off-white ground, dark coffee ink,
+       yellow only ever as a fill behind dark text, blue darkened until it
+       is legible. Every token is declared here in the bare :root first. */
+    :root {
+      --paper:        #FBF9F4;
+      --surface:      #F4F0E7;
+      --ink:          #2A211A;
+      --muted:        #6E6157;
+      --rule:         #E3DCCE;
+      --rule-strong:  #CFC5B2;
+      --yellow:       #FFF176;
+      --on-yellow:    #2A211A;
+      --link:         #0077A8;
+      --console:      #2A211A;
+      --console-ink:  #F7F3EA;
+      --console-dim:  #A3968A;
+      --console-rule: #473B31;
+      --warn-bg:      #FBF1D8;
+      --warn-rule:    #D8B75A;
+  
+      --measure: 68ch;
+      --step--1: 0.83rem;
+      --step-0:  1rem;
+      --step-1:  1.24rem;
+      --step-2:  1.6rem;
+      --step-3:  2.1rem;
+      --step-4:  2.9rem;
+    }
+  
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --paper:        #1B1510;
+        --surface:      #241D16;
+        --ink:          #F0EAE0;
+        --muted:        #AA9C8D;
+        --rule:         #352C24;
+        --rule-strong:  #4A3E33;
+        --link:         #62C8EF;
+        --console:      #100C08;
+        --console-rule: #3A2F26;
+        --warn-bg:      #2E2413;
+        --warn-rule:    #7A6528;
+      }
+    }
+  
+    :root[data-theme="dark"] {
+      --paper:        #1B1510;
+      --surface:      #241D16;
+      --ink:          #F0EAE0;
+      --muted:        #AA9C8D;
+      --rule:         #352C24;
+      --rule-strong:  #4A3E33;
+      --link:         #62C8EF;
+      --console:      #100C08;
+      --console-rule: #3A2F26;
+      --warn-bg:      #2E2413;
+      --warn-rule:    #7A6528;
+    }
+  
+    /* ---- base ---- */
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Work Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+      font-size: var(--step-0);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+  
+    .page {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: clamp(2rem, 6vw, 4.5rem) clamp(1.15rem, 5vw, 2rem) 6rem;
+    }
+  
+    h1, h2, h3 {
+      font-family: Newsreader, Georgia, "Times New Roman", serif;
+      font-weight: 500;
+      text-wrap: balance;
+      line-height: 1.2;
+      margin: 0;
+    }
+  
+    p { margin: 0; max-width: var(--measure); }
+    a { color: var(--link); text-underline-offset: 0.15em; }
+    a:focus-visible,
+    summary:focus-visible {
+      outline: 2px solid var(--link);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+  
+    mark {
+      background: var(--yellow);
+      color: var(--on-yellow);
+      padding: 0.05em 0.22em;
+      border-radius: 2px;
+    }
+  
+    code {
+      font-family: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 0.86em;
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: 3px;
+      padding: 0.1em 0.34em;
+      overflow-wrap: break-word;
+    }
+  
+    /* ---- masthead ---- */
+    .masthead {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      padding-bottom: 1.6rem;
+      border-bottom: 2px solid var(--ink);
+    }
+    .masthead h1 { font-size: var(--step-4); letter-spacing: -0.015em; }
+    .masthead p { font-size: var(--step-1); color: var(--muted); max-width: 34ch; }
+  
+    .eyebrow {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: var(--step--1);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0;
+    }
+  
+    .facts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 1.5rem;
+      margin: 0;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: var(--step--1);
+      color: var(--muted);
+    }
+    .facts div { display: flex; gap: 0.5rem; }
+    .facts dt { color: var(--muted); opacity: 0.75; }
+    .facts dd { margin: 0; color: var(--ink); }
+  
+    /* ---- sections ---- */
+    section {
+      display: flex;
+      flex-direction: column;
+      gap: 1.05rem;
+      padding-top: 3.2rem;
+    }
+    section > h2 {
+      font-size: var(--step-3);
+      letter-spacing: -0.01em;
+    }
+    section > h2 + .lede {
+      color: var(--muted);
+      margin-top: -0.5rem;
+    }
+    h3 { font-size: var(--step-1); margin-top: 0.6rem; }
+  
+    /* ---- console ------------------------------------------------------
+       Commands keep the same dark ground in both themes. It is one object
+       with one meaning: this is a thing you type. */
+    .console {
+      background: var(--console);
+      color: var(--console-ink);
+      border: 1px solid var(--console-rule);
+      border-radius: 6px;
+      padding: 1.05rem 1.2rem;
+      overflow-x: auto;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 0.88rem;
+      line-height: 1.85;
+    }
+    .console .prompt { color: var(--console-dim); user-select: none; }
+    .console .note   { color: var(--console-dim); }
+    .console b { color: var(--yellow); font-weight: 500; }
+  
+    /* ---- ordered steps: used only where order genuinely matters ---- */
+    ol.steps {
+      list-style: none;
+      counter-reset: step;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+    ol.steps > li {
+      counter-increment: step;
+      display: grid;
+      grid-template-columns: 2rem 1fr;
+      gap: 0.35rem 0.9rem;
+      align-items: start;
+    }
+    ol.steps > li::before {
+      content: counter(step);
+      grid-row: 1 / span 2;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: var(--step--1);
+      font-weight: 700;
+      line-height: 1.75;
+      color: var(--muted);
+      border-top: 2px solid var(--ink);
+      padding-top: 0.3rem;
+    }
+    ol.steps > li > :first-of-type { margin-top: 0.05rem; }
+    ol.steps h3 { margin: 0; font-size: var(--step-1); }
+    ol.steps .console { margin-top: 0.2rem; }
+    ol.steps > li > * { grid-column: 2; }
+  
+    /* ---- plain lists ---- */
+    ul.plain {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      max-width: var(--measure);
+    }
+    ul.plain > li {
+      padding-left: 1.1rem;
+      position: relative;
+    }
+    ul.plain > li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.72em;
+      width: 0.42rem;
+      height: 1px;
+      background: var(--rule-strong);
+    }
+  
+    /* ---- lookup table ---- */
+    .lookup-wrap { overflow-x: auto; }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 30rem;
+      font-size: 0.95rem;
+    }
+    caption {
+      text-align: left;
+      color: var(--muted);
+      font-size: var(--step--1);
+      padding-bottom: 0.6rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 0.62rem 0.9rem 0.62rem 0;
+      border-bottom: 1px solid var(--rule);
+      vertical-align: top;
+    }
+    th {
+      font-weight: 600;
+      font-size: var(--step--1);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom-color: var(--rule-strong);
+    }
+    td:last-child { padding-right: 0; }
+    td code { background: none; border: none; padding: 0; color: var(--ink); }
+  
+    /* ---- callout: sparing, for the two things that actually bite ---- */
+    .callout {
+      background: var(--warn-bg);
+      border-left: 3px solid var(--warn-rule);
+      padding: 1rem 1.15rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      max-width: var(--measure);
+    }
+    .callout p { max-width: none; }
+    .callout strong { font-weight: 600; }
+  
+    /* ---- details ---- */
+    details {
+      border-top: 1px solid var(--rule);
+      padding: 0.85rem 0;
+      max-width: var(--measure);
+    }
+    details:last-of-type { border-bottom: 1px solid var(--rule); }
+    summary {
+      cursor: pointer;
+      font-weight: 500;
+      list-style: none;
+      display: flex;
+      gap: 0.7rem;
+      align-items: baseline;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::before {
+      content: "+";
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      color: var(--muted);
+      font-size: 0.9em;
+    }
+    details[open] summary::before { content: "\2013"; }
+    details > :not(summary) { margin-top: 0.75rem; }
+  
+    footer {
+      margin-top: 4rem;
+      padding-top: 1.4rem;
+      border-top: 1px solid var(--rule);
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+  
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+<main class="page">
+
+  <header class="masthead">
+    <p class="eyebrow">Site handbook</p>
+    <h1>Editing snehajain.co.uk</h1>
+    <p>Everything you need to change something on the site and get it live, in the order you actually need it.</p>
+    <dl class="facts">
+      <div><dt>repo</dt><dd>SnehaJain-bd/snehajain.co.uk</dd></div>
+      <div><dt>branch</dt><dd>nextjs</dd></div>
+      <div><dt>host</dt><dd>Vercel</dd></div>
+    </dl>
+  </header>
+
+  <section>
+    <h2>The three git commands</h2>
+    <p class="lede">Every change, no matter how small, ends with these three. Run them from the terminal in VS Code, inside the website folder.</p>
+
+    <div class="console">
+      <div><span class="prompt">&gt; </span>git add -A<span class="note">                        # 1. gather up everything you changed</span></div>
+      <div><span class="prompt">&gt; </span>git commit -m "Fix the About page typo"<span class="note">  # 2. save it with a note</span></div>
+      <div><span class="prompt">&gt; </span>git push<span class="note">                            # 3. send it to GitHub</span></div>
+    </div>
+
+    <p>Think of it as <mark>gather, save, send</mark>. Nothing leaves your computer until step three.</p>
+
+    <p>Two more worth knowing:</p>
+
+    <div class="console">
+      <div><span class="prompt">&gt; </span>git status<span class="note">   # what have I changed so far?</span></div>
+      <div><span class="prompt">&gt; </span>git pull<span class="note">     # get anyone else's changes before you start</span></div>
+    </div>
+
+    <p><code>git pull</code> matters the moment more than one person touches the site. Run it before you begin, not after.</p>
+
+    <div class="callout">
+      <p><strong>If a file called <code>COMMIT_EDITMSG</code> opens, nothing is broken.</strong></p>
+      <p>You ran <code>git commit</code> without a message, so git opened an editor to ask for one. That tab <em>is</em> the message box. Type your message on the very first line, above all the grey <code>#</code> lines, then <code>Ctrl+S</code> to save and <code>Ctrl+W</code> to close. The commit finishes as the tab closes. Closing without saving cancels it.</p>
+      <p>Using <code>-m "your message"</code> as above avoids it entirely.</p>
+    </div>
+
+    <h3>The same thing by clicking</h3>
+    <p><code>Ctrl+Shift+G</code> opens the Source Control panel. The three steps are the same, and always in this order:</p>
+    <ul class="plain">
+      <li><strong>Stage.</strong> Your changed files sit under <em>Changes</em>. Click the <code>+</code> beside one to move it into <em>Staged Changes</em>, or the <code>+</code> on the <em>Changes</em> heading to take all of them. Staging is you saying "this one goes in".</li>
+      <li><strong>Commit.</strong> Type your message in the box at the top of the panel, then <code>Ctrl+Enter</code>. Type it in the box and git never needs to open that editor file.</li>
+      <li><strong>Push.</strong> The button underneath turns into <em>Sync Changes</em> with a number on it. That number is how many commits are waiting. Click it.</li>
+    </ul>
+    <p>The one trap is committing with the message box empty, which is what sends you to <code>COMMIT_EDITMSG</code>.</p>
+  </section>
+
+  <section>
+    <h2>Setting up, once per computer</h2>
+    <ol class="steps">
+      <li>
+        <h3>Get the code</h3>
+        <div class="console"><div><span class="prompt">&gt; </span>git clone https://github.com/SnehaJain-bd/snehajain.co.uk.git</div></div>
+      </li>
+      <li>
+        <h3>Install what it needs</h3>
+        <p>From inside the folder. Once, and again only if someone adds a new package.</p>
+        <div class="console"><div><span class="prompt">&gt; </span>npm install</div></div>
+      </li>
+      <li>
+        <h3>Run it locally</h3>
+        <p>Opens at <code>localhost:3000</code> and updates as you type. Leave it running while you work.</p>
+        <div class="console"><div><span class="prompt">&gt; </span>npm run dev</div></div>
+      </li>
+    </ol>
+
+    <div class="callout">
+      <p><strong>If PowerShell refuses to run <code>npm</code></strong>, saying scripts are disabled on this system, that is Windows blocking scripts by default. Fix it once:</p>
+      <div class="console"><div><span class="prompt">&gt; </span>Set-ExecutionPolicy -Scope CurrentUser RemoteSigned</div></div>
+      <p>It affects only your user account. Or skip it and type <code>npm.cmd</code> instead of <code>npm</code> every time.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>What to open for what</h2>
+    <p class="lede">Nothing here is hand-written HTML. Pages are components, case studies are Markdown, and the rest is plain lists you can read.</p>
+    <div class="lookup-wrap">
+      <table>
+        <caption>Every routine change starts in one of these.</caption>
+        <thead>
+          <tr><th scope="col">To change</th><th scope="col">Open</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Home page words</td><td><code>app/page.tsx</code></td></tr>
+          <tr><td>About page</td><td><code>app/about/page.tsx</code></td></tr>
+          <tr><td>Services page</td><td><code>app/services/page.tsx</code></td></tr>
+          <tr><td>Contact page</td><td><code>app/contact/page.tsx</code></td></tr>
+          <tr><td>Work index page</td><td><code>app/work/page.tsx</code></td></tr>
+          <tr><td>A case study</td><td><code>content/projects/&lt;name&gt;.mdx</code></td></tr>
+          <tr><td>Its pictures</td><td><code>source-images/&lt;name&gt;/</code>, then <code>npm run images</code></td></tr>
+          <tr><td>Testimonials</td><td><code>content/testimonials.ts</code></td></tr>
+          <tr><td>Services and packages</td><td><code>content/services.ts</code></td></tr>
+          <tr><td>FAQ</td><td><code>content/faq.ts</code></td></tr>
+          <tr><td>Email, socials, form id</td><td><code>content/site.ts</code></td></tr>
+          <tr><td>Colour, type, spacing</td><td><code>app/globals.css</code></td></tr>
+          <tr><td>Animation</td><td><code>components/motion/</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Adding pictures to a project</h2>
+    <ol class="steps">
+      <li>
+        <h3>Drop the full-size originals in</h3>
+        <p>Into <code>source-images/&lt;project&gt;/</code>. Never into <code>public/</code>. Originals are deliberately kept out of the repo, because git keeps every version of every file forever.</p>
+      </li>
+      <li>
+        <h3>Shrink them</h3>
+        <p>Caps them at 2000px and writes web-sized copies into <code>public/work/&lt;project&gt;/</code>.</p>
+        <div class="console"><div><span class="prompt">&gt; </span>npm run images</div></div>
+      </li>
+      <li>
+        <h3>Gather, save, send</h3>
+        <p>That is it. You do not tell the case study about the new picture. The folder is the gallery.</p>
+      </li>
+    </ol>
+
+    <h3>The filename does the work</h3>
+    <p>Three things are decided by what you call the file, so name them properly.</p>
+    <div class="lookup-wrap">
+      <table>
+        <thead>
+          <tr><th scope="col">Filename</th><th scope="col">What it does</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>cover.jpg</code></td><td>The big image at the top, and the card on the work page</td></tr>
+          <tr><td><code>01-storefront.jpg</code></td><td>Goes in the gallery. Numbers keep them in order</td></tr>
+          <tr><td><code>02-fridge-wide.jpg</code></td><td>The word <em>wide</em> makes it span the full width</td></tr>
+          <tr><td><code>cover-attention.jpg</code></td><td>Crops the cover to the busiest part rather than the centre</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The rest of the name becomes the alt text a screen reader announces, so <code>pattern-detail.jpg</code> is read aloud as "Asmi, pattern detail". Numbers and the word <em>wide</em> are stripped out of that automatically. Renaming a file reorders the page.</p>
+  </section>
+
+  <section>
+    <h2>Adding a whole project</h2>
+    <p class="lede">A project is two things with the same name: a file of words, and a folder of pictures.</p>
+    <ol class="steps">
+      <li>
+        <h3>Copy an existing case study</h3>
+        <p>Any <code>.mdx</code> in <code>content/projects/</code>. Rename it in lowercase with hyphens, no spaces. The filename becomes the web address, so <code>swirly.mdx</code> is <code>/work/swirly</code>.</p>
+      </li>
+      <li>
+        <h3>Change the block at the top and write the body</h3>
+        <p>There are no image paths in it. Nothing to keep in step with the folder.</p>
+      </li>
+      <li>
+        <h3>Make the matching pictures folder</h3>
+        <p><code>source-images/&lt;same-name&gt;/</code>, then <code>npm run images</code>.</p>
+      </li>
+      <li>
+        <h3>Gather, save, send</h3>
+      </li>
+    </ol>
+    <p>If you write the words before the pictures exist, nothing breaks. The project quietly stays off the site and the build log tells you which folder it is waiting for.</p>
+
+    <h3>The switches at the top of a case study</h3>
+    <ul class="plain">
+      <li><code>order</code> sets its position on the work page, lowest first.</li>
+      <li><code>published: false</code> takes it off the site completely but keeps the file. No page, no card, and no dead links, because it drops out of the "next project" chain too. This is how you park something.</li>
+      <li><code>featured: false</code> keeps it off the home page only.</li>
+      <li><code>client</code> is optional. Leave the line out and the "For ..." line and the Client row both disappear. Same for <code>year</code>, <code>sector</code> and <code>services</code>. An empty field is never printed as a blank row.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Writing, pictures, writing, pictures</h2>
+    <p class="lede">In a case study, <code>##</code> starts a section and a blank line separates paragraphs. <code>&lt;Gallery /&gt;</code> on a line of its own drops the pictures in.</p>
+    <p>One <code>&lt;Gallery /&gt;</code> shows the whole folder, which suits a case study that is one piece of writing followed by the work. To build an argument instead, name the files each block should show:</p>
+
+    <div class="console">
+<div>## The brand</div>
+<div>&nbsp;</div>
+<div>Rooted in a blend of cultural symbolism and modern design.</div>
+<div>&nbsp;</div>
+<div>&lt;Gallery pick=<b>"box, pattern detail"</b> /&gt;</div>
+<div>&nbsp;</div>
+<div>## Bridging culture with contemporary expression</div>
+<div>&nbsp;</div>
+<div>The identity merges tradition with modern sensibilities.</div>
+<div>&nbsp;</div>
+<div>&lt;Gallery pick=<b>"label tag wide"</b> /&gt;</div>
+<div>&nbsp;</div>
+<div>## A distinctive identity</div>
+<div>&nbsp;</div>
+<div>It tells a story.</div>
+<div>&nbsp;</div>
+<div>&lt;Gallery /&gt;</div>
+    </div>
+
+    <ul class="plain">
+      <li>A name is just the filename, no path and no <code>.jpg</code>. Capitals, spaces, hyphens and underscores all work, so <code>pattern detail</code> finds <code>pattern-detail.jpg</code>.</li>
+      <li>The order you write them is the order they appear.</li>
+      <li>A bare <code>&lt;Gallery /&gt;</code> shows <mark>whatever no pick has claimed</mark>. Leave one at the end and new photographs appear there on their own, without you editing the case study again.</li>
+      <li>Each block lays out its own rows, so a pick of two sits side by side and a pick of one runs full width. That is your layout control.</li>
+      <li>Misspell a name and the build stops and lists what is actually in the folder. Better to catch it there than to find a missing gallery weeks later.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Before you send it</h2>
+    <p class="lede">Two checks, both worth the minute they take.</p>
+    <ol class="steps">
+      <li>
+        <h3>Look at it</h3>
+        <p><code>npm run dev</code>, then open <code>localhost:3000</code>. This updates as you type, so it is usually already open.</p>
+      </li>
+      <li>
+        <h3>Prove it builds</h3>
+        <p>This is the exact command Vercel runs. If it passes here it will pass there, and a broken build caught on your own machine costs nothing.</p>
+        <div class="console"><div><span class="prompt">&gt; </span>npm run build</div></div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>After you push</h2>
+    <ul class="plain">
+      <li>Vercel notices the push and rebuilds on its own. There is no deploy button and nothing to upload.</li>
+      <li>Every branch gets its own preview link. <code>main</code> is the live site.</li>
+      <li>If the build fails, Vercel emails you and the site stays exactly as it was. A bad push cannot take the site down, it just does not replace it.</li>
+      <li>Read the failure from the top. The first error is the real one, the rest is noise.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>When it goes wrong</h2>
+
+    <details>
+      <summary>I want to undo what I just changed, before committing</summary>
+      <p>Throws away your edits to that file and puts back the last committed version. There is no undo for this, so be sure.</p>
+      <div class="console"><div><span class="prompt">&gt; </span>git checkout -- path/to/the/file</div></div>
+    </details>
+
+    <details>
+      <summary>I committed but have not pushed, and want the message back</summary>
+      <p>Undoes the commit and leaves every change sitting in your folder untouched, ready to commit again.</p>
+      <div class="console"><div><span class="prompt">&gt; </span>git reset --soft HEAD~1</div></div>
+    </details>
+
+    <details>
+      <summary>git says the push was rejected</summary>
+      <p>Someone else pushed first. Pull their work, then push again.</p>
+      <div class="console">
+        <div><span class="prompt">&gt; </span>git pull</div>
+        <div><span class="prompt">&gt; </span>git push</div>
+      </div>
+    </details>
+
+    <details>
+      <summary>A picture is not showing up</summary>
+      <p>Almost always one of two things: the original went into <code>source-images/</code> but <code>npm run images</code> was never run, or it was run but the result in <code>public/work/</code> was never committed. Run <code>git status</code> and see what is sitting there unstaged.</p>
+    </details>
+
+    <details>
+      <summary>Removing a picture</summary>
+      <p>Delete it from both places, <code>source-images/&lt;project&gt;/</code> and <code>public/work/&lt;project&gt;/</code>. Only the second one is in the repo, so only deleting the first changes nothing.</p>
+    </details>
+  </section>
+
+  <footer>
+    <p>The deeper technical reference, including colour rules, type, animation and the known rough edges, lives in <code>README.md</code> in the repo.</p>
+  </footer>
+
+</main>
+</body>
+</html>

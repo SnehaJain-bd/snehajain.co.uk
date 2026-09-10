@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Animation choices for snehajain.co.uk</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Work+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<style>
+  /* Palette lifted from app/globals.css so the demos read true:
+     off-white ground, dark coffee ink, yellow only ever as a fill
+     behind dark text, blue darkened until it is legible. */
+  :root {
+    --paper:       #FBF9F4;
+    --surface:     #F4F0E7;
+    --ink:         #2A211A;
+    --muted:       #6E6157;
+    --rule:        #E3DCCE;
+    --rule-strong: #CFC5B2;
+    --yellow:      #FFF176;
+    --on-yellow:   #2A211A;
+    --link:        #0077A8;
+    --console:     #2A211A;
+    --console-ink: #F7F3EA;
+    --chip:        #0077A8;
+
+    --measure: 68ch;
+    --ease-soft:  cubic-bezier(.22,.61,.36,1);
+    --ease-expo:  cubic-bezier(.16,1,.3,1);
+    --ease-back:  cubic-bezier(.34,1.56,.64,1);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:       #1B1510;
+      --surface:     #241D16;
+      --ink:         #F0EAE0;
+      --muted:       #AA9C8D;
+      --rule:        #352C24;
+      --rule-strong: #4A3E33;
+      --link:        #62C8EF;
+      --console:     #100C08;
+      --chip:        #62C8EF;
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Work Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 54rem;
+    margin: 0 auto;
+    padding: clamp(2rem, 6vw, 4.5rem) clamp(1.15rem, 5vw, 2rem) 7rem;
+  }
+
+  h1, h2, h3, .hd-title {
+    font-family: Newsreader, Georgia, "Times New Roman", serif;
+    font-weight: 500;
+    line-height: 1.18;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  p { margin: 0; max-width: var(--measure); }
+  a { color: var(--link); }
+
+  .eyebrow {
+    font-family: "JetBrains Mono", ui-monospace, Menlo, monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  code, .mono {
+    font-family: "JetBrains Mono", ui-monospace, Menlo, monospace;
+    font-size: 0.85em;
+  }
+  code {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 0.1em 0.34em;
+  }
+
+  mark { background: var(--yellow); color: var(--on-yellow); padding: 0.05em 0.24em; border-radius: 2px; }
+
+  header.masthead {
+    display: flex; flex-direction: column; gap: 0.9rem;
+    padding-bottom: 1.8rem; border-bottom: 2px solid var(--ink);
+  }
+  header.masthead h1 { font-size: clamp(2.2rem, 6vw, 3.1rem); letter-spacing: -0.015em; }
+  header.masthead p { font-size: 1.15rem; color: var(--muted); }
+
+  section { padding-top: 3.4rem; display: flex; flex-direction: column; gap: 1.1rem; }
+  section > h2 { font-size: clamp(1.7rem, 4vw, 2.2rem); }
+  section > .lede { color: var(--muted); margin-top: -0.45rem; }
+  h3 { font-size: 1.2rem; }
+
+  ul.plain { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.7rem; max-width: var(--measure); }
+  ul.plain > li { padding-left: 1.1rem; position: relative; }
+  ul.plain > li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 0.42rem; height: 1px; background: var(--rule-strong); }
+
+  /* ---------- buttons ---------- */
+  button.play {
+    font: 500 0.82rem/1 "JetBrains Mono", ui-monospace, monospace;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink);
+    background: transparent;
+    border: 1px solid var(--rule-strong);
+    border-radius: 999px;
+    padding: 0.55rem 1rem;
+    cursor: pointer;
+    transition: background 0.18s ease, border-color 0.18s ease;
+  }
+  button.play:hover { background: var(--yellow); border-color: var(--yellow); color: var(--on-yellow); }
+  button.play:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
+
+  /* ---------- lever demos ---------- */
+  .lever {
+    border-top: 1px solid var(--rule);
+    padding: 1.4rem 0 0.3rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+  }
+  .lever-head { display: flex; flex-wrap: wrap; gap: 0.7rem 1rem; align-items: baseline; justify-content: space-between; }
+  .lever-head h3 { margin: 0; }
+  .lever-say { color: var(--muted); font-size: 0.95rem; max-width: var(--measure); }
+  .lever-say b { color: var(--ink); font-weight: 500; }
+
+  .tracks { display: flex; flex-direction: column; gap: 0.55rem; }
+  .track {
+    display: grid;
+    grid-template-columns: 7.5rem 1fr;
+    gap: 0.9rem;
+    align-items: center;
+  }
+  .track-label {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .rail {
+    position: relative;
+    height: 2.1rem;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .chip {
+    position: absolute;
+    top: 50%;
+    left: 0.35rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: -0.625rem;
+    border-radius: 3px;
+    background: var(--chip);
+  }
+  .rail.vertical .chip { left: 50%; margin-left: -0.625rem; }
+
+  .row-chips { display: flex; gap: 0.4rem; align-items: center; height: 2.1rem; padding: 0 0.35rem; }
+  .row-chips .chip { position: static; margin: 0; }
+
+  /* ---------- hero stage ---------- */
+  .stage {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: clamp(1.6rem, 5vw, 3rem);
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .stage-bar {
+    display: flex; flex-wrap: wrap; gap: 0.6rem 1rem;
+    align-items: baseline; justify-content: space-between;
+    margin-bottom: 0.9rem;
+  }
+  .stage-name { display: flex; gap: 0.7rem; align-items: baseline; }
+  .stage-key {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.78rem; font-weight: 700; color: var(--muted);
+    border-top: 2px solid var(--ink); padding-top: 0.25rem;
+  }
+
+  .hero-demo { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 1.1rem; }
+  .hd-title { font-size: clamp(1.55rem, 4.4vw, 2.5rem); letter-spacing: -0.012em; }
+  .hd-sub { font-size: clamp(0.98rem, 2vw, 1.1rem); color: var(--muted); max-width: 36ch; }
+  .hd-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .b-solid, .b-ghost {
+    font-size: 0.92rem; font-weight: 500;
+    padding: 0.62rem 1.1rem; border-radius: 999px;
+    text-decoration: none; display: inline-block;
+  }
+  .b-solid { background: var(--ink); color: var(--paper); }
+  .b-ghost { border: 1px solid var(--rule-strong); color: var(--ink); }
+
+  .mask { display: block; overflow: hidden; }
+  .ln { display: block; }
+
+  /* the marker, variant C, the site's own highlighter device */
+  .marker { position: relative; display: inline-block; }
+  .marker .ink {
+    position: absolute; left: -0.06em; right: -0.06em; bottom: 0.06em;
+    height: 0.4em; background: var(--yellow);
+    transform-origin: left center; z-index: 0; border-radius: 2px;
+  }
+  .marker .txt { position: relative; z-index: 1; }
+
+  /* the ambient wash, variant E */
+  .ambient {
+    position: absolute; z-index: 0;
+    width: 60%; aspect-ratio: 1; right: -8%; top: -22%;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--yellow) 0%, transparent 68%);
+    opacity: 0.5; filter: blur(38px);
+    animation: drift 15s ease-in-out infinite alternate;
+  }
+
+  /* ================= keyframes =================
+     Every element sits at its finished state when idle. The keyframes
+     only describe where it comes FROM, so nothing is ever parked
+     invisible waiting to be triggered. */
+  @keyframes rise      { from { transform: translateY(110%); } }
+  @keyframes riseFar   { from { transform: translateY(118%); } }
+  @keyframes fadeUp    { from { opacity: 0; transform: translateY(14px); } }
+  @keyframes fadeUpSm  { from { opacity: 0; transform: translateY(9px); } }
+  @keyframes draw      { from { transform: scaleX(0); } }
+  @keyframes word      { from { opacity: 0; transform: translateY(0.5em); filter: blur(7px); } }
+  @keyframes settle    { from { transform: scale(0.972); } }
+  @keyframes drift     { from { transform: translate(-4%, -3%) scale(1); } to { transform: translate(7%, 5%) scale(1.14); } }
+  @keyframes slide     { from { transform: translateX(0); } to { transform: translateX(calc(100% - 1.95rem)); } }
+  @keyframes liftS     { from { transform: translateY(8px); opacity: 0; } }
+  @keyframes liftM     { from { transform: translateY(20px); opacity: 0; } }
+  @keyframes liftL     { from { transform: translateY(48px); opacity: 0; } }
+  @keyframes justFade  { from { opacity: 0; } }
+  @keyframes justScale { from { transform: scale(0.6); opacity: 0; } }
+  @keyframes justBlur  { from { filter: blur(9px); opacity: 0; } }
+  @keyframes wipe      { from { clip-path: inset(0 100% 0 0); } }
+
+  /* ---- lever: distance ---- */
+  .run .d-s { animation: liftS .6s var(--ease-soft) both; }
+  .run .d-m { animation: liftM .6s var(--ease-soft) both; }
+  .run .d-l { animation: liftL .6s var(--ease-soft) both; }
+
+  /* ---- lever: duration ---- */
+  .run .t-fast { animation: slide .25s var(--ease-soft) both; }
+  .run .t-mid  { animation: slide .6s  var(--ease-soft) both; }
+  .run .t-slow { animation: slide 1.2s var(--ease-soft) both; }
+
+  /* ---- lever: easing ---- */
+  .run .e-lin  { animation: slide .8s linear both; }
+  .run .e-soft { animation: slide .8s var(--ease-soft) both; }
+  .run .e-expo { animation: slide .8s var(--ease-expo) both; }
+  .run .e-back { animation: slide .8s var(--ease-back) both; }
+
+  /* ---- lever: stagger ---- */
+  .run .s-tight  .chip { animation: liftM .5s var(--ease-soft) both; animation-delay: calc(var(--i) * .03s); }
+  .run .s-normal .chip { animation: liftM .5s var(--ease-soft) both; animation-delay: calc(var(--i) * .10s); }
+  .run .s-loose  .chip { animation: liftM .5s var(--ease-soft) both; animation-delay: calc(var(--i) * .24s); }
+
+  /* ---- lever: what moves ---- */
+  .run .p-move  { animation: liftM .6s var(--ease-soft) both; }
+  .run .p-fade  { animation: justFade .6s var(--ease-soft) both; }
+  .run .p-scale { animation: justScale .6s var(--ease-soft) both; }
+  .run .p-blur  { animation: justBlur .6s var(--ease-soft) both; }
+  .run .p-wipe  { animation: wipe .6s var(--ease-soft) both; }
+
+  /* ================= hero variants ================= */
+
+  /* A. as it is now: one move, one easing, evenly spaced */
+  [data-variant="a"].run .ln-1      { animation: rise .85s var(--ease-soft) .05s both; }
+  [data-variant="a"].run .ln-2      { animation: rise .85s var(--ease-soft) .17s both; }
+  [data-variant="a"].run .sub-in    { animation: rise .85s var(--ease-soft) .32s both; }
+  [data-variant="a"].run .act-in    { animation: rise .85s var(--ease-soft) .44s both; }
+
+  /* B. weighted: headline is the event, the rest supports it */
+  [data-variant="b"].run .ln-1      { animation: riseFar .9s var(--ease-expo) 0s both; }
+  [data-variant="b"].run .ln-2      { animation: riseFar .9s var(--ease-expo) .12s both; }
+  [data-variant="b"].run .hd-sub    { animation: fadeUp .5s var(--ease-soft) .58s both; }
+  [data-variant="b"].run .hd-actions{ animation: fadeUpSm .45s var(--ease-soft) .70s both; }
+
+  /* C. marker: the yellow highlighter finishes the sentence */
+  [data-variant="c"].run .ln-1      { animation: riseFar .9s var(--ease-expo) 0s both; }
+  [data-variant="c"].run .ln-2      { animation: riseFar .9s var(--ease-expo) .12s both; }
+  [data-variant="c"].run .ink       { animation: draw .55s var(--ease-soft) .92s both; }
+  [data-variant="c"].run .hd-sub    { animation: fadeUp .5s var(--ease-soft) 1.25s both; }
+  [data-variant="c"].run .hd-actions{ animation: fadeUpSm .45s var(--ease-soft) 1.37s both; }
+
+  /* D. word by word: blur clearing, more expressive */
+  [data-variant="d"].run .w         { animation: word .62s var(--ease-expo) both; animation-delay: calc(var(--i) * .045s); }
+  [data-variant="d"].run .hd-sub    { animation: fadeUp .5s var(--ease-soft) .72s both; }
+  [data-variant="d"].run .hd-actions{ animation: fadeUpSm .45s var(--ease-soft) .84s both; }
+
+  /* E. settle, then never quite still */
+  [data-variant="e"].run .hero-demo { animation: settle 1.1s var(--ease-expo) both; }
+  [data-variant="e"].run .ln-1      { animation: riseFar .9s var(--ease-expo) 0s both; }
+  [data-variant="e"].run .ln-2      { animation: riseFar .9s var(--ease-expo) .12s both; }
+  [data-variant="e"].run .hd-sub    { animation: fadeUp .5s var(--ease-soft) .58s both; }
+  [data-variant="e"].run .hd-actions{ animation: fadeUpSm .45s var(--ease-soft) .70s both; }
+
+  /* ---------- reference table ---------- */
+  .table-wrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; min-width: 34rem; font-size: 0.95rem; }
+  th, td { text-align: left; padding: 0.62rem 0.9rem 0.62rem 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); font-weight: 600; border-bottom-color: var(--rule-strong); }
+  td:last-child, th:last-child { padding-right: 0; }
+
+  footer { margin-top: 4.5rem; padding-top: 1.4rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: 0.94rem; }
+
+  .reduced-note {
+    background: var(--surface); border-left: 3px solid var(--rule-strong);
+    padding: 0.9rem 1.1rem; max-width: var(--measure); font-size: 0.95rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ambient { animation: none; }
+  }
+
+  @media (max-width: 34rem) {
+    .track { grid-template-columns: 1fr; gap: 0.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<main class="page">
+
+  <header class="masthead">
+    <p class="eyebrow">Working file</p>
+    <h1>Animation choices</h1>
+    <p>Words for the things that move, and five different heroes to watch. Pick what you like, then tell me in these terms.</p>
+    <div><button class="play" data-play-all>Play everything</button></div>
+  </header>
+
+  <section>
+    <h2>How to use this</h2>
+    <p>You do not need the vocabulary before you start. Watch first, react second. Every demo below has a <b>Play</b> button and you can press it as often as you like.</p>
+    <ul class="plain">
+      <li><b>Part one</b> breaks motion into five separate dials. Each one is shown on its own so you can see what it does by itself.</li>
+      <li><b>Part two</b> is your real hero, five different ways, using your actual words.</li>
+      <li><b>Part three</b> lists the other places on the site where motion could go, so you can say yes or no to each.</li>
+    </ul>
+    <p class="reduced-note">If your system is set to reduce motion, the demos still play when you press the button, because you asked for them. The site itself stays completely still for anyone with that setting on, which is deliberate and will not change.</p>
+  </section>
+
+  <section>
+    <h2>Part one: the five dials</h2>
+    <p class="lede">Almost any note you might want to give me is one of these five turned up or down.</p>
+
+    <div class="lever" data-demo>
+      <div class="lever-head">
+        <h3>1. Distance</h3>
+        <button class="play" data-play>Play</button>
+      </div>
+      <p class="lever-say">How far a thing travels before it settles. Short reads as crisp and confident. Long reads as dramatic, and starts to feel slow even at the same speed.</p>
+      <div class="tracks">
+        <div class="track"><span class="track-label">8px</span><div class="rail vertical"><span class="chip d-s"></span></div></div>
+        <div class="track"><span class="track-label">20px</span><div class="rail vertical"><span class="chip d-m"></span></div></div>
+        <div class="track"><span class="track-label">48px</span><div class="rail vertical"><span class="chip d-l"></span></div></div>
+      </div>
+      <p class="lever-say">Say: <b>travels further</b>, or <b>barely moves</b>.</p>
+    </div>
+
+    <div class="lever" data-demo>
+      <div class="lever-head">
+        <h3>2. Speed</h3>
+        <button class="play" data-play>Play</button>
+      </div>
+      <p class="lever-say">How long it takes. Under a quarter second feels snappy and almost invisible. Over a second starts to feel like the page is keeping you waiting.</p>
+      <div class="tracks">
+        <div class="track"><span class="track-label">0.25s</span><div class="rail"><span class="chip t-fast"></span></div></div>
+        <div class="track"><span class="track-label">0.60s</span><div class="rail"><span class="chip t-mid"></span></div></div>
+        <div class="track"><span class="track-label">1.20s</span><div class="rail"><span class="chip t-slow"></span></div></div>
+      </div>
+      <p class="lever-say">Say: <b>faster</b>, <b>slower</b>, or <b>it drags</b>.</p>
+    </div>
+
+    <div class="lever" data-demo>
+      <div class="lever-head">
+        <h3>3. Easing</h3>
+        <button class="play" data-play>Play</button>
+      </div>
+      <p class="lever-say">The character of the speed, and the one that changes the feel the most. All four of these travel the same distance in the same time. They do not feel remotely alike.</p>
+      <div class="tracks">
+        <div class="track"><span class="track-label">even</span><div class="rail"><span class="chip e-lin"></span></div></div>
+        <div class="track"><span class="track-label">gentle</span><div class="rail"><span class="chip e-soft"></span></div></div>
+        <div class="track"><span class="track-label">decisive</span><div class="rail"><span class="chip e-expo"></span></div></div>
+        <div class="track"><span class="track-label">overshoot</span><div class="rail"><span class="chip e-back"></span></div></div>
+      </div>
+      <p class="lever-say"><b>Even</b> is machinery, and almost always wrong. <b>Gentle</b> is what the site uses now. <b>Decisive</b> leaves fast and lands softly, which reads as assured. <b>Overshoot</b> goes slightly too far and comes back, which reads as playful.</p>
+      <p class="lever-say">Say: <b>more decisive</b>, <b>give it some bounce</b>, or <b>too bouncy</b>.</p>
+    </div>
+
+    <div class="lever" data-demo>
+      <div class="lever-head">
+        <h3>4. Stagger</h3>
+        <button class="play" data-play>Play</button>
+      </div>
+      <p class="lever-say">The gap between one thing arriving and the next. This is what makes a row of cards feel like a considered sequence rather than a single lump.</p>
+      <div class="tracks">
+        <div class="track"><span class="track-label">tight</span><div class="rail"><div class="row-chips s-tight"><span class="chip" style="--i:0"></span><span class="chip" style="--i:1"></span><span class="chip" style="--i:2"></span><span class="chip" style="--i:3"></span><span class="chip" style="--i:4"></span></div></div></div>
+        <div class="track"><span class="track-label">normal</span><div class="rail"><div class="row-chips s-normal"><span class="chip" style="--i:0"></span><span class="chip" style="--i:1"></span><span class="chip" style="--i:2"></span><span class="chip" style="--i:3"></span><span class="chip" style="--i:4"></span></div></div></div>
+        <div class="track"><span class="track-label">loose</span><div class="rail"><div class="row-chips s-loose"><span class="chip" style="--i:0"></span><span class="chip" style="--i:1"></span><span class="chip" style="--i:2"></span><span class="chip" style="--i:3"></span><span class="chip" style="--i:4"></span></div></div></div>
+      </div>
+      <p class="lever-say">Say: <b>let them arrive closer together</b>, or <b>one at a time, more separated</b>.</p>
+    </div>
+
+    <div class="lever" data-demo>
+      <div class="lever-head">
+        <h3>5. What actually changes</h3>
+        <button class="play" data-play>Play</button>
+      </div>
+      <p class="lever-say">Movement is only one option. These are the others, and they can be combined.</p>
+      <div class="tracks">
+        <div class="track"><span class="track-label">position</span><div class="rail vertical"><span class="chip p-move"></span></div></div>
+        <div class="track"><span class="track-label">fade</span><div class="rail vertical"><span class="chip p-fade"></span></div></div>
+        <div class="track"><span class="track-label">scale</span><div class="rail vertical"><span class="chip p-scale"></span></div></div>
+        <div class="track"><span class="track-label">blur</span><div class="rail vertical"><span class="chip p-blur"></span></div></div>
+        <div class="track"><span class="track-label">wipe</span><div class="rail vertical"><span class="chip p-wipe"></span></div></div>
+      </div>
+      <p class="lever-say">A <b>wipe</b> is how your yellow highlighter already works: it is painted on rather than faded in.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Part two: your hero, five ways</h2>
+    <p class="lede">Same words, same type, same buttons. Only the motion differs. Watch each one twice before deciding.</p>
+
+    <div class="stage-bar">
+      <div class="stage-name"><span class="stage-key">A</span><h3>As it is now</h3></div>
+      <button class="play" data-play>Play</button>
+    </div>
+    <div class="stage" data-variant="a" data-demo>
+      <div class="hero-demo">
+        <h2 class="hd-title">
+          <span class="mask"><span class="ln ln-1">You know what you&rsquo;re building.</span></span>
+          <span class="mask"><span class="ln ln-2">Your brand doesn&rsquo;t say it yet.</span></span>
+        </h2>
+        <span class="mask"><span class="ln sub-in"><span class="hd-sub" style="display:block">Strategic brand design for founder-led businesses.</span></span></span>
+        <span class="mask"><span class="ln act-in">
+          <span class="hd-actions"><a class="b-solid" href="#">Start a Project</a><a class="b-ghost" href="#">See Selected Work</a></span>
+        </span></span>
+      </div>
+    </div>
+    <p class="lever-say">Every element does the same move, at the same speed, with the same easing, spaced evenly apart. Nothing is more important than anything else, and once it lands the page is completely still. That is the dullness.</p>
+
+    <div class="stage-bar">
+      <div class="stage-name"><span class="stage-key">B</span><h3>Weighted</h3></div>
+      <button class="play" data-play>Play</button>
+    </div>
+    <div class="stage" data-variant="b" data-demo>
+      <div class="hero-demo">
+        <h2 class="hd-title">
+          <span class="mask"><span class="ln ln-1">You know what you&rsquo;re building.</span></span>
+          <span class="mask"><span class="ln ln-2">Your brand doesn&rsquo;t say it yet.</span></span>
+        </h2>
+        <p class="hd-sub">Strategic brand design for founder-led businesses.</p>
+        <div class="hd-actions"><a class="b-solid" href="#">Start a Project</a><a class="b-ghost" href="#">See Selected Work</a></div>
+      </div>
+    </div>
+    <p class="lever-say">The smallest change here. The headline gets the slow, decisive easing and a real pause after it. The sub-line and buttons then arrive quickly and quietly, because they are support, not the message. Same ingredients as A, ranked.</p>
+
+    <div class="stage-bar">
+      <div class="stage-name"><span class="stage-key">C</span><h3>Marker</h3></div>
+      <button class="play" data-play>Play</button>
+    </div>
+    <div class="stage" data-variant="c" data-demo>
+      <div class="hero-demo">
+        <h2 class="hd-title">
+          <span class="mask"><span class="ln ln-1">You know what you&rsquo;re building.</span></span>
+          <span class="mask"><span class="ln ln-2">Your brand <span class="marker"><span class="ink" aria-hidden="true"></span><span class="txt">doesn&rsquo;t say it yet.</span></span></span></span>
+        </h2>
+        <p class="hd-sub">Strategic brand design for founder-led businesses.</p>
+        <div class="hd-actions"><a class="b-solid" href="#">Start a Project</a><a class="b-ghost" href="#">See Selected Work</a></div>
+      </div>
+    </div>
+    <p class="lever-say">B, plus your own highlighter drawing itself across the point of the sentence once the lines have settled. It uses a device the brand already owns, and it puts the emphasis exactly where the argument is. The cost is roughly half a second more before the buttons appear.</p>
+
+    <div class="stage-bar">
+      <div class="stage-name"><span class="stage-key">D</span><h3>Word by word</h3></div>
+      <button class="play" data-play>Play</button>
+    </div>
+    <div class="stage" data-variant="d" data-demo>
+      <div class="hero-demo">
+        <h2 class="hd-title" data-split>You know what you&rsquo;re building. Your brand doesn&rsquo;t say it yet.</h2>
+        <p class="hd-sub">Strategic brand design for founder-led businesses.</p>
+        <div class="hd-actions"><a class="b-solid" href="#">Start a Project</a><a class="b-ghost" href="#">See Selected Work</a></div>
+      </div>
+    </div>
+    <p class="lever-say">The sentence assembles itself, each word lifting and sharpening out of a blur. The most expressive of the five and the most attention-seeking. It reads as writing being composed, which suits a brand built on words, but it makes the reader wait on the message.</p>
+
+    <div class="stage-bar">
+      <div class="stage-name"><span class="stage-key">E</span><h3>Never quite still</h3></div>
+      <button class="play" data-play>Play</button>
+    </div>
+    <div class="stage" data-variant="e" data-demo>
+      <span class="ambient" aria-hidden="true"></span>
+      <div class="hero-demo">
+        <h2 class="hd-title">
+          <span class="mask"><span class="ln ln-1">You know what you&rsquo;re building.</span></span>
+          <span class="mask"><span class="ln ln-2">Your brand doesn&rsquo;t say it yet.</span></span>
+        </h2>
+        <p class="hd-sub">Strategic brand design for founder-led businesses.</p>
+        <div class="hd-actions"><a class="b-solid" href="#">Start a Project</a><a class="b-ghost" href="#">See Selected Work</a></div>
+      </div>
+    </div>
+    <p class="lever-say">B again, but the whole block settles very slightly as it arrives, and a soft wash of colour drifts behind it permanently. Nothing announces itself, the hero simply never freezes. This is the one that most directly answers "dull", because the dullness is partly that the page dies the moment it finishes loading.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>If you want</th><th>Choose</th></tr></thead>
+        <tbody>
+          <tr><td>The safest improvement, nothing showy</td><td>B</td></tr>
+          <tr><td>To use the brand&rsquo;s own device, and point at the argument</td><td>C</td></tr>
+          <tr><td>Something people remember and mention</td><td>D</td></tr>
+          <tr><td>A page that feels alive rather than loaded</td><td>E</td></tr>
+          <tr><td>The most complete answer</td><td>C and E together, which do combine</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Part three: everywhere else</h2>
+    <p class="lede">The hero is one moment. These are the others, most of which are currently doing nothing or doing the same fade as everything else. Say yes or no to each.</p>
+    <ul class="plain">
+      <li><b>Work cards.</b> On hover, the image could push in slightly while the title shifts, so the card feels like a physical thing being picked up. Currently it only changes colour.</li>
+      <li><b>Case study covers.</b> Already drift slightly as they pass. Could be made stronger or removed.</li>
+      <li><b>Section headings.</b> Currently every heading on the site fades up identically. The yellow highlighter could draw itself on the key phrase of each one instead, the way the hero does in C.</li>
+      <li><b>Numbers and counts.</b> Figures like "twenty plus clients" could count up as they come into view. Effective once, irritating if used more than once on a page.</li>
+      <li><b>Buttons.</b> Currently a colour change. The arrow could travel, or the fill could wipe across rather than switch.</li>
+      <li><b>Between pages.</b> At the moment clicking a link is an instant cut. A short crossfade or a wipe in your off-white would make the site feel like one continuous thing rather than separate documents.</li>
+      <li><b>The approach section.</b> The steps could draw a line connecting them as you scroll, which suits content that is genuinely a sequence.</li>
+      <li><b>Scroll-linked headline.</b> A large phrase that shifts slowly as you scroll past it, giving the page depth without anything blinking or popping.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>How to tell me</h2>
+    <p>Anything in this form is enough to act on. You do not need to be more precise than this.</p>
+    <ul class="plain">
+      <li>"Hero B, but more decisive and a bit faster."</li>
+      <li>"C, and put the marker on <i>building</i> instead."</li>
+      <li>"E, but the wash is too strong, and I do not want the block to scale."</li>
+      <li>"D is too much. B everywhere, and yes to the work cards and page transitions, no to counting numbers."</li>
+      <li>"Everything is too slow across the whole site."</li>
+    </ul>
+    <p>If none of the five is right, say what is wrong with the closest one. "B but it still feels flat" is more useful than a blank page, and I can take it from there.</p>
+  </section>
+
+  <footer>
+    <p>A working file, not part of the site. It lives in <code>docs/</code> and is not published, so nothing here is visible to visitors. Open it any time by double-clicking it.</p>
+  </footer>
+
+</main>
+
+<script>
+  (function () {
+    /* Split variant D's headline into words, numbered so the CSS can
+       stagger them. Done here so the markup stays readable. */
+    document.querySelectorAll('[data-split]').forEach(function (el) {
+      var words = el.textContent.trim().split(/\s+/);
+      el.textContent = '';
+      words.forEach(function (w, i) {
+        var span = document.createElement('span');
+        span.className = 'w';
+        span.style.setProperty('--i', i);
+        span.style.display = 'inline-block';
+        span.textContent = w;
+        el.appendChild(span);
+        if (i < words.length - 1) el.appendChild(document.createTextNode(' '));
+      });
+    });
+
+    function play(el) {
+      el.classList.remove('run');
+      void el.offsetWidth;          // force the browser to notice the removal
+      el.classList.add('run');
+    }
+
+    function demoFor(button) {
+      var block = button.closest('.lever');
+      if (block) return block;
+      // stage bars sit just above their stage
+      var bar = button.closest('.stage-bar');
+      if (bar && bar.nextElementSibling && bar.nextElementSibling.matches('.stage')) {
+        return bar.nextElementSibling;
+      }
+      return null;
+    }
+
+    document.querySelectorAll('[data-play]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var d = demoFor(b);
+        if (d) play(d);
+      });
+    });
+
+    var all = document.querySelector('[data-play-all]');
+    if (all) {
+      all.addEventListener('click', function () {
+        document.querySelectorAll('[data-demo]').forEach(function (d, i) {
+          setTimeout(function () { play(d); }, i * 260);
+        });
+      });
+    }
+
+    /* Play each demo once as it comes into view, so scrolling through
+       the page shows you everything without pressing anything. Skipped
+       entirely if the reader has asked for reduced motion. */
+    var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!still && 'IntersectionObserver' in window) {
+      var seen = new WeakSet();
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting && !seen.has(e.target)) {
+            seen.add(e.target);
+            play(e.target);
+          }
+        });
+      }, { threshold: 0.35 });
+      document.querySelectorAll('[data-demo]').forEach(function (d) { io.observe(d); });
+    }
+  })();
+</script>
+
+</body>
+</html>
