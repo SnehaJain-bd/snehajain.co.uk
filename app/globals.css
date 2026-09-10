@@ -503,10 +503,10 @@ p:not([class]):last-child{ margin-bottom:0; }
    container happens to run out. */
 .hero__title{
   font-family:var(--head);
-  font-size:clamp(1.9rem, 4.4vw, 3.5rem);
-  line-height:1.22;
+  font-size:clamp(2.1rem, 5.2vw, 4.2rem);
+  line-height:1.18;
   font-weight:600;
-  letter-spacing:-.022em;
+  letter-spacing:-.026em;
   margin:0 0 1.15rem;
 }
 .hero__title > span{ display:block; }
