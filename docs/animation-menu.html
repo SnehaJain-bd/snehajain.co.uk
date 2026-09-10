@@ -110,7 +110,7 @@
 
   /* scroll frames: the reader scrolls inside these */
   .scroller { height:100%; overflow-y:auto; padding:0 1rem; scrollbar-width:thin; }
-  .scroller::before, .scroller::after { content:""; display:block; height:8.5rem; }
+  .scroller::before, .scroller::after { content:""; display:block; height:100%; }
   .scroll-hint {
     position:absolute; right:.5rem; bottom:.5rem; z-index:3;
     font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.65rem;
@@ -971,7 +971,7 @@
           frameEl.classList.remove('in');
         }
       });
-    }, { root: frameEl, threshold: 0.6 });
+    }, { root: frameEl, threshold: 0.3 });
     io.observe(target);
   });
 
