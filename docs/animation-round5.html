@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Round five</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Work+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<style>
+  :root {
+    --paper:#FBF9F4; --paper-2:#F4F0E7; --paper-3:#EDE7DA; --ink:#2A211A;
+    --ink-2:#6C5F54; --ink-3:#7A7168; --line:#E3DDD0; --line-2:#D3CABA;
+    --yellow:#FFF176; --yellow-soft:#FEFBE0; --blue:#00A7E1; --link:#0077A8;
+    --measure:68ch; --radius:14px; --radius-sm:8px;
+    --ease:cubic-bezier(.22,.61,.36,1);
+    --ease-expo:cubic-bezier(.16,1,.3,1);
+    --ease-inout:cubic-bezier(.45,.05,.35,1);
+  }
+  @media (prefers-color-scheme:dark) {
+    :root:not([data-theme="light"]) {
+      --paper:#1A1512; --paper-2:#221C17; --paper-3:#2A211A; --ink:#FBF9F4;
+      --ink-2:#B3A99D; --ink-3:#8A7F73; --line:#3A312A; --line-2:#4A4037;
+      --yellow-soft:#332E17; --link:#4CC5EF;
+    }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:"Work Sans",ui-sans-serif,system-ui,sans-serif; line-height:1.62; -webkit-font-smoothing:antialiased; }
+  ::selection { background:var(--yellow); color:#2A211A; }
+  img { max-width:100%; display:block; }
+
+  .page { max-width:60rem; margin:0 auto; padding:clamp(2rem,6vw,4.5rem) clamp(1.15rem,5vw,2rem) 7rem; }
+  h1,h2,h3,h4,.display { font-family:Newsreader,Georgia,"Times New Roman",serif; font-weight:500; line-height:1.16; margin:0; text-wrap:balance; }
+  p { margin:0; max-width:var(--measure); }
+  a { color:var(--link); }
+
+  .eyebrow { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.8rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-2); margin:0; }
+  code { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.85em; background:var(--paper-2); border:1px solid var(--line); border-radius:3px; padding:.1em .34em; }
+
+  header.masthead { display:flex; flex-direction:column; gap:.9rem; padding-bottom:1.8rem; border-bottom:2px solid var(--ink); }
+  header.masthead h1 { font-size:clamp(2.2rem,6vw,3.1rem); letter-spacing:-.015em; }
+  header.masthead p { font-size:1.15rem; color:var(--ink-2); }
+
+  section { padding-top:3.4rem; display:flex; flex-direction:column; gap:1.1rem; }
+  section > h2 { font-size:clamp(1.7rem,4vw,2.2rem); }
+  section > .lede { color:var(--ink-2); margin-top:-.45rem; }
+  h3 { font-size:1.15rem; }
+  .note { color:var(--ink-2); font-size:.95rem; max-width:var(--measure); }
+  .note b { color:var(--ink); font-weight:500; }
+
+  .bar-head { display:flex; flex-wrap:wrap; gap:.6rem 1rem; align-items:baseline; justify-content:space-between; margin-top:1.4rem; }
+  .bar-head .name { display:flex; gap:.7rem; align-items:baseline; }
+  .key { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.78rem; font-weight:700; color:var(--ink-2); border-top:2px solid var(--ink); padding-top:.25rem; }
+
+  .stage { position:relative; border:1px solid var(--line); border-radius:var(--radius); background:var(--paper); padding:clamp(1.2rem,3vw,2rem); overflow:hidden; }
+  .stage--dark { background:#2A211A; color:#FBF9F4; border-color:#3A312A; }
+
+  /* ============ underline options ============ */
+  .demo-line { font-family:Newsreader,Georgia,serif; font-size:clamp(1.6rem,4.5vw,3rem); font-weight:600; line-height:1.3; letter-spacing:-.02em; }
+  .demo-line--sm { font-size:clamp(1.05rem,2.4vw,1.35rem); font-weight:500; }
+
+  .u { position:relative; display:inline-block; isolation:isolate; padding:.02em .22em; }
+  .u i {
+    position:absolute; z-index:-1; display:block;
+    background:var(--yellow);
+    transform-origin:left center;
+    animation:draw .6s var(--ease) forwards;
+  }
+  @keyframes draw { from { transform:scaleX(0); } to { transform:scaleX(1); } }
+
+  /* U1, what is on the site now: a tapered lens, which comes to a point
+     at each end and reads as a bulge rather than a terminal */
+  .u--now i {
+    left:-.1em; right:-.12em; bottom:.02em; height:.4em;
+    -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40' preserveAspectRatio='none'%3E%3Cpath d='M4 25 C28 12 66 18 108 13 C146 9 176 13 195 19 C199 21 199 27 194 29 C168 37 118 33 78 35 C48 36 19 34 6 31 C1 30 1 27 4 25 Z' fill='black'/%3E%3C/svg%3E");
+    mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40' preserveAspectRatio='none'%3E%3Cpath d='M4 25 C28 12 66 18 108 13 C146 9 176 13 195 19 C199 21 199 27 194 29 C168 37 118 33 78 35 C48 36 19 34 6 31 C1 30 1 27 4 25 Z' fill='black'/%3E%3C/svg%3E");
+    -webkit-mask-size:100% 100%; mask-size:100% 100%;
+    -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+  }
+
+  /* U2, a plain rounded bar. No SVG at all, so nothing can distort. */
+  .u--bar i {
+    left:-.12em; right:-.14em; bottom:.02em; height:.34em;
+    border-radius:999px;
+  }
+
+  /* U3, the same bar with the tilt a hand gives it */
+  .u--tilt i {
+    left:-.14em; right:-.16em; bottom:.03em; height:.34em;
+    border-radius:999px;
+    rotate:-.9deg;
+  }
+
+  /* U4, drawn in her stroke language: even weight, fully rounded
+     terminals, one gentle wave. Stroked rather than filled, so the
+     thickness never varies. */
+  .u--stroke i {
+    left:-.14em; right:-.16em; bottom:0; height:.44em;
+    background:none;
+    -webkit-mask:none; mask:none;
+  }
+  .u--stroke svg { display:block; width:100%; height:100%; overflow:visible; }
+  .u--stroke path { fill:none; stroke:var(--yellow); stroke-width:13; stroke-linecap:round; }
+
+  /* U5, two strokes, the way the approximately mark is drawn */
+  .u--double i { left:-.14em; right:-.16em; bottom:-.04em; height:.56em; background:none; }
+  .u--double svg { display:block; width:100%; height:100%; overflow:visible; }
+  .u--double path { fill:none; stroke:var(--yellow); stroke-width:9; stroke-linecap:round; }
+
+  /* U7 and U8, built from overlapping passes rather than one shape.
+     Each pass is a bar with fully rounded ends, at its own length, tilt
+     and height. Where they overlap the edge goes ragged the way a marker
+     does when you go over a word twice.
+
+     They also cannot distort: border-radius 999px on a short wide box
+     gives semicircular ends whatever the width, so a long phrase and a
+     short one both end properly. */
+  .u--pass i, .u--pass2 i { background:none; }
+  .u--pass b, .u--pass2 b {
+    position:absolute; display:block;
+    background:var(--yellow);
+    border-radius:999px;
+  }
+
+  .u--pass i { left:-.14em; right:-.16em; bottom:-.02em; height:.52em; }
+  .u--pass b:nth-child(1) { left:0;     right:.02em; top:.10em; height:.26em; rotate:-.8deg; }
+  .u--pass b:nth-child(2) { left:.06em; right:0;     top:.17em; height:.22em; rotate:.6deg; }
+
+  .u--pass2 i { left:-.16em; right:-.18em; bottom:-.04em; height:.58em; }
+  .u--pass2 b:nth-child(1) { left:0;     right:.04em; top:.09em;  height:.24em; rotate:-1deg; }
+  .u--pass2 b:nth-child(2) { left:.05em; right:0;     top:.17em;  height:.21em; rotate:.7deg; }
+  .u--pass2 b:nth-child(3) { left:.34em; right:.28em; top:.235em; height:.15em; rotate:-.4deg; }
+
+  /* U6, her own artwork, stretched */
+  .u--mark i {
+    left:-.16em; right:-.18em; bottom:-.06em; height:.56em;
+    background:none;
+  }
+  .u--mark img { width:100%; height:100%; object-fit:fill; display:block; }
+
+  .replay { font:500 .78rem/1 "JetBrains Mono",ui-monospace,monospace; letter-spacing:.06em; text-transform:uppercase; color:inherit; background:transparent; border:1px solid var(--line-2); border-radius:999px; padding:.5rem .95rem; cursor:pointer; }
+  .replay:hover { background:var(--yellow); border-color:var(--yellow); color:#2A211A; }
+  .replay:focus-visible { outline:2px solid var(--link); outline-offset:3px; }
+
+  .pair { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  @media (max-width:44rem) { .pair { grid-template-columns:1fr; } }
+
+  /* ============ packages ============ */
+  .packages { display:grid; grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); gap:1rem; list-style:none; margin:0; padding:0; }
+  .package { border:1px solid var(--line); border-radius:var(--radius); padding:1.3rem; background:var(--paper); display:flex; flex-direction:column; gap:.8rem; transition:border-color .3s var(--ease), transform .35s var(--ease); }
+  .package:hover { border-color:var(--ink); transform:translateY(-4px); }
+  .package__num { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.7rem; letter-spacing:.14em; color:var(--ink-3); }
+  .package__num::before { content:"("; } .package__num::after { content:")"; }
+  .package h4 { font-size:1.4rem; }
+  .package__who { font-family:Newsreader,Georgia,serif; font-size:1rem; color:var(--ink-2); }
+  .package__leave { font-size:.9rem; padding:.7rem .9rem; background:var(--yellow-soft); border-left:3px solid var(--yellow); border-radius:0 var(--radius-sm) var(--radius-sm) 0; }
+  .package__meta { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.64rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-2); border-top:1px solid var(--line); padding-top:.8rem; margin-top:auto; }
+
+  /* P2: an index, not cards */
+  .pk-index { list-style:none; margin:0; padding:0; }
+  .pk-row { display:grid; grid-template-columns:2.2rem 1fr auto; gap:1rem; align-items:start; padding:1.15rem .2rem; border-bottom:1px solid var(--line); transition:padding-left .3s var(--ease); }
+  .pk-row:first-child { border-top:1px solid var(--line); }
+  .pk-row:hover { padding-left:.7rem; }
+  .pk-row .n { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.7rem; color:var(--ink-3); padding-top:.5rem; }
+  .pk-row h4 { font-size:1.35rem; }
+  .pk-row .who { font-size:.9rem; color:var(--ink-2); margin-top:.15rem; }
+  .pk-row .leave { font-family:Newsreader,Georgia,serif; font-size:.98rem; margin-top:.4rem; }
+  .pk-row .meta { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); text-align:right; padding-top:.5rem; white-space:nowrap; }
+  @media (max-width:42rem) { .pk-row { grid-template-columns:2rem 1fr; } .pk-row .meta { grid-column:2; text-align:left; } }
+
+  /* P3: marked cards, the leave line as the hero */
+  .pk-marked { display:grid; grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); gap:1rem; list-style:none; margin:0; padding:0; }
+  .pk-card { border:1px solid var(--line); border-radius:var(--radius); background:var(--paper); padding:1.4rem; display:flex; flex-direction:column; gap:.7rem; }
+  .pk-card__top { display:flex; align-items:center; gap:.6rem; padding-bottom:.7rem; border-bottom:2px solid var(--ink); }
+  .pk-card__top img { width:1.25rem; height:1.25rem; object-fit:contain; }
+  .pk-card__top h4 { font-size:1.2rem; }
+  .pk-card__leave { font-family:Newsreader,Georgia,serif; font-size:1.15rem; line-height:1.35; }
+  .pk-card__who { font-size:.86rem; color:var(--ink-2); }
+  .pk-card__meta { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); margin-top:auto; padding-top:.8rem; }
+
+  /* ============ work rows ============ */
+  .wk-rows { display:flex; flex-direction:column; gap:2rem; }
+  .wk-row { display:grid; grid-template-columns:1.25fr 1fr; gap:1.6rem; align-items:center; text-decoration:none; color:inherit; }
+  .wk-row:nth-child(even) .wk-media { order:2; }
+  .wk-media { aspect-ratio:3/2; border-radius:var(--radius); overflow:hidden; border:1px solid var(--line); }
+  .wk-media img { width:100%; height:100%; object-fit:cover; transition:transform .6s var(--ease); }
+  .wk-row:hover .wk-media img { transform:scale(1.04); }
+  .wk-body { display:flex; flex-direction:column; gap:.5rem; }
+  .wk-body h4 { font-size:clamp(1.5rem,3.4vw,2.3rem); }
+  .wk-body p { color:var(--ink-2); font-size:.95rem; }
+  .wk-tags { display:flex; flex-wrap:wrap; gap:.35rem; margin-top:.3rem; }
+  .wk-tags span { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.62rem; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-2); border:1px solid var(--line); border-radius:999px; padding:.25rem .6rem; }
+  .wk-year { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.7rem; color:var(--ink-3); }
+  @media (max-width:44rem) { .wk-row { grid-template-columns:1fr; } .wk-row:nth-child(even) .wk-media { order:0; } }
+
+  /* F3: banner, text under a full-bleed image */
+  .wk-banner { display:flex; flex-direction:column; gap:1rem; text-decoration:none; color:inherit; }
+  .wk-banner__media { aspect-ratio:21/9; border-radius:var(--radius); overflow:hidden; border:1px solid var(--line); }
+  .wk-banner__media img { width:100%; height:100%; object-fit:cover; transition:transform .6s var(--ease); }
+  .wk-banner:hover .wk-banner__media img { transform:scale(1.03); }
+  .wk-banner__foot { display:flex; flex-wrap:wrap; gap:.5rem 1.5rem; align-items:baseline; justify-content:space-between; }
+  .wk-banner__foot h4 { font-size:clamp(1.5rem,3.4vw,2.2rem); }
+
+  /* F4: a ledger row, small thumb, type carries it */
+  .wk-ledger { display:flex; flex-direction:column; }
+  .wk-lrow { display:grid; grid-template-columns:5.5rem 1fr auto; gap:1.2rem; align-items:center; padding:1rem .2rem; border-bottom:1px solid var(--line); text-decoration:none; color:inherit; transition:padding-left .35s var(--ease); }
+  .wk-lrow:first-child { border-top:1px solid var(--line); }
+  .wk-lrow:hover { padding-left:.8rem; }
+  .wk-lrow img { width:5.5rem; height:3.7rem; object-fit:cover; border-radius:var(--radius-sm); }
+  .wk-lrow h4 { font-size:clamp(1.2rem,2.6vw,1.6rem); }
+  .wk-lrow .sub { font-size:.85rem; color:var(--ink-2); }
+  .wk-lrow .meta { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.68rem; color:var(--ink-3); text-align:right; white-space:nowrap; }
+  @media (max-width:40rem) { .wk-lrow { grid-template-columns:4rem 1fr; } .wk-lrow .meta { display:none; } }
+
+  .verdict { border-left:3px solid var(--yellow); background:var(--paper-2); padding:1rem 1.15rem; display:flex; flex-direction:column; gap:.55rem; max-width:var(--measure); }
+  .verdict p { max-width:none; }
+
+  footer { margin-top:4.5rem; padding-top:1.4rem; border-top:1px solid var(--line); color:var(--ink-2); font-size:.94rem; }
+  @media (prefers-reduced-motion:reduce) { * { animation-duration:.001ms !important; transition-duration:.001ms !important; } }
+</style>
+</head>
+<body>
+
+<main class="page">
+
+  <header class="masthead">
+    <p class="eyebrow">Working file, round five</p>
+    <h1>Round five</h1>
+    <p>Eight underlines, three package layouts, three full width work rows. Press replay on any underline.</p>
+  </header>
+
+  <section>
+    <h2>The underline</h2>
+    <p class="lede">Looking at your marks properly changed my mind about what is wrong with it.</p>
+    <p>Your <code>approximately</code> mark is drawn with <b>even weight all the way along, fully rounded terminals and a gentle wave</b>. No taper at all. What I built tapers to a point at each end, which is why the right end reads as a bulge rather than as the end of a stroke. It is not the wrong size, it is the wrong kind of mark.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">U1</span><h3>What is on the site now</h3></div><button class="replay" data-replay>Replay</button></div>
+    <div class="stage" data-demo>
+      <p class="demo-line">Your brand <span class="u u--now"><i></i>doesn&rsquo;t say it yet.</span></p>
+    </div>
+    <p class="note">The taper is the problem. A brush that thins to nothing at both ends is a calligraphic stroke, and nothing else in your identity is calligraphic.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">U2</span><h3>A plain rounded bar</h3></div><button class="replay" data-replay>Replay</button></div>
+    <div class="stage" data-demo>
+      <p class="demo-line">Your brand <span class="u u--bar"><i></i>doesn&rsquo;t say it yet.</span></p>
+    </div>
+    <p class="note">Even weight, round ends, no SVG involved so nothing can distort at any width. Honest and slightly plain.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">U3</span><h3>The same bar, tilted</h3></div><button class="replay" data-replay>Replay</button></div>
+    <div class="stage" data-demo>
+      <p class="demo-line">Your brand <span class="u u--tilt"><i></i>doesn&rsquo;t say it yet.</span></p>
+    </div>
+    <p class="note">Under one degree of tilt. Enough that it reads as drawn by a hand rather than set by a machine, not enough to look like a mistake.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">U4</span><h3>Your stroke language</h3></div><button class="replay" data-replay>Replay</button></div>
+    <div class="stage" data-demo>
+      <p class="demo-line">Your brand <span class="u u--stroke"><i>
+        <svg viewBox="0 0 200 30" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M8 20 C58 11 96 24 142 15 C162 11 178 12 192 15"/>
+        </svg>
+      </i>doesn&rsquo;t say it yet.</span></p>
+    </div>
+    <p class="note">A single stroke of constant thickness with round caps and one gentle wave, which is exactly how your marks are drawn. This is the one I would choose.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">U5</span><h3>Two strokes</h3></div><button class="replay" data-replay>Replay</button></div>
+    <div class="stage" data-demo>
+      <p class="demo-line">Your brand <span class="u u--double"><i>
+        <svg viewBox="0 0 200 44" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M8 16 C56 7 98 22 142 12 C162 8 178 9 192 12"/>
+          <path d="M8 34 C56 25 98 40 142 30 C162 26 178 27 192 30"/>
+        </svg>
+      </i>doesn&rsquo;t say it yet.</span></p>
+    </div>
+    <p class="note">The approximately mark used as an underline. Unmistakably yours, and busy enough that it starts competing with the words.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">U6</span><h3>Literally your artwork</h3></div><button class="replay" data-replay>Replay</button></div>
+    <div class="stage" data-demo>
+      <p class="demo-line">Your brand <span class="u u--mark"><i><img src="../public/img/marks/approx-yellow.png" alt=""></i>doesn&rsquo;t say it yet.</span></p>
+    </div>
+    <p class="note">The drawn file itself, stretched to the width of the phrase. Cohesive by definition, but stretching artwork drawn at one proportion to any other proportion is how logos get ruined, and the wave flattens out on a long phrase.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">U7</span><h3>Two passes of a marker</h3></div><button class="replay" data-replay>Replay</button></div>
+    <div class="stage" data-demo>
+      <p class="demo-line">Your brand <span class="u u--pass"><i><b></b><b></b></i>doesn&rsquo;t say it yet.</span></p>
+    </div>
+    <p class="note">Two bars, each with fully rounded ends, at slightly different lengths, heights and tilts. Where they overlap the edge goes ragged, which is what a marker actually does when you go over a word a second time. Nothing here can distort either: a fully rounded end stays a semicircle at any width.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">U8</span><h3>Three passes, heavier</h3></div><button class="replay" data-replay>Replay</button></div>
+    <div class="stage" data-demo>
+      <p class="demo-line">Your brand <span class="u u--pass2"><i><b></b><b></b><b></b></i>doesn&rsquo;t say it yet.</span></p>
+    </div>
+    <p class="note">The same idea with a third, shorter pass through the middle, so the stroke is densest where a hand would press hardest and thins towards the ends without ever tapering to a point.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">U7</span><h3>Two passes, at small size</h3></div><button class="replay" data-replay>Replay</button></div>
+    <div class="stage" data-demo>
+      <p class="demo-line demo-line--sm">Each detail is <span class="u u--pass"><i><b></b><b></b></i>well thought of, clean</span>. I just want to applaud her commendable work.</p>
+    </div>
+    <p class="note">Worth checking at testimonial size too, since that is where it appears most often. The raggedness has to survive being small.</p>
+
+    <h3>On the dark band, at real size</h3>
+    <div class="stage stage--dark" data-demo>
+      <p class="demo-line" style="text-align:center">Tell me what<br>you&rsquo;re <span class="u u--stroke"><i>
+        <svg viewBox="0 0 200 30" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M8 20 C58 11 96 24 142 15 C162 11 178 12 192 15"/>
+        </svg>
+      </i>building.</span></p>
+    </div>
+    <p class="note">U4 at the size that showed the problem worst. Nothing bulges, because there is no point for it to bulge at, but it is also very even.</p>
+
+    <div class="stage stage--dark" data-demo>
+      <p class="demo-line" style="text-align:center">Tell me what<br>you&rsquo;re <span class="u u--pass"><i><b></b><b></b></i>building.</span></p>
+    </div>
+    <p class="note">U7 at the same size. The overlap keeps an edge that a single shape cannot have, and it holds up at this length because nothing is being stretched: both bars end in a true semicircle whatever the phrase.</p>
+  </section>
+
+  <section>
+    <h2>The packages</h2>
+    <p class="lede">Four packages on <code>/services</code>. Deliverables and timelines are still to confirm, so every layout has to live with that line.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">P1</span><h3>As it is now</h3></div></div>
+    <div class="stage">
+      <ul class="packages">
+        <li class="package">
+          <span class="package__num">1</span>
+          <h4>Brand Strategy</h4>
+          <p class="package__who">For founders with a product but no clear point of view yet.</p>
+          <p class="package__leave">You leave knowing what your brand says and why.</p>
+          <div class="package__meta">Deliverables and timeline: to confirm</div>
+        </li>
+        <li class="package">
+          <span class="package__num">2</span>
+          <h4>Visual Identity</h4>
+          <p class="package__who">For founders whose strategy is set but whose look doesn&rsquo;t match it.</p>
+          <p class="package__leave">You leave with an identity you can use without me.</p>
+          <div class="package__meta">Deliverables and timeline: to confirm</div>
+        </li>
+      </ul>
+    </div>
+    <p class="note">Four equal cards. The "to confirm" line sits at the bottom of each, so the thing you cannot answer yet is repeated four times.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">P2</span><h3>An index, not cards</h3></div></div>
+    <div class="stage">
+      <ul class="pk-index">
+        <li class="pk-row"><span class="n">01</span><div><h4>Brand Strategy</h4><p class="who">For founders with a product but no clear point of view yet.</p><p class="leave">You leave knowing what your brand says and why.</p></div><span class="meta">Timeline<br>to confirm</span></li>
+        <li class="pk-row"><span class="n">02</span><div><h4>Visual Identity</h4><p class="who">For founders whose strategy is set but whose look doesn&rsquo;t match it.</p><p class="leave">You leave with an identity you can use without me.</p></div><span class="meta">Timeline<br>to confirm</span></li>
+        <li class="pk-row"><span class="n">03</span><div><h4>Full Brand Identity</h4><p class="who">For founders starting from scratch.</p><p class="leave">Strategy and identity together, done once, in order.</p></div><span class="meta">Timeline<br>to confirm</span></li>
+        <li class="pk-row"><span class="n">04</span><div><h4>Packaging</h4><p class="who">For products that need to stand out on a shelf and on a screen.</p><p class="leave">Priced per SKU.</p></div><span class="meta">Timeline<br>to confirm</span></li>
+      </ul>
+    </div>
+    <p class="note">All four readable at once with no scrolling and no card furniture. It also rhymes with the work index on the home page, so the site starts to have one way of listing things. The "to confirm" moves to the right where it reads as a column rather than as four apologies.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">P3</span><h3>Marked cards, with what you leave with as the headline</h3></div></div>
+    <div class="stage">
+      <ul class="pk-marked">
+        <li class="pk-card">
+          <span class="pk-card__top"><img src="../public/img/marks/diamond-blue.png" alt=""><h4>Brand Strategy</h4></span>
+          <p class="pk-card__leave">You leave knowing what your brand says and why.</p>
+          <p class="pk-card__who">For founders with a product but no clear point of view yet.</p>
+          <div class="pk-card__meta">Timeline to confirm</div>
+        </li>
+        <li class="pk-card">
+          <span class="pk-card__top"><img src="../public/img/marks/square-blue.png" alt=""><h4>Visual Identity</h4></span>
+          <p class="pk-card__leave">You leave with an identity you can use without me.</p>
+          <p class="pk-card__who">For founders whose strategy is set but whose look doesn&rsquo;t match it.</p>
+          <div class="pk-card__meta">Timeline to confirm</div>
+        </li>
+        <li class="pk-card">
+          <span class="pk-card__top"><img src="../public/img/marks/ring-blue.png" alt=""><h4>Full Brand Identity</h4></span>
+          <p class="pk-card__leave">Strategy and identity together, done once, in order.</p>
+          <p class="pk-card__who">For founders starting from scratch.</p>
+          <div class="pk-card__meta">Timeline to confirm</div>
+        </li>
+      </ul>
+    </div>
+    <p class="note">The promise leads and the qualifier follows, which is the right way round: people buy the outcome, not the description of themselves. Uses the same stage marks as the services section, so a package and a stage read as related.</p>
+
+    <div class="verdict">
+      <p><b>My reading:</b> P2. Four cards is a lot of furniture for four short offers, and the index puts the "to confirm" into a column instead of repeating it as a footnote four times. P3 if you want the packages to feel more like products than a list.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Full width rows on the work page</h2>
+    <p class="lede">Five projects. On <code>/work</code> the whole body of work is the point, so length is not a problem the way it is on the home page.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">F1</span><h3>Alternating editorial rows</h3></div></div>
+    <div class="stage">
+      <div class="wk-rows">
+        <a class="wk-row" href="#">
+          <span class="wk-media"><img src="../public/work/swirly/cover.jpg" alt=""></span>
+          <span class="wk-body"><span class="wk-year">2026 &middot; Ice cream</span><h4>Swirly</h4><p>A playful, contemporary ice cream brand built to reimagine how indulgence looks and feels.</p><span class="wk-tags"><span>Visual Identity</span><span>Packaging</span></span></span>
+        </a>
+        <a class="wk-row" href="#">
+          <span class="wk-media"><img src="../public/work/paloma/cover.jpg" alt=""></span>
+          <span class="wk-body"><span class="wk-year">2026 &middot; Hospitality</span><h4>Paloma</h4><p>An identity drawn in sand, for a coastal retreat that never needed to shout.</p><span class="wk-tags"><span>Brand Strategy</span><span>Visual Identity</span></span></span>
+        </a>
+      </div>
+    </div>
+    <p class="note">Each project gets a side of the page and room for a sentence. The alternation stops five of them reading as a single column of the same shape.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">F2</span><h3>Banner rows</h3></div></div>
+    <div class="stage">
+      <div class="wk-rows">
+        <a class="wk-banner" href="#">
+          <span class="wk-banner__media"><img src="../public/work/swirly/cover.jpg" alt=""></span>
+          <span class="wk-banner__foot"><h4>Swirly</h4><span class="wk-year">Brand identity and packaging &middot; 2026</span></span>
+        </a>
+        <a class="wk-banner" href="#">
+          <span class="wk-banner__media"><img src="../public/work/asmi/cover.jpg" alt=""></span>
+          <span class="wk-banner__foot"><h4>Asmi</h4><span class="wk-year">Brand identity for an apparel brand &middot; 2026</span></span>
+        </a>
+      </div>
+    </div>
+    <p class="note">The work at full width, with the words underneath and out of the way. The most confident of the three and the least room to explain anything. It suits covers that can carry a page on their own, which yours can.</p>
+
+    <div class="bar-head"><div class="name"><span class="key">F3</span><h3>A ledger</h3></div></div>
+    <div class="stage">
+      <div class="wk-ledger">
+        <a class="wk-lrow" href="#"><img src="../public/work/swirly/cover.jpg" alt=""><span><h4>Swirly</h4><span class="sub">Brand identity and packaging</span></span><span class="meta">Ice cream &middot; 2026</span></a>
+        <a class="wk-lrow" href="#"><img src="../public/work/asmi/cover.jpg" alt=""><span><h4>Asmi</h4><span class="sub">Brand identity for an apparel brand</span></span><span class="meta">Clothing &middot; 2026</span></a>
+        <a class="wk-lrow" href="#"><img src="../public/work/paloma/cover.jpg" alt=""><span><h4>Paloma</h4><span class="sub">Identity for a coastal retreat</span></span><span class="meta">Hospitality &middot; 2026</span></a>
+        <a class="wk-lrow" href="#"><img src="../public/work/lumeya/cover.jpg" alt=""><span><h4>Lumeya</h4><span class="sub">Conscious luxury skincare</span></span><span class="meta">Skincare &middot; 2026</span></a>
+        <a class="wk-lrow" href="#"><img src="../public/work/sunlife-international/cover.jpg" alt=""><span><h4>Sunlife International</h4><span class="sub">Brand identity and stationery</span></span><span class="meta">Corporate &middot; 2026</span></a>
+      </div>
+    </div>
+    <p class="note">All five on one screen, type leading and the pictures reduced to a reminder. Fast to scan and the least generous to the work itself, which is a strange thing for a portfolio to be.</p>
+
+    <div class="verdict">
+      <p><b>My reading:</b> F1. On the work page the job is to make someone want to open a project, and only F1 gives you both the picture and the sentence that does the persuading. F2 is more beautiful and says nothing.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>What I need back</h2>
+    <p>Underline: <b>U1 to U8</b>. Packages: <b>P1, P2 or P3</b>. Work page: <b>F1, F2 or F3</b>.</p>
+  </section>
+
+  <footer>
+    <p>A working file, not part of the site. Earlier rounds are the other <code>animation-*.html</code> files in this folder.</p>
+  </footer>
+
+</main>
+
+<script>
+(function () {
+  function play(stage) {
+    stage.querySelectorAll('.u i').forEach(function (ink) {
+      ink.style.animation = 'none';
+      void ink.offsetWidth;
+      ink.style.animation = '';
+    });
+  }
+  document.querySelectorAll('[data-replay]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var head = b.closest('.bar-head');
+      if (head && head.nextElementSibling) play(head.nextElementSibling);
+    });
+  });
+  if ('IntersectionObserver' in window) {
+    var seen = new WeakSet();
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting && !seen.has(e.target)) { seen.add(e.target); play(e.target); }
+      });
+    }, { threshold: 0.4 });
+    document.querySelectorAll('[data-demo]').forEach(function (d) { io.observe(d); });
+  }
+})();
+</script>
+
+</body>
+</html>
