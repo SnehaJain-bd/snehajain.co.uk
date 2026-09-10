@@ -199,30 +199,3 @@ export function HighlightNow({
     </span>
   );
 }
-
-/** Hero words arriving line by line on load. */
-export function RiseIn({
-  children,
-  delay = 0,
-  className,
-}: {
-  children: ReactNode;
-  delay?: number;
-  className?: string;
-}) {
-  const still = useReducedMotion();
-  if (still) return <span className={className}>{children}</span>;
-
-  return (
-    <span className={className} style={{ display: 'block', overflow: 'hidden' }}>
-      <m.span
-        style={{ display: 'block' }}
-        initial={{ y: '110%' }}
-        animate={{ y: '0%' }}
-        transition={{ duration: 0.85, ease: EASE, delay }}
-      >
-        {children}
-      </m.span>
-    </span>
-  );
-}

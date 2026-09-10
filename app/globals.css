@@ -121,10 +121,6 @@ p:not([class]):last-child{ margin-bottom:0; }
 }
 
 .hp{ position:absolute; left:-9999px; opacity:0; pointer-events:none; }
-.vh{
-  position:absolute; width:1px; height:1px; overflow:hidden;
-  clip:rect(0 0 0 0); clip-path:inset(50%); white-space:nowrap;
-}
 
 /* ---------- 3. LAYOUT PRIMITIVES ---------- */
 
@@ -208,18 +204,6 @@ p:not([class]):last-child{ margin-bottom:0; }
 .ital{ font-style:italic; font-weight:400; }
 
 /* Sneha's drawn marks, used as punctuation rather than decoration */
-.brandmark{
-  display:inline-block;
-  width:auto;
-  flex:none;
-  user-select:none;
-}
-.brandmark--dots{ height:.65rem; }
-.brandmark--diamond{ height:.6rem; }
-.brandmark--braces{ height:2.75rem; }
-@media (prefers-color-scheme: dark){
-  .brandmark--dots,.brandmark--diamond,.brandmark--braces{ filter:invert(1) brightness(1.6); }
-}
 
 /* ---------- 4. BUTTONS & LINKS ---------- */
 
@@ -466,7 +450,6 @@ p:not([class]):last-child{ margin-bottom:0; }
     transition:transform .38s var(--ease), opacity .28s var(--ease), visibility .38s;
     overflow-y:auto;
   }
-  .nav.is-open{ transform:translateY(0); opacity:1; visibility:visible; }
   .nav a{
     font-family:var(--head);
     font-size:1.55rem;
@@ -520,8 +503,6 @@ p:not([class]):last-child{ margin-bottom:0; }
   color:var(--ink);
   margin:0 0 3rem;
 }
-.hero__line{ display:block; }
-.hero__line--muted{ color:var(--ink-2); }
 
 .hero__actions{ display:flex; flex-wrap:wrap; gap:.85rem; align-items:center; }
 
@@ -554,9 +535,7 @@ p:not([class]):last-child{ margin-bottom:0; }
 }
 .intro__body strong{ color:var(--ink); font-weight:500; }
 
-
 /* ---------- 8. SERVICES ---------- */
-
 
 /* ---------- 9. WORK ---------- */
 
@@ -633,7 +612,6 @@ p:not([class]):last-child{ margin-bottom:0; }
 }
 
 /* ---------- 11. TESTIMONIALS ---------- */
-
 
 .faq-groups{
   display:grid;
@@ -761,20 +739,9 @@ details.qa[open] summary{ font-weight:500; }
   font-weight:500;
   margin:0 0 1rem;
 }
-.contact__actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:.85rem;
-  align-items:center;
-  margin-top:1.75rem;
-}
 
 .form{ display:flex; flex-direction:column; gap:1.1rem; }
-.form__row{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:1.1rem;
-}
+
 .form label{ display:flex; flex-direction:column; gap:.45rem; }
 .form label > span{
   font-family:var(--mono);
@@ -800,7 +767,7 @@ details.qa[open] summary{ font-weight:500; }
   outline:none;
   box-shadow:0 0 0 3px var(--yellow);
 }
-.form__note{ font-size:.85rem; color:var(--ink-2); margin:0; }
+
 .form .btn{ align-self:flex-start; }
 
 /* ---------- 17. FOOTER ---------- */
@@ -876,45 +843,6 @@ details.qa[open] summary{ font-weight:500; }
 }
 .about__photo img{ width:100%; aspect-ratio:1/1; object-fit:cover; }
 
-
-.howiwork{
-  list-style:none; margin:0; padding:0;
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  gap:clamp(1.25rem,2.5vw,2rem);
-}
-.howiwork li{
-  padding-top:1.25rem;
-  border-top:2px solid var(--ink);
-  font-family:var(--head);
-  font-size:1.18rem;
-  line-height:1.35;
-}
-.proofline{
-  font-family:var(--head);
-  font-size:clamp(1.4rem,3vw,2.2rem);
-  line-height:1.25;
-  letter-spacing:-.015em;
-  margin:0;
-  max-width:24ch;
-}
-
-.pullquote{
-  display:flex;
-  align-items:flex-start;
-  gap:1.25rem;
-  margin:clamp(2.5rem,5vw,4rem) 0 0;
-  padding-top:clamp(2rem,4vw,3rem);
-  border-top:1px solid var(--line);
-}
-.pullquote p{
-  font-family:var(--head);
-  font-size:clamp(1.35rem,3vw,2.1rem);
-  line-height:1.28;
-  letter-spacing:-.018em;
-  margin:0;
-}
-
 /* ---------- 19. CASE STUDY ---------- */
 
 .case-facts{
@@ -935,11 +863,6 @@ details.qa[open] summary{ font-weight:500; }
 }
 .case-facts dd{ margin:0; font-size:.98rem; }
 
-.case-body{ max-width:68ch; }
-.case-body h2{ font-size:clamp(1.6rem,3vw,2.2rem); margin:2.75rem 0 1rem; }
-.case-body h2:first-child{ margin-top:0; }
-.case-body p{ color:var(--ink-2); }
-.case-body strong{ color:var(--ink); font-weight:500; }
 figure{ margin:0; }
 figure img{ border-radius:var(--radius); border:1px solid var(--line); }
 /* Brand marks and the logo are drawn artwork, not photographs. They are
@@ -1045,20 +968,6 @@ figcaption{
 }
 .tally-wrap noscript p{ padding:1.5rem; margin:0; }
 
-/* ---------- 26. EMPTY TESTIMONIAL SLOT ---------- */
-
-.voice--empty:hover{
-  border-color:var(--line-2);
-  background:transparent;
-}
-.voice--empty .voice__quote,
-.voice--empty .voice__name,
-.voice--empty .voice__role{
-  color:var(--ink-3);
-  font-style:italic;
-}
-.voice--empty .voice__role{ font-style:normal; }
-
 /* ---------- 27. DARK SECTION ----------
    Deliberately dark in both themes, like the closing band, so the
    texture and the text never come apart. */
@@ -1085,7 +994,6 @@ figcaption{
 .section--dark .mark{ background:var(--yellow); color:#2A211A; }
 
 /* ---------- 28. CASE STUDY ---------- */
-
 
 .case-intro{ padding-block:clamp(2.5rem,6vw,4.5rem) clamp(2rem,4vw,3rem); }
 .case-intro__client{
@@ -1121,36 +1029,6 @@ figcaption{
 }
 
 /* Text block: label on the left, argument on the right */
-.case-block{ padding-block:clamp(2.5rem,5vw,4.5rem); }
-.case-block__inner{
-  display:grid;
-  grid-template-columns:minmax(0,1fr);
-  gap:1.25rem;
-}
-@media (min-width:900px){
-  .case-block__inner{
-    grid-template-columns:minmax(160px,.25fr) minmax(0,1fr);
-    gap:2rem 3rem;
-    align-items:start;
-  }
-}
-.case-block h2{
-  font-family:var(--head);
-  font-size:clamp(1.05rem,1.5vw,1.25rem);
-  font-weight:500;
-  line-height:1.25;
-  letter-spacing:-.01em;
-  color:var(--ink);
-  padding-top:.3rem;
-  margin:0;
-}
-.case-block p{
-  font-size:clamp(1.05rem,1.6vw,1.25rem);
-  line-height:1.55;
-  color:var(--ink);
-  max-width:58ch;
-  margin:0 0 1.1em;
-}
 
 /* Image blocks */
 /* Six columns, so a row fills cleanly as 3+3, or 2+2+2, or one 6.
@@ -1181,23 +1059,6 @@ figcaption{
 }
 
 /* Credits */
-.case-credits{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:1.5rem 2rem;
-  border-top:1px solid var(--line);
-  padding-top:2rem;
-  margin:0;
-}
-.case-credits dt{
-  font-family:var(--mono);
-  font-size:.66rem;
-  letter-spacing:.13em;
-  text-transform:uppercase;
-  color:var(--ink-3);
-  margin-bottom:.35rem;
-}
-.case-credits dd{ margin:0; font-size:.98rem; }
 
 /* Next project, as a full card rather than a text link */
 .next-project{
@@ -1302,7 +1163,7 @@ figcaption{
   .step{ border-top-color:var(--yellow); }
   .faq-group__head{ border-bottom-color:var(--yellow); }
 
-  .case-block h2{ color:var(--yellow); }
+  
   .case-intro__client,
   .case-intro__tags{ color:var(--yellow); }
   .case-intro__tags span{ color:var(--ink-3); }
@@ -1577,7 +1438,7 @@ main,
 }
 
 @media (prefers-reduced-motion: reduce){
-  .cursor-field, .hero__field{ opacity:calc(var(--field-strength) * .6); }
+  .cursor-field{ opacity:calc(var(--field-strength) * .6); }
 }
 
 /* =========================================================
@@ -1894,8 +1755,6 @@ main,
 .eyebrow:has(.eyebrow__mark){ gap:.6rem; }
 
 /* ---- the FAQ question mark, and W4: the plus that springs ---- */
-.faq-group__mark{ display:inline-block; flex:none; }
-.faq-group__mark img{ display:block; width:1.1rem; height:1.1rem; object-fit:contain; }
 
 /* ---- W2: marks adrift in the footer ---- */
 .foot-marks{
@@ -1943,7 +1802,6 @@ main,
   .foot-marks picture{ animation:none; }
   .textlink{ transition:none; }
 }
-
 
 /* =========================================================
    33. PACKAGES AND THE THREE STEPS

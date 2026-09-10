@@ -152,8 +152,8 @@ function listFolder(slug: string): string[] {
   return fs.readdirSync(dir).filter((f) => IMAGE_EXT.test(f)).sort();
 }
 
-/** The cover file for a project, if one is on disk. */
-export function findCover(slug: string): string | null {
+/** The cover file for a project, if one is on disk. Used by getProject. */
+function findCover(slug: string): string | null {
   const files = listFolder(slug);
   if (!files.length) return null;
   const cover = files.find((f) => /^cover\./i.test(f)) ?? files[0];
