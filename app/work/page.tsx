@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import SectionHead from '@/components/site/SectionHead';
 import Mark from '@/components/site/Mark';
 import CtaBand from '@/components/site/CtaBand';
-import { WorkGrid } from '@/components/home/sections';
+import WorkChapters from '@/components/work/WorkChapters';
 import { Reveal } from '@/components/motion/primitives';
 import { getProjects } from '@/lib/projects';
 
@@ -34,11 +34,7 @@ export default async function WorkPage() {
           </div>
         </section>
 
-        <section className="section">
-          <div className="wrap">
-            <WorkGrid projects={projects} />
-          </div>
-        </section>
+        <WorkChapters projects={projects} />
       </main>
       <CtaBand />
     </>

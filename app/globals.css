@@ -2144,3 +2144,106 @@ main,
   object-fit:contain;
   margin-top:.3em;
 }
+
+/* =========================================================
+   34. THE WORK PAGE, AS CHAPTERS
+
+   One project per screen, full bleed, snapping as you scroll.
+   ========================================================= */
+
+/* Scoped with :has, so only a page that actually contains chapters
+   snaps. Putting scroll-snap-type on html unconditionally would make
+   every other page on the site behave like this one.
+
+   Proximity, not mandatory: it settles a chapter when you land near
+   one and otherwise gets out of the way. Mandatory snap fights the
+   reader on the hero, the closing band and the footer, none of which
+   are chapters. */
+@media (min-width:700px){
+  html:has(.chapters){ scroll-snap-type:y proximity; }
+}
+@media (prefers-reduced-motion: reduce){
+  html:has(.chapters){ scroll-snap-type:none; }
+}
+
+.chapters{ display:flex; flex-direction:column; }
+
+.chapter{
+  position:relative;
+  display:flex;
+  align-items:flex-end;
+  min-height:calc(100vh - 5.5rem);
+  min-height:calc(100svh - 5.5rem);
+  overflow:hidden;
+  scroll-snap-align:start;
+  border-bottom:1px solid var(--line);
+  color:#FBF9F4;
+  isolation:isolate;
+}
+.chapter__img{ object-fit:cover; z-index:0; transition:transform .9s var(--ease); }
+.chapter:hover .chapter__img{ transform:scale(1.03); }
+
+/* Only the bottom third darkens, and only as far as the words need.
+   These covers were chosen for their colour: a flat grey over all of
+   them to make white text legible throws away the reason. */
+.chapter::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background:linear-gradient(
+    to top,
+    rgb(24 16 10 / .78) 0%,
+    rgb(24 16 10 / .42) 18%,
+    rgb(24 16 10 / .10) 38%,
+    transparent 56%
+  );
+  pointer-events:none;
+}
+
+.chapter__cap{
+  position:relative;
+  z-index:2;
+  width:100%;
+  max-width:var(--max);
+  margin-inline:auto;
+  padding:clamp(1.75rem,4vw,3.5rem) var(--gut);
+  display:flex;
+  flex-direction:column;
+  gap:.35rem;
+}
+.chapter__meta{
+  font-family:var(--mono);
+  font-size:.7rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  opacity:.85;
+}
+.chapter__title{
+  font-family:var(--head);
+  font-size:clamp(2.4rem,7vw,5rem);
+  font-weight:600;
+  letter-spacing:-.03em;
+  line-height:1;
+  display:flex;
+  align-items:baseline;
+  gap:.3em;
+}
+.chapter__arw{
+  font-size:.42em;
+  display:inline-block;
+  transition:transform .4s var(--ease);
+}
+.chapter:hover .chapter__arw{ transform:translate(.25em,-.25em); }
+.chapter__sub{
+  font-size:clamp(.95rem,2vw,1.15rem);
+  max-width:44ch;
+  opacity:.92;
+}
+
+/* The focus ring has to be visible against a photograph. */
+.chapter:focus-visible{ outline:3px solid var(--yellow); outline-offset:-6px; }
+
+@media (max-width:700px){
+  .chapter{ min-height:76vh; min-height:76svh; }
+}
