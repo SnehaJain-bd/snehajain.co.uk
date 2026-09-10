@@ -169,6 +169,11 @@ export function WorkGrid({
               />
             </div>
             <div className="lead-project__body">
+              {[first.sector, first.year].filter(Boolean).length ? (
+                <p className="lead-project__meta">
+                  {[first.sector, first.year].filter(Boolean).join(' · ')}
+                </p>
+              ) : null}
               <h3 className="lead-project__title">
                 {first.title} <span className="arw">&#8599;</span>
               </h3>

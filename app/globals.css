@@ -1693,7 +1693,9 @@ main,
   font-weight:600;
   letter-spacing:-.015em;
 }
-.work-index__meta{ font-family:var(--mono); font-size:.72rem; color:var(--ink-3); }
+.work-index__meta,
+.lead-project__meta{ font-family:var(--mono); font-size:.72rem; color:var(--ink-3); }
+.lead-project__meta{ margin:0 0 .15rem; }
 
 /* The row you are on comes forward and the others step back, which is
    what makes a list of names feel like a set of choices. */
