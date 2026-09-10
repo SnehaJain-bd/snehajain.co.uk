@@ -101,8 +101,9 @@ export type Package = {
      hand over before this goes live, and delete this note when you do.
      An empty array simply renders no list. */
   deliverables: string[];
-  /* Both shown on one line at the foot of the card, timeline left and
-     price right. */
+  /* Shown at the foot of the card, timeline at the left end and price
+     at the right. Per package, because every project is scoped
+     differently: these are not going to end up the same. */
   timeline: string;
   /* A PLACEHOLDER, and deliberately an impossible figure rather than a
      plausible one. A wrong but believable price can ship unnoticed and
@@ -111,10 +112,6 @@ export type Package = {
      before this page goes live. */
   price: string;
 };
-
-/* Every package carries the same holding values for now. */
-const TIMELINE = '4 to 6 weeks';
-const PRICE = 'From £0,000';
 
 export const packages: Package[] = [
   {
@@ -127,8 +124,8 @@ export const packages: Package[] = [
       'Messaging framework',
       'Two working sessions',
     ],
-    timeline: TIMELINE,
-    price: PRICE,
+    timeline: '4 to 6 weeks',
+    price: 'From £0,000',
   },
   {
     title: 'Visual Identity',
@@ -140,8 +137,8 @@ export const packages: Package[] = [
       'Art direction for imagery',
       'Guidelines document',
     ],
-    timeline: TIMELINE,
-    price: PRICE,
+    timeline: '4 to 6 weeks',
+    price: 'From £0,000',
   },
   {
     title: 'Full Brand Identity',
@@ -152,8 +149,8 @@ export const packages: Package[] = [
       'Everything in Visual Identity',
       'Applied across your first touchpoints',
     ],
-    timeline: TIMELINE,
-    price: PRICE,
+    timeline: '4 to 6 weeks',
+    price: 'From £0,000',
   },
   {
     title: 'Packaging',
@@ -164,7 +161,7 @@ export const packages: Package[] = [
       'Front of pack design',
       'Print ready files per SKU',
     ],
-    timeline: TIMELINE,
-    price: PRICE,
+    timeline: '4 to 6 weeks',
+    price: 'From £0,000',
   },
 ];
