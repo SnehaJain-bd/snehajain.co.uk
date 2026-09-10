@@ -12,6 +12,7 @@ import {
   getProject,
   getNext,
   folderGallery,
+  pickGallery,
   type Project,
   type GalleryImage,
 } from '@/lib/projects';
@@ -59,13 +60,25 @@ export default async function CaseStudy({ params }: Params) {
   if (!project!.published || !project!.cover) notFound();
   const next = await getNext(slug);
 
-  /* <Gallery /> written bare in the MDX means every image in
-     public/work/<slug>/ except the cover, in filename order. An explicit
-     images list still wins, for when the order needs holding by hand. */
+  /* Three ways to write a gallery, all resolved here because this is
+     where the slug, and so the folder, is known:
+
+       <Gallery />                 whatever no pick has claimed
+       <Gallery pick="a, b" />     those files, in that order
+       <Gallery images={[...]} />  literal paths, the escape hatch  */
   const folder = folderGallery(slug, project!.title);
-  const BoundGallery = ({ images }: { images?: GalleryImage[] }) => (
-    <Gallery images={images ?? folder} />
+  const BoundGallery = ({ images, pick }: { images?: GalleryImage[]; pick?: string }) => (
+    <Gallery images={images ?? (pick ? pickGallery(slug, project!.title, pick) : folder)} />
   );
+
+  /* A fact with nothing in it is left out rather than printed as an
+     empty row, so a project with no named client shows no Client. */
+  const facts = [
+    { label: 'Client', value: project!.client },
+    { label: 'Year', value: project!.year },
+    { label: 'Sector', value: project!.sector },
+    { label: 'Services', value: project!.services?.join(', ') },
+  ].filter((f) => f.value && String(f.value).trim());
 
   return (
     <>
@@ -82,7 +95,9 @@ export default async function CaseStudy({ params }: Params) {
         <section className="case-intro">
           <div className="wrap">
             <Reveal>
-              <p className="case-intro__client">For {project!.client}</p>
+              {project!.client ? (
+                <p className="case-intro__client">For {project!.client}</p>
+              ) : null}
               <h1 className="case-intro__title">{project!.title}</h1>
               <p className="case-intro__tags">
                 {project!.services.map((s, i) => (
@@ -100,22 +115,12 @@ export default async function CaseStudy({ params }: Params) {
         <div className="wrap">
           <Reveal as="div">
             <dl className="case-facts">
-              <div>
-                <dt>Client</dt>
-                <dd>{project!.client}</dd>
-              </div>
-              <div>
-                <dt>Year</dt>
-                <dd>{project!.year}</dd>
-              </div>
-              <div>
-                <dt>Sector</dt>
-                <dd>{project!.sector}</dd>
-              </div>
-              <div>
-                <dt>Services</dt>
-                <dd>{project!.services.join(', ')}</dd>
-              </div>
+              {facts.map((f) => (
+                <div key={f.label}>
+                  <dt>{f.label}</dt>
+                  <dd>{f.value}</dd>
+                </div>
+              ))}
             </dl>
           </Reveal>
         </div>

@@ -4,7 +4,8 @@ import path from 'node:path';
 export type ProjectMeta = {
   title: string;
   subtitle: string;
-  client: string;
+  /* Optional. Left out or empty, no client is shown on the page. */
+  client?: string;
   year: string;
   sector: string;
   services: string[];
@@ -159,16 +160,80 @@ export function findCover(slug: string): string | null {
   return `/work/${slug}/${cover}`;
 }
 
-/** Everything in the folder except the cover, ready for the gallery. */
-export function folderGallery(slug: string, title: string): GalleryImage[] {
+function toImage(slug: string, title: string, file: string): GalleryImage {
+  return {
+    src: `/work/${slug}/${file}`,
+    alt: altFromName(file, title),
+    wide: /wide/i.test(file),
+  };
+}
+
+/** The gallery files: everything in the folder bar the cover. */
+function galleryFiles(slug: string): string[] {
   const files = listFolder(slug);
   if (!files.length) return [];
   const cover = files.find((f) => /^cover\./i.test(f)) ?? files[0];
-  return files
-    .filter((f) => f !== cover)
-    .map((f) => ({
-      src: `/work/${slug}/${f}`,
-      alt: altFromName(f, title),
-      wide: /wide/i.test(f),
-    }));
+  return files.filter((f) => f !== cover);
+}
+
+/* A name in a pick is a filename without its extension. A leading
+   number is optional, so "box" finds 01-box.jpg just as well. */
+const stem = (f: string) => f.replace(IMAGE_EXT, '').toLowerCase();
+const bare = (f: string) => stem(f).replace(/^[0-9]+[-_]*/, '');
+
+function matchFile(files: string[], name: string): string | null {
+  const want = stem(name.trim());
+  return files.find((f) => stem(f) === want) ?? files.find((f) => bare(f) === want) ?? null;
+}
+
+/**
+ * A named handful from the folder, in the order asked for, so a case
+ * study can alternate writing and pictures:
+ *
+ *   <Gallery pick="box, pattern-detail" />
+ *
+ * A name that is not in the folder fails the build rather than quietly
+ * rendering nothing, and the error says what is available.
+ */
+export function pickGallery(slug: string, title: string, pick: string): GalleryImage[] {
+  const files = galleryFiles(slug);
+  return pick
+    .split(',')
+    .map((n) => n.trim())
+    .filter(Boolean)
+    .map((name) => {
+      const hit = matchFile(files, name);
+      if (!hit) {
+        throw new Error(
+          `[projects] ${slug}: <Gallery pick> asked for "${name}", which is not in ` +
+            `public/work/${slug}/. Available: ${files.map(stem).join(', ')}`
+        );
+      }
+      return toImage(slug, title, hit);
+    });
+}
+
+/** Every name mentioned by a pick anywhere in this case study. */
+function pickedIn(slug: string): string[] {
+  const file = path.join(DIR, `${slug}.mdx`);
+  if (!fs.existsSync(file)) return [];
+  const src = fs.readFileSync(file, 'utf8');
+  return [...src.matchAll(/pick=["']([^"']+)["']/g)].flatMap((m) =>
+    m[1].split(',').map((s) => s.trim()).filter(Boolean)
+  );
+}
+
+/**
+ * What a bare <Gallery /> shows: the folder minus the cover, minus
+ * anything already claimed by a pick in this file. With no picks that
+ * is the whole folder, which is the common case.
+ */
+export function folderGallery(slug: string, title: string): GalleryImage[] {
+  const files = galleryFiles(slug);
+  const used = new Set(
+    pickedIn(slug)
+      .map((n) => matchFile(files, n))
+      .filter((f): f is string => Boolean(f))
+  );
+  return files.filter((f) => !used.has(f)).map((f) => toImage(slug, title, f));
 }

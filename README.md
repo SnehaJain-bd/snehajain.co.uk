@@ -79,6 +79,11 @@ no page, no card, no sitemap entry, and no dead link, because it drops out of th
 
 `featured: false` keeps it off the home page but leaves it on the work page.
 
+`client` is optional. Leave the line out and no client is shown: the "For ..." line
+above the title disappears and the Client row drops out of the facts list. The same
+goes for `year`, `sector` and `services`. An empty fact is never printed as a blank
+row.
+
 Note what is not in there: no image paths. Nothing to keep in step with the folder.
 
 ### The body
@@ -101,6 +106,54 @@ More than just a product on the shelf.
 Put `<Gallery />` wherever the images belong. Write as many sections as you want. A
 project with no sections at all is fine, it shows the cover, the facts and the
 gallery.
+
+### Alternating writing and pictures
+
+One `<Gallery />` shows the whole folder, which is right when the case study is one
+piece of writing followed by the work. When you want to build an argument instead,
+text then pictures then text then pictures, name the files each block should show:
+
+```mdx
+## The brand
+
+Rooted in a blend of cultural symbolism and modern design.
+
+<Gallery pick="box, pattern-detail" />
+
+## Bridging culture with contemporary expression
+
+The identity merges tradition with modern design sensibilities.
+
+<Gallery pick="label-tag-wide" />
+
+## A distinctive identity
+
+It tells a story.
+
+<Gallery />
+```
+
+A name is just the filename without the extension, no path and no folder. The
+order you write them is the order they appear, so a pick overrides alphabetical
+order for that block. A leading number is optional: `box` finds `01-box.jpg` too.
+
+**The bare `<Gallery />` at the end shows whatever no pick has claimed.** That is
+what keeps the folder in charge: drop a new photograph in, run `npm run images`,
+and it appears at the end without you touching the case study. If every image is
+spoken for, the bare block renders nothing at all rather than an empty space, so
+you can leave it there or take it out.
+
+A pick that names a file which is not in the folder **fails the build** and tells
+you what is available, rather than quietly rendering nothing:
+
+```
+[projects] asmi: <Gallery pick> asked for "pattern-detial", which is not in
+public/work/asmi/. Available: box, label-tag-wide, parcel-in-hand,
+pattern-detail, shopping-bag
+```
+
+Each block packs its own rows, so a pick of two sits side by side and a pick of
+one runs full width.
 
 ---
 
