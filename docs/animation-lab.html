@@ -297,6 +297,22 @@
   [data-variant="b"].run .hd-sub    { animation: fadeUp .5s var(--ease-soft) .58s both; }
   [data-variant="b"].run .hd-actions{ animation: fadeUpSm .45s var(--ease-soft) .70s both; }
 
+  /* C-fade. the chosen direction: the lines fade rather than rise,
+     and the marker still finishes the sentence. Two versions, because
+     a pure opacity fade can read as inert and the fix is very small. */
+  [data-variant="cf"].run .ln-1      { animation: justFade .8s var(--ease-soft) 0s both; }
+  [data-variant="cf"].run .ln-2      { animation: justFade .8s var(--ease-soft) .16s both; }
+  [data-variant="cf"].run .ink       { animation: draw .55s var(--ease-soft) .92s both; }
+  [data-variant="cf"].run .hd-sub    { animation: justFade .6s var(--ease-soft) 1.25s both; }
+  [data-variant="cf"].run .hd-actions{ animation: justFade .55s var(--ease-soft) 1.37s both; }
+
+  @keyframes fadeWhisper { from { opacity: 0; transform: translateY(7px); } }
+  [data-variant="cw"].run .ln-1      { animation: fadeWhisper .85s var(--ease-expo) 0s both; }
+  [data-variant="cw"].run .ln-2      { animation: fadeWhisper .85s var(--ease-expo) .16s both; }
+  [data-variant="cw"].run .ink       { animation: draw .55s var(--ease-soft) .95s both; }
+  [data-variant="cw"].run .hd-sub    { animation: fadeWhisper .6s var(--ease-soft) 1.28s both; }
+  [data-variant="cw"].run .hd-actions{ animation: fadeWhisper .55s var(--ease-soft) 1.4s both; }
+
   /* C. marker: the yellow highlighter finishes the sentence */
   [data-variant="c"].run .ln-1      { animation: riseFar .9s var(--ease-expo) 0s both; }
   [data-variant="c"].run .ln-2      { animation: riseFar .9s var(--ease-expo) .12s both; }
@@ -441,8 +457,47 @@
   </section>
 
   <section>
-    <h2>Part two: your hero, five ways</h2>
-    <p class="lede">Same words, same type, same buttons. Only the motion differs. Watch each one twice before deciding.</p>
+    <h2>Where we landed</h2>
+    <p class="lede">C, with the lines fading instead of rising. Here it is both ways, because a pure fade can read as inert and the fix is very small.</p>
+
+    <div class="stage-bar">
+      <div class="stage-name"><span class="stage-key">C1</span><h3>Fade, nothing else</h3></div>
+      <button class="play" data-play>Play</button>
+    </div>
+    <div class="stage" data-variant="cf" data-demo>
+      <div class="hero-demo">
+        <h2 class="hd-title">
+          <span class="ln ln-1" style="display:block">You know what you&rsquo;re building.</span>
+          <span class="ln ln-2" style="display:block">Your brand <span class="marker"><span class="ink" aria-hidden="true"></span><span class="txt">doesn&rsquo;t say it yet.</span></span></span>
+        </h2>
+        <p class="hd-sub">Strategic brand design for founder-led businesses.</p>
+        <div class="hd-actions"><a class="b-solid" href="#">Start a Project</a><a class="b-ghost" href="#">See Selected Work</a></div>
+      </div>
+    </div>
+    <p class="lever-say">Pure opacity. Nothing travels at all, so the marker becomes the only movement in the whole hero and lands with real weight. The risk is that the words themselves feel like they simply appeared rather than arrived.</p>
+
+    <div class="stage-bar">
+      <div class="stage-name"><span class="stage-key">C2</span><h3>Fade, with a whisper of lift</h3></div>
+      <button class="play" data-play>Play</button>
+    </div>
+    <div class="stage" data-variant="cw" data-demo>
+      <div class="hero-demo">
+        <h2 class="hd-title">
+          <span class="ln ln-1" style="display:block">You know what you&rsquo;re building.</span>
+          <span class="ln ln-2" style="display:block">Your brand <span class="marker"><span class="ink" aria-hidden="true"></span><span class="txt">doesn&rsquo;t say it yet.</span></span></span>
+        </h2>
+        <p class="hd-sub">Strategic brand design for founder-led businesses.</p>
+        <div class="hd-actions"><a class="b-solid" href="#">Start a Project</a><a class="b-ghost" href="#">See Selected Work</a></div>
+      </div>
+    </div>
+    <p class="lever-say">Still a fade, but each line drifts up seven pixels as it arrives. Not enough to read as a rise, just enough to give the words a direction. Most people cannot say what the difference is, only that this one feels less flat.</p>
+
+    <p class="lever-say"><b>On E, which you could not see:</b> you were right, there was almost nothing there. Yellow on an off-white ground is the lowest contrast pair in your palette, so a soft yellow wash on the hero is close to invisible. Your version fixes exactly that by bringing blue in and tying it to the pointer, which is in the second file.</p>
+  </section>
+
+  <section>
+    <h2>The other four, for reference</h2>
+    <p class="lede">Same words, same type, same buttons. Only the motion differs.</p>
 
     <div class="stage-bar">
       <div class="stage-name"><span class="stage-key">A</span><h3>As it is now</h3></div>

@@ -1,0 +1,1084 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cursor, scroll and hover</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Work+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<style>
+  :root {
+    --paper:       #FBF9F4;
+    --surface:     #F4F0E7;
+    --ink:         #2A211A;
+    --muted:       #6E6157;
+    --rule:        #E3DCCE;
+    --rule-strong: #CFC5B2;
+    --yellow:      #FFF176;
+    --on-yellow:   #2A211A;
+    --blue:        #00A7E1;
+    --link:        #0077A8;
+    --chip:        #0077A8;
+    --field-alpha: 0.55;
+
+    --measure: 68ch;
+    --ease-soft: cubic-bezier(.22,.61,.36,1);
+    --ease-expo: cubic-bezier(.16,1,.3,1);
+    --ease-back: cubic-bezier(.34,1.56,.64,1);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:       #1B1510;
+      --surface:     #241D16;
+      --ink:         #F0EAE0;
+      --muted:       #AA9C8D;
+      --rule:        #352C24;
+      --rule-strong: #4A3E33;
+      --link:        #62C8EF;
+      --chip:        #62C8EF;
+      --field-alpha: 0.30;
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Work Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page { max-width: 54rem; margin: 0 auto; padding: clamp(2rem,6vw,4.5rem) clamp(1.15rem,5vw,2rem) 7rem; }
+
+  h1, h2, h3, .display {
+    font-family: Newsreader, Georgia, "Times New Roman", serif;
+    font-weight: 500; line-height: 1.18; margin: 0; text-wrap: balance;
+  }
+  p { margin: 0; max-width: var(--measure); }
+  a { color: var(--link); }
+
+  .eyebrow {
+    font-family: "JetBrains Mono", ui-monospace, Menlo, monospace;
+    font-size: .8rem; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--muted); margin: 0;
+  }
+  code {
+    font-family: "JetBrains Mono", ui-monospace, Menlo, monospace;
+    font-size: .85em; background: var(--surface);
+    border: 1px solid var(--rule); border-radius: 3px; padding: .1em .34em;
+  }
+  mark { background: var(--yellow); color: var(--on-yellow); padding: .05em .24em; border-radius: 2px; }
+
+  header.masthead { display:flex; flex-direction:column; gap:.9rem; padding-bottom:1.8rem; border-bottom:2px solid var(--ink); }
+  header.masthead h1 { font-size: clamp(2.2rem,6vw,3.1rem); letter-spacing:-.015em; }
+  header.masthead p { font-size:1.15rem; color:var(--muted); }
+
+  section { padding-top:3.4rem; display:flex; flex-direction:column; gap:1.1rem; }
+  section > h2 { font-size: clamp(1.7rem,4vw,2.2rem); }
+  section > .lede { color:var(--muted); margin-top:-.45rem; }
+  h3 { font-size:1.15rem; }
+
+  ul.plain { margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:.7rem; max-width:var(--measure); }
+  ul.plain > li { padding-left:1.1rem; position:relative; }
+  ul.plain > li::before { content:""; position:absolute; left:0; top:.72em; width:.42rem; height:1px; background:var(--rule-strong); }
+
+  .note { color: var(--muted); font-size:.95rem; max-width:var(--measure); }
+  .note b { color: var(--ink); font-weight:500; }
+
+  /* ================= option cards ================= */
+  .options { display:grid; grid-template-columns:repeat(auto-fit,minmax(15rem,1fr)); gap:1.1rem; }
+  .opt {
+    border:1px solid var(--rule); border-radius:8px; overflow:hidden;
+    display:flex; flex-direction:column; background:var(--surface);
+  }
+  .opt-frame { position:relative; height:11rem; overflow:hidden; background:var(--paper); }
+  .opt-body { padding:.85rem 1rem 1rem; display:flex; flex-direction:column; gap:.3rem; border-top:1px solid var(--rule); }
+  .opt-name { display:flex; align-items:baseline; gap:.55rem; }
+  .opt-key {
+    font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.72rem; font-weight:700;
+    color:var(--muted); font-variant-numeric:tabular-nums;
+  }
+  .opt-body p { font-size:.9rem; color:var(--muted); max-width:none; }
+  .opt-body h3 { font-size:1.05rem; }
+
+  /* scroll frames: the reader scrolls inside these */
+  .scroller { height:100%; overflow-y:auto; padding:0 1rem; scrollbar-width:thin; }
+  .scroller::before, .scroller::after { content:""; display:block; height:8.5rem; }
+  .scroll-hint {
+    position:absolute; right:.5rem; bottom:.5rem; z-index:3;
+    font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.65rem;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--muted);
+    background:var(--surface); border:1px solid var(--rule);
+    border-radius:999px; padding:.2rem .5rem; pointer-events:none;
+  }
+
+  .swatch { background:var(--chip); border-radius:4px; height:2.4rem; }
+  .bar { height:.55rem; background:var(--rule-strong); border-radius:999px; }
+  .bar + .bar { margin-top:.45rem; }
+
+  /* ---------- scroll option animations ---------- */
+  .sc { opacity:1; }
+  .in .s-fade   { animation: fadeUp .7s var(--ease-soft) both; }
+  .in .s-stag > * { animation: fadeUp .55s var(--ease-soft) both; animation-delay: calc(var(--i) * .09s); }
+  .in .s-draw .ink { animation: draw .55s var(--ease-soft) .15s both; }
+  .in .s-mask .ln { animation: rise .8s var(--ease-expo) both; animation-delay: calc(var(--i) * .1s); }
+  .in .s-scale  { animation: scaleSettle 1s var(--ease-expo) both; }
+  .in .s-wipe   { animation: wipeUp .8s var(--ease-expo) both; }
+  .in .s-line .line-ink { animation: growY .9s var(--ease-soft) both; }
+  .in .s-line .dot { animation: pop .4s var(--ease-back) both; animation-delay: calc(.25s + var(--i) * .22s); }
+
+  @keyframes fadeUp      { from { opacity:0; transform:translateY(18px); } }
+  @keyframes rise        { from { transform:translateY(110%); } }
+  @keyframes draw        { from { transform:scaleX(0); } }
+  @keyframes scaleSettle { from { transform:scale(1.09); } }
+  @keyframes wipeUp      { from { clip-path: inset(100% 0 0 0); } }
+  @keyframes growY       { from { transform:scaleY(0); } }
+  @keyframes pop         { from { transform:scale(0); } }
+
+  .mask { display:block; overflow:hidden; }
+  .ln { display:block; }
+
+  .marker { position:relative; display:inline-block; }
+  .marker .ink {
+    position:absolute; left:-.06em; right:-.06em; bottom:.05em; height:.42em;
+    background:var(--yellow); transform-origin:left center; z-index:0; border-radius:2px;
+  }
+  .marker .txt { position:relative; z-index:1; }
+
+  .steps-demo { display:flex; flex-direction:column; gap:.9rem; position:relative; padding-left:1.4rem; }
+  .line-rail { position:absolute; left:.32rem; top:.4rem; bottom:.4rem; width:2px; background:var(--rule); }
+  .line-ink { position:absolute; inset:0; background:var(--chip); transform-origin:top center; }
+  .dot { position:absolute; left:-.42rem; width:.75rem; height:.75rem; border-radius:50%; background:var(--chip); }
+  .step-row { position:relative; }
+
+  .count { font-family:Newsreader,Georgia,serif; font-size:2.6rem; font-variant-numeric:tabular-nums; }
+
+  /* ---------- hover options ---------- */
+  .hov-card {
+    position:absolute; inset:1rem; border-radius:6px; overflow:hidden;
+    background:var(--surface); border:1px solid var(--rule);
+    display:flex; flex-direction:column; cursor:pointer;
+    transition: transform .35s var(--ease-soft), box-shadow .35s var(--ease-soft);
+  }
+  .hov-media { flex:1; overflow:hidden; background:linear-gradient(135deg,var(--yellow),var(--blue)); }
+  .hov-media span { display:block; width:100%; height:100%; transition:transform .55s var(--ease-soft); background:inherit; }
+  .hov-foot { padding:.5rem .7rem; font-size:.86rem; display:flex; justify-content:space-between; gap:.5rem; align-items:center; }
+  .hov-foot .arw { transition:transform .35s var(--ease-soft); display:inline-block; }
+
+  .opt-frame:hover .h-lift   { transform:translateY(-6px); box-shadow:0 14px 30px rgba(42,33,26,.16); }
+  .opt-frame:hover .h-push span { transform:scale(1.09); }
+  .opt-frame:hover .h-shift .arw { transform:translate(4px,-4px); }
+
+  .btn-demo {
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    border:1px solid var(--ink); background:transparent; color:var(--ink);
+    border-radius:999px; padding:.7rem 1.3rem; font:500 .92rem/1 "Work Sans",sans-serif;
+    cursor:pointer; overflow:hidden; isolation:isolate;
+  }
+  .btn-demo .fill {
+    position:absolute; inset:0; background:var(--yellow); z-index:-1;
+    transform:scaleX(0); transform-origin:left center; transition:transform .4s var(--ease-expo);
+  }
+  .opt-frame:hover .btn-demo .fill { transform:scaleX(1); }
+  .btn-demo .arw2 { display:inline-block; transition:transform .35s var(--ease-soft); }
+  .opt-frame:hover .btn-demo .arw2 { transform:translateX(5px); }
+
+  .link-demo {
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    font-size:1.1rem; text-decoration:none; color:var(--ink); position:absolute;
+  }
+  .link-demo .rule2 {
+    position:absolute; left:0; right:0; bottom:-.2em; height:2px; background:var(--ink);
+    transform:scaleX(0); transform-origin:left center; transition:transform .4s var(--ease-expo);
+  }
+  .opt-frame:hover .link-demo .rule2 { transform:scaleX(1); }
+
+  .sweep-demo { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-size:1.1rem; }
+  .sweep-demo .ink { transition:transform .45s var(--ease-expo); transform:scaleX(0); }
+  .opt-frame:hover .sweep-demo .ink { transform:scaleX(1); }
+
+  .magnet, .tilt-card { position:absolute; left:50%; top:50%; }
+  .magnet {
+    transform:translate(-50%,-50%); background:var(--ink); color:var(--paper);
+    border-radius:999px; padding:.75rem 1.4rem; font:500 .92rem/1 "Work Sans",sans-serif;
+    will-change:transform;
+  }
+  .tilt-wrap { position:absolute; inset:1.2rem; perspective:700px; }
+  .tilt-card {
+    position:absolute; inset:0; left:0; top:0; border-radius:8px;
+    background:linear-gradient(140deg,var(--yellow),var(--blue));
+    transform-style:preserve-3d; will-change:transform;
+  }
+
+  .gray-demo { position:absolute; inset:1rem; border-radius:6px; background:linear-gradient(135deg,var(--yellow),var(--blue)); filter:saturate(.15); transition:filter .5s var(--ease-soft); }
+  .opt-frame:hover .gray-demo { filter:saturate(1); }
+
+  /* ================= cursor field ================= */
+  .field-stage {
+    position:relative; border:1px solid var(--rule); border-radius:10px;
+    overflow:hidden; background:var(--paper); isolation:isolate;
+    min-height:22rem; display:flex; align-items:center;
+    padding:clamp(1.5rem,5vw,3rem);
+  }
+  .field-layer {
+    position:absolute; inset:0; z-index:0; pointer-events:none;
+    opacity:var(--field-alpha);
+    background:
+      radial-gradient(var(--size) var(--size) at var(--yx) var(--yy), var(--yellow) 0%, transparent 64%),
+      radial-gradient(calc(var(--size) * 1.15) calc(var(--size) * 1.15) at var(--bx) var(--by), var(--blue) 0%, transparent 62%);
+    filter: blur(var(--blur));
+    transition: opacity .4s ease;
+  }
+  .field-content { position:relative; z-index:1; display:flex; flex-direction:column; gap:1rem; }
+  .field-content h3 { font-size:clamp(1.6rem,4.4vw,2.4rem); }
+  .field-content p { color:var(--muted); max-width:34ch; }
+  .field-hint {
+    position:absolute; right:.75rem; top:.75rem; z-index:2;
+    font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.68rem;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--muted);
+  }
+
+  .dials { display:grid; grid-template-columns:repeat(auto-fit,minmax(13rem,1fr)); gap:1rem 1.6rem; }
+  .dial { display:flex; flex-direction:column; gap:.3rem; }
+  .dial label {
+    font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.75rem;
+    letter-spacing:.06em; text-transform:uppercase; color:var(--muted);
+    display:flex; justify-content:space-between; gap:1rem;
+  }
+  .dial label b { color:var(--ink); font-weight:500; font-variant-numeric:tabular-nums; }
+  .dial input[type=range] { width:100%; accent-color:var(--link); }
+
+  .readout {
+    font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.85rem;
+    background:var(--surface); border:1px solid var(--rule); border-radius:6px;
+    padding:.8rem 1rem; user-select:all; overflow-x:auto; white-space:nowrap;
+  }
+
+  button.play {
+    font:500 .82rem/1 "JetBrains Mono",ui-monospace,monospace;
+    letter-spacing:.06em; text-transform:uppercase; color:var(--ink);
+    background:transparent; border:1px solid var(--rule-strong);
+    border-radius:999px; padding:.55rem 1rem; cursor:pointer;
+    transition:background .18s ease, border-color .18s ease;
+  }
+  button.play:hover { background:var(--yellow); border-color:var(--yellow); color:var(--on-yellow); }
+  button.play:focus-visible, .opt-frame:focus-visible { outline:2px solid var(--link); outline-offset:3px; }
+
+  footer { margin-top:4.5rem; padding-top:1.4rem; border-top:1px solid var(--rule); color:var(--muted); font-size:.94rem; }
+
+  /* ================= whimsy ================= */
+  .progress {
+    position:fixed; left:0; top:0; height:3px; width:0%; z-index:50;
+    background:var(--yellow); transition:width .08s linear;
+  }
+
+  .mark-img { width:1.5rem; height:1.5rem; object-fit:contain; }
+  .mark-img.big { width:2.6rem; height:2.6rem; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .mark-img { filter:invert(1) brightness(1.6); }
+  }
+
+  @keyframes bob    { from { transform:translateY(-3px) rotate(-4deg); } to { transform:translateY(3px) rotate(4deg); } }
+  @keyframes orbit  { from { transform:translate(0,0) rotate(0deg); } to { transform:translate(14px,-18px) rotate(22deg); } }
+  @keyframes loopy  { 0% { transform:translate(0,0) rotate(0); } 45% { transform:translate(9px,-9px) rotate(180deg); } 100% { transform:translate(0,0) rotate(360deg); } }
+  @keyframes cheer  { 0%,100% { transform:rotate(0); } 25% { transform:rotate(-13deg); } 60% { transform:rotate(9deg); } }
+
+  .w-bob { animation: bob 2.6s ease-in-out infinite alternate; display:inline-block; }
+
+  .heading-demo { font-family:Newsreader,Georgia,serif; font-size:1.25rem; display:flex; gap:.55rem; align-items:center; }
+
+  .logo-demo { transition:transform .45s var(--ease-back); display:block; }
+  .opt-frame:hover .logo-demo { transform:rotate(-6deg) scale(1.08); }
+  .logo-demo img { width:4.5rem; height:auto; display:block; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .logo-demo img { filter:invert(1) brightness(1.7); }
+  }
+
+  .faq-demo { position:absolute; inset:1rem; display:flex; flex-direction:column; gap:.5rem; }
+  .faq-row {
+    border:1px solid var(--rule); border-radius:6px; background:var(--surface);
+    padding:.6rem .75rem; display:flex; justify-content:space-between; align-items:center;
+    font-size:.88rem; cursor:pointer;
+  }
+  .faq-row .plus { transition:transform .45s var(--ease-back); font-size:1.1rem; line-height:1; color:var(--muted); }
+  .faq-row[aria-expanded="true"] .plus { transform:rotate(135deg); }
+  .faq-panel { max-height:0; overflow:hidden; transition:max-height .45s var(--ease-expo); }
+  .faq-panel.open { max-height:5rem; }
+  .faq-panel p { font-size:.8rem; color:var(--muted); padding:.4rem .75rem 0; }
+
+  .nav-demo { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); display:flex; gap:.2rem; }
+  .nav-demo a {
+    position:relative; padding:.4rem .7rem; font-size:.9rem; text-decoration:none; color:var(--ink);
+  }
+  .nav-pill {
+    position:absolute; z-index:0; border-radius:999px; background:var(--yellow);
+    transition:transform .42s var(--ease-expo), width .42s var(--ease-expo);
+    top:.25rem; bottom:.25rem; left:0; width:0;
+  }
+  .nav-demo a span { position:relative; z-index:1; }
+
+  .scatter { position:absolute; inset:1rem; display:flex; gap:.5rem; align-items:center; justify-content:center; }
+  .scatter i {
+    display:block; width:3.6rem; height:4.4rem; border-radius:4px;
+    background:linear-gradient(135deg,var(--yellow),var(--blue));
+    transition:transform .45s var(--ease-back);
+  }
+  .scatter i:nth-child(1) { transform:rotate(-7deg); }
+  .scatter i:nth-child(2) { transform:rotate(2deg); }
+  .scatter i:nth-child(3) { transform:rotate(8deg); }
+  .opt-frame:hover .scatter i { transform:rotate(0deg) translateY(-4px); }
+
+  .opt-frame:hover .arw-loop { animation: loopy .7s var(--ease-soft); }
+  .arw-loop { display:inline-block; }
+
+  .opt-frame:hover .w-cheer { animation: cheer .9s ease-in-out; }
+  .w-cheer { display:inline-block; transform-origin:50% 85%; }
+
+  .fourofour { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.2rem; }
+  .fourofour b { font-family:Newsreader,Georgia,serif; font-size:2.8rem; font-weight:500; display:flex; gap:.1rem; align-items:center; }
+  .fourofour small { color:var(--muted); font-size:.8rem; }
+
+  .bg-marks { position:absolute; inset:0; pointer-events:none; opacity:.5; }
+  .bg-marks img { position:absolute; width:1.4rem; animation: orbit 7s ease-in-out infinite alternate; }
+  .bg-marks img:nth-child(1) { left:12%; top:22%; animation-duration:8s; }
+  .bg-marks img:nth-child(2) { left:72%; top:30%; animation-duration:10s; animation-direction:alternate-reverse; }
+  .bg-marks img:nth-child(3) { left:44%; top:68%; animation-duration:9s; }
+
+  .verdict {
+    border-left:3px solid var(--yellow); background:var(--surface);
+    padding:1rem 1.15rem; display:flex; flex-direction:column; gap:.55rem; max-width:var(--measure);
+  }
+  .verdict p { max-width:none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration:.001ms !important; transition-duration:.001ms !important; }
+    .w-bob, .bg-marks img { animation:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<main class="page">
+
+  <header class="masthead">
+    <p class="eyebrow">Working file, part two</p>
+    <h1>Cursor, scroll and hover</h1>
+    <p>Your gradient idea made real, then a menu of scroll and hover options. Everything here is live. Move the pointer, scroll inside the frames, hover the cards.</p>
+  </header>
+
+  <section>
+    <h2>The cursor field</h2>
+    <p class="lede">Your idea. A soft wash of yellow and blue that follows the pointer, so the page is never static anywhere, not just in the hero.</p>
+
+    <div class="field-stage" id="field">
+      <span class="field-layer" id="fieldLayer" aria-hidden="true"></span>
+      <span class="field-hint">move your pointer in here</span>
+      <div class="field-content">
+        <h3 class="display">You know what you&rsquo;re building.<br>Your brand doesn&rsquo;t say it yet.</h3>
+        <p>Strategic brand design for founder-led businesses.</p>
+      </div>
+    </div>
+
+    <p class="note">The blue trails behind the yellow rather than sitting on top of it. That is what stops it reading as one blob, and it is why the two colours keep mixing into new greens and creams as you move.</p>
+
+    <h3>Turn the dials, then tell me the numbers</h3>
+    <div class="dials">
+      <div class="dial">
+        <label for="d-size">Size <b id="v-size">520</b></label>
+        <input type="range" id="d-size" min="180" max="1100" value="520" step="10">
+      </div>
+      <div class="dial">
+        <label for="d-strength">Strength <b id="v-strength">0.55</b></label>
+        <input type="range" id="d-strength" min="0" max="1" value="0.55" step="0.05">
+      </div>
+      <div class="dial">
+        <label for="d-lag">Lag <b id="v-lag">0.09</b></label>
+        <input type="range" id="d-lag" min="0.02" max="0.4" value="0.09" step="0.01">
+      </div>
+      <div class="dial">
+        <label for="d-trail">Blue trail <b id="v-trail">0.45</b></label>
+        <input type="range" id="d-trail" min="0" max="1" value="0.45" step="0.05">
+      </div>
+      <div class="dial">
+        <label for="d-blur">Softness <b id="v-blur">40</b></label>
+        <input type="range" id="d-blur" min="0" max="120" value="40" step="2">
+      </div>
+    </div>
+
+    <div class="readout" id="readout">size 520 &middot; strength 0.55 &middot; lag 0.09 &middot; trail 0.45 &middot; softness 40</div>
+    <p class="note">Triple-click that line to select it, then paste it to me and I will build exactly that.</p>
+
+    <h3>What you should know before saying yes</h3>
+    <ul class="plain">
+      <li><b>It has to sit behind everything and never catch clicks.</b> That is straightforward, but it does mean the wash cannot tint your images, only the background around them.</li>
+      <li><b>Contrast is the real constraint.</b> Blue at full strength behind dark coffee text starts eating into legibility. Strength above roughly 0.6 is where I would want to check the text again rather than take it on faith.</li>
+      <li><b>Touch devices have no pointer.</b> On a phone there is nothing to follow, so it either sits still in one place or drifts slowly on its own. I would drift it, so phones still get the feeling.</li>
+      <li><b>Reduced motion turns it off.</b> Anyone who has asked their system to stop animations gets a still version.</li>
+      <li><b>It is cheap to run.</b> Two blurred gradients moved by transform, updated once per frame. It will not slow the site down.</li>
+      <li><b>In dark mode it wants to be about half as strong.</b> Yellow on dark coffee is high contrast, so the same setting that reads as subtle in daylight reads as a lamp at night.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Scroll animations</h2>
+    <p class="lede">Scroll inside each frame to see it. Pick the ones you want, and say where.</p>
+
+    <div class="options">
+
+      <div class="opt">
+        <div class="opt-frame" data-scroll>
+          <span class="scroll-hint">scroll</span>
+          <div class="scroller">
+            <div class="sc s-fade">
+              <div class="swatch"></div>
+              <div style="margin-top:.6rem"><span class="bar" style="display:block;width:90%"></span><span class="bar" style="display:block;width:70%"></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">S1</span><h3>Fade up</h3></div>
+          <p>Lifts eighteen pixels and fades as it enters. This is what every section on the site does today.</p>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="opt-frame" data-scroll>
+          <span class="scroll-hint">scroll</span>
+          <div class="scroller">
+            <div class="sc s-stag" style="display:flex;flex-direction:column;gap:.5rem">
+              <span class="bar" style="--i:0"></span><span class="bar" style="--i:1"></span>
+              <span class="bar" style="--i:2"></span><span class="bar" style="--i:3"></span>
+              <span class="bar" style="--i:4"></span>
+            </div>
+          </div>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">S2</span><h3>Stagger</h3></div>
+          <p>The same fade, but each item waits for the one before it. For lists, cards and the work grid.</p>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="opt-frame" data-scroll>
+          <span class="scroll-hint">scroll</span>
+          <div class="scroller">
+            <div class="sc s-draw" style="font-family:Newsreader,Georgia,serif;font-size:1.3rem;line-height:1.3">
+              The decision behind <span class="marker"><span class="ink" aria-hidden="true"></span><span class="txt">each project.</span></span>
+            </div>
+          </div>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">S3</span><h3>Marker draw</h3></div>
+          <p>Your highlighter paints itself across the key phrase of a section heading. The same device as the hero.</p>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="opt-frame" data-scroll>
+          <span class="scroll-hint">scroll</span>
+          <div class="scroller">
+            <div class="sc s-mask" style="font-family:Newsreader,Georgia,serif;font-size:1.2rem;line-height:1.35">
+              <span class="mask"><span class="ln" style="--i:0">Brand strategy, identity</span></span>
+              <span class="mask"><span class="ln" style="--i:1">and packaging for</span></span>
+              <span class="mask"><span class="ln" style="--i:2">founder-led businesses.</span></span>
+            </div>
+          </div>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">S4</span><h3>Line by line</h3></div>
+          <p>Lines rise from behind a mask, one after another. Heavier than a fade. Best used once or twice on a page.</p>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="opt-frame" data-scroll>
+          <span class="scroll-hint">scroll</span>
+          <div class="scroller">
+            <div style="overflow:hidden;border-radius:6px">
+              <div class="sc s-scale" style="height:6rem;background:linear-gradient(135deg,var(--yellow),var(--blue))"></div>
+            </div>
+          </div>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">S5</span><h3>Settle in</h3></div>
+          <p>An image starts slightly too large and settles to its true size. Quiet, and it suits case study covers.</p>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="opt-frame" data-scroll>
+          <span class="scroll-hint">scroll</span>
+          <div class="scroller">
+            <div class="sc s-wipe" style="height:6rem;border-radius:6px;background:linear-gradient(135deg,var(--yellow),var(--blue))"></div>
+          </div>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">S6</span><h3>Wipe up</h3></div>
+          <p>Uncovered from the bottom rather than faded. Reads as printing rather than appearing.</p>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="opt-frame" data-scroll>
+          <span class="scroll-hint">scroll</span>
+          <div class="scroller">
+            <div class="sc s-line">
+              <div class="steps-demo">
+                <span class="line-rail"><span class="line-ink"></span></span>
+                <div class="step-row"><span class="dot" style="--i:0"></span><span class="bar" style="width:80%"></span></div>
+                <div class="step-row"><span class="dot" style="--i:1"></span><span class="bar" style="width:65%"></span></div>
+                <div class="step-row"><span class="dot" style="--i:2"></span><span class="bar" style="width:72%"></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">S7</span><h3>Connecting line</h3></div>
+          <p>A line draws down through the steps as you reach them. Only honest where the content really is a sequence, so: the approach section.</p>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="opt-frame" data-scroll>
+          <span class="scroll-hint">scroll</span>
+          <div class="scroller">
+            <div class="sc" style="text-align:center">
+              <span class="count" data-count="20">0</span>
+              <div style="font-size:.85rem;color:var(--muted)">plus clients</div>
+            </div>
+          </div>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">S8</span><h3>Count up</h3></div>
+          <p>A figure ticks to its value. Works once on a page. Twice and it starts to feel like a sales deck.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>Hover animations</h2>
+    <p class="lede">Hover each frame. On a phone these do nothing, which is why none of them can be the only way to understand something.</p>
+
+    <div class="options">
+
+      <div class="opt">
+        <div class="opt-frame" tabindex="0">
+          <div class="hov-card h-lift">
+            <div class="hov-media"><span></span></div>
+            <div class="hov-foot"><span>Swirly</span><span class="arw">&#8599;</span></div>
+          </div>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">H1</span><h3>Lift</h3></div>
+          <p>The card rises and casts a shadow. The most conventional option, and it reads instantly as clickable.</p>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="opt-frame" tabindex="0">
+          <div class="hov-card h-push">
+            <div class="hov-media"><span></span></div>
+            <div class="hov-foot"><span>Paloma</span><span class="arw">&#8599;</span></div>
+          </div>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">H2</span><h3>Image push in</h3></div>
+          <p>The card holds still and the picture grows inside its frame. Calmer than a lift, and it puts the attention on the work.</p>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="opt-frame" tabindex="0">
+          <div class="hov-card h-shift">
+            <div class="hov-media"><span></span></div>
+            <div class="hov-foot"><span>Asmi</span><span class="arw">&#8599;</span></div>
+          </div>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">H3</span><h3>Arrow travels</h3></div>
+          <p>Only the arrow moves, in the direction it points. Almost nothing, which is the appeal.</p>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="opt-frame" tabindex="0">
+          <button class="btn-demo" type="button"><span class="fill" aria-hidden="true"></span>Start a Project</button>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">H4</span><h3>Fill wipe</h3></div>
+          <p>The yellow paints across the button rather than switching on. Same device as the marker, applied to a control.</p>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="opt-frame" tabindex="0">
+          <button class="btn-demo" type="button">Start a Project <span class="arw2">&rarr;</span></button>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">H5</span><h3>Arrow nudge</h3></div>
+          <p>The arrow inside a button slides forward. Pairs with H4 rather than competing with it.</p>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="opt-frame" tabindex="0">
+          <a class="link-demo" href="#">See selected work<span class="rule2" aria-hidden="true"></span></a>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">H6</span><h3>Underline draws</h3></div>
+          <p>The rule grows from the left instead of appearing whole. For text links in body copy.</p>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="opt-frame" tabindex="0">
+          <span class="sweep-demo"><span class="marker"><span class="ink" aria-hidden="true"></span><span class="txt">hello@snehajain.co.uk</span></span></span>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">H7</span><h3>Marker sweep</h3></div>
+          <p>Your highlighter paints behind a link on hover. Strong, so it belongs on one or two links, not all of them.</p>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="opt-frame" tabindex="0" data-magnet>
+          <button class="magnet" type="button">Let&rsquo;s work it out</button>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">H8</span><h3>Magnetic</h3></div>
+          <p>The button leans toward your pointer as you approach. Playful, and it fits the cursor field idea rather than fighting it.</p>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="opt-frame" tabindex="0" data-tilt>
+          <div class="tilt-wrap"><div class="tilt-card"></div></div>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">H9</span><h3>Tilt</h3></div>
+          <p>The card turns in space to face your pointer. The most physical of these, and the easiest to overdo.</p>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="opt-frame" tabindex="0">
+          <div class="gray-demo"></div>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">H10</span><h3>Colour arrives</h3></div>
+          <p>The image sits desaturated and comes to life under the pointer. Beautiful on the right photography, dishonest on packaging shots where colour is the work.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>Whimsy, element by element</h2>
+    <p class="lede">Small, specific, and mostly only visible if you go looking. Whimsy survives being rare and dies of being everywhere.</p>
+
+    <p class="note"><b>You already have one.</b> Select any text on this page, or on your site. It highlights in your yellow rather than the browser's blue. That has been in <code>globals.css</code> since the beginning, and it is exactly the register we are aiming at: nobody notices it, and it makes the page feel made.</p>
+
+    <p class="note"><b>And you have four unused marks.</b> <code>mark-braces</code>, <code>mark-diamond</code>, <code>mark-dots</code> and <code>mark-heart</code> are sitting in <code>public/img/</code> doing nothing. They are the most obviously "yours" material available, so several of these use them.</p>
+
+    <div class="options">
+
+      <div class="opt">
+        <div class="opt-frame">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:1rem">
+            <span class="heading-demo">
+              <img class="mark-img w-bob" src="../public/img/mark-diamond.png" alt="">
+              Selected work
+            </span>
+          </div>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">W1</span><h3>A mark that breathes</h3></div>
+          <p>One of your marks sits beside a section heading and drifts, very slowly, forever. Almost subliminal, and it puts your own shapes on the page rather than a generic dot.</p>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="opt-frame">
+          <div class="bg-marks" aria-hidden="true">
+            <img src="../public/img/mark-dots.png" alt="">
+            <img src="../public/img/mark-braces.png" alt="">
+            <img src="../public/img/mark-heart.png" alt="">
+          </div>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:Newsreader,Georgia,serif;font-size:1.1rem">
+            Founders, in their words.
+          </div>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">W2</span><h3>Marks adrift</h3></div>
+          <p>Your marks scattered faintly behind a section, each moving on its own slow path. Pairs with the cursor field, but the two together may be one thing too many.</p>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="opt-frame" tabindex="0">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+            <span class="logo-demo"><img src="../public/img/logo-dark.png" alt="Sneha Jain logo"></span>
+          </div>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">W3</span><h3>The logo tips its hat</h3></div>
+          <p>Your mark leans and grows very slightly under the pointer. It is the one element on every page, so it is the cheapest place to put personality.</p>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="opt-frame">
+          <div class="faq-demo" id="faqDemo">
+            <div>
+              <div class="faq-row" role="button" tabindex="0" aria-expanded="false"><span>How long does it take?</span><span class="plus">+</span></div>
+              <div class="faq-panel"><p>Usually four to six weeks, depending on scope.</p></div>
+            </div>
+            <div>
+              <div class="faq-row" role="button" tabindex="0" aria-expanded="false"><span>Do you work remotely?</span><span class="plus">+</span></div>
+              <div class="faq-panel"><p>Always. Southampton based, clients anywhere.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">W4</span><h3>The plus springs</h3></div>
+          <p>Click one. The plus turns into a cross with a little overshoot rather than a flat rotation. Pure micro-detail, and it costs nothing.</p>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="opt-frame">
+          <nav class="nav-demo" id="navDemo">
+            <span class="nav-pill" aria-hidden="true"></span>
+            <a href="#" class="active"><span>Work</span></a>
+            <a href="#"><span>About</span></a>
+            <a href="#"><span>Services</span></a>
+          </nav>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">W5</span><h3>The nav pill slides</h3></div>
+          <p>Hover the items. A yellow pill travels between them rather than blinking on and off. Small, but it makes the header feel like one object.</p>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="opt-frame" tabindex="0">
+          <div class="scatter"><i></i><i></i><i></i></div>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">W6</span><h3>Photographs straighten up</h3></div>
+          <p>Gallery images sit a degree or two off true, like prints laid on a desk, and straighten when you approach. Charming once per case study, twee if it is every image.</p>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="opt-frame" tabindex="0">
+          <button class="btn-demo" type="button">Start a Project <span class="arw-loop">&rarr;</span></button>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">W7</span><h3>The arrow loops</h3></div>
+          <p>Instead of nudging forward, the arrow turns a full loop and comes back. Noticeably more playful than H5, and it is the sort of thing people mention.</p>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="opt-frame" tabindex="0">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:.5rem;font-size:.95rem">
+            Made in Southampton
+            <img class="mark-img w-cheer" src="../public/img/mark-heart.png" alt="">
+          </div>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">W8</span><h3>A reward at the bottom</h3></div>
+          <p>Something small at the very end of the footer that only reacts to people who got all the way down. Hover it. Whimsy is at its safest where only the curious find it.</p>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="opt-frame">
+          <div class="fourofour">
+            <b>4<img class="mark-img big w-bob" src="../public/img/mark-dots.png" alt="0">4</b>
+            <small>This page went somewhere else.</small>
+          </div>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">W9</span><h3>The 404</h3></div>
+          <p>A mark stands in for the zero. Nobody plans to see this page, so it is the one place where being playful costs you nothing at all.</p>
+        </div>
+      </div>
+
+      <div class="opt">
+        <div class="opt-frame">
+          <div style="position:absolute;left:0;right:0;top:0;height:3px;background:var(--rule)"></div>
+          <div style="position:absolute;left:0;top:0;height:3px;width:62%;background:var(--yellow)"></div>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.85rem">
+            look at the top of this page
+          </div>
+        </div>
+        <div class="opt-body">
+          <div class="opt-name"><span class="opt-key">W10</span><h3>Scroll progress</h3></div>
+          <p>A hairline of yellow across the very top, filling as you read. It is live on this page right now. Useful as well as pleasant on long case studies.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <h3>How much is too much</h3>
+    <p class="note">The failure mode is not any single one of these. It is three of them firing in the same eyeful, which stops reading as care and starts reading as a demo. The test I would apply: <b>at any moment, at most one thing on screen should be doing something you did not ask it to do.</b></p>
+
+    <div class="verdict">
+      <p><b>If you want my pick for "a little, throughout, not too much":</b></p>
+      <p><b>The cursor field</b>, gentle, as the one ambient thing. It is everywhere, so it does the "throughout" work by itself and nothing else has to.</p>
+      <p><b>W3, W4, W5 and W7</b>, all of which only happen when someone touches something. Interaction whimsy is free: it cannot pile up, because a person can only touch one thing at a time.</p>
+      <p><b>W9</b>, because it is a page nobody plans to visit.</p>
+      <p><b>Not W2</b> if you take the cursor field, since that is two ambient things competing. <b>Not W6</b> beyond one image per case study. <b>W10</b> is a genuine usability win on long pages, so I would count it as furniture rather than whimsy.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>How to tell me</h2>
+    <p>Codes are enough. For example:</p>
+    <ul class="plain">
+      <li>"Cursor field yes, at <code>size 520 &middot; strength 0.35 &middot; lag 0.12 &middot; trail 0.6 &middot; softness 60</code>."</li>
+      <li>"S2 on the work grid, S3 on every section heading, S7 on the approach. No to S8."</li>
+      <li>"H2 and H3 together on the work cards, H4 on buttons, H6 on text links. H9 is too much."</li>
+      <li>"W3, W4, W5, W7 and W9. Nothing else."</li>
+      <li>"All of it is too slow" or "all of it is too much" are both useful answers.</li>
+    </ul>
+    <p class="note">You do not have to pick from every list. Saying no to a whole section is a real answer, and restraint usually looks more expensive than the alternative.</p>
+  </section>
+
+  <footer>
+    <p>A working file, not part of the site. It lives in <code>docs/</code> and is never published. The hero options are in <code>docs/animation-lab.html</code>.</p>
+  </footer>
+
+</main>
+
+<script>
+(function () {
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- the cursor field ---------- */
+  var stage = document.getElementById('field');
+  var layer = document.getElementById('fieldLayer');
+
+  var dials = {
+    size:     document.getElementById('d-size'),
+    strength: document.getElementById('d-strength'),
+    lag:      document.getElementById('d-lag'),
+    trail:    document.getElementById('d-trail'),
+    blur:     document.getElementById('d-blur')
+  };
+  var out = {
+    size:     document.getElementById('v-size'),
+    strength: document.getElementById('v-strength'),
+    lag:      document.getElementById('v-lag'),
+    trail:    document.getElementById('v-trail'),
+    blur:     document.getElementById('v-blur')
+  };
+  var readout = document.getElementById('readout');
+
+  // target, yellow position, blue position, all in percentages
+  var tx = 50, ty = 50, yx = 50, yy = 50, bx = 50, by = 50;
+
+  function settings() {
+    return {
+      size:     Number(dials.size.value),
+      strength: Number(dials.strength.value),
+      lag:      Number(dials.lag.value),
+      trail:    Number(dials.trail.value),
+      blur:     Number(dials.blur.value)
+    };
+  }
+
+  function paintDials() {
+    var s = settings();
+    out.size.textContent     = s.size;
+    out.strength.textContent = s.strength.toFixed(2);
+    out.lag.textContent      = s.lag.toFixed(2);
+    out.trail.textContent    = s.trail.toFixed(2);
+    out.blur.textContent     = s.blur;
+    readout.textContent =
+      'size ' + s.size +
+      ' · strength ' + s.strength.toFixed(2) +
+      ' · lag ' + s.lag.toFixed(2) +
+      ' · trail ' + s.trail.toFixed(2) +
+      ' · softness ' + s.blur;
+    layer.style.setProperty('--size', s.size + 'px');
+    layer.style.setProperty('--blur', s.blur + 'px');
+    layer.style.opacity = s.strength;
+  }
+
+  Object.keys(dials).forEach(function (k) {
+    dials[k].addEventListener('input', paintDials);
+  });
+  paintDials();
+
+  if (stage) {
+    stage.addEventListener('pointermove', function (e) {
+      var r = stage.getBoundingClientRect();
+      tx = ((e.clientX - r.left) / r.width) * 100;
+      ty = ((e.clientY - r.top) / r.height) * 100;
+    });
+    stage.addEventListener('pointerleave', function () { tx = 50; ty = 50; });
+  }
+
+  function frame() {
+    var s = settings();
+    // yellow chases the pointer, blue chases the yellow more slowly,
+    // which is what keeps the two colours from sitting on top of each other
+    yx += (tx - yx) * s.lag;
+    yy += (ty - yy) * s.lag;
+    var blueLag = s.lag * (1 - s.trail * 0.85);
+    bx += (yx - bx) * blueLag;
+    by += (yy - by) * blueLag;
+
+    layer.style.setProperty('--yx', yx.toFixed(2) + '%');
+    layer.style.setProperty('--yy', yy.toFixed(2) + '%');
+    layer.style.setProperty('--bx', bx.toFixed(2) + '%');
+    layer.style.setProperty('--by', by.toFixed(2) + '%');
+    requestAnimationFrame(frame);
+  }
+  if (layer) {
+    layer.style.setProperty('--yx', '50%');
+    layer.style.setProperty('--yy', '50%');
+    layer.style.setProperty('--bx', '50%');
+    layer.style.setProperty('--by', '50%');
+    requestAnimationFrame(frame);
+  }
+
+  /* ---------- scroll demos: watch inside each frame ---------- */
+  document.querySelectorAll('[data-scroll]').forEach(function (frameEl) {
+    var target = frameEl.querySelector('.sc');
+    if (!target) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        // re-arm every time it leaves, so scrolling back replays it
+        if (e.isIntersecting) {
+          frameEl.classList.add('in');
+          var c = target.querySelector('[data-count]');
+          if (c) countTo(c);
+        } else {
+          frameEl.classList.remove('in');
+        }
+      });
+    }, { root: frameEl, threshold: 0.6 });
+    io.observe(target);
+  });
+
+  function countTo(el) {
+    var target = Number(el.getAttribute('data-count'));
+    if (reduced) { el.textContent = target; return; }
+    var start = performance.now(), dur = 900;
+    function tick(now) {
+      var p = Math.min((now - start) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * eased);
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  /* ---------- magnetic button ---------- */
+  document.querySelectorAll('[data-magnet]').forEach(function (frameEl) {
+    var btn = frameEl.querySelector('.magnet');
+    if (!btn) return;
+    frameEl.addEventListener('pointermove', function (e) {
+      if (reduced) return;
+      var r = frameEl.getBoundingClientRect();
+      var dx = (e.clientX - (r.left + r.width / 2)) * 0.28;
+      var dy = (e.clientY - (r.top + r.height / 2)) * 0.28;
+      btn.style.transform = 'translate(calc(-50% + ' + dx + 'px), calc(-50% + ' + dy + 'px))';
+    });
+    frameEl.addEventListener('pointerleave', function () {
+      btn.style.transition = 'transform .45s cubic-bezier(.34,1.56,.64,1)';
+      btn.style.transform = 'translate(-50%, -50%)';
+      setTimeout(function () { btn.style.transition = ''; }, 460);
+    });
+  });
+
+  /* ---------- W10: the yellow hairline at the top of this page ---------- */
+  var bar = document.createElement('div');
+  bar.className = 'progress';
+  document.body.appendChild(bar);
+  function paintProgress() {
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    var pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+    bar.style.width = Math.min(pct, 100) + '%';
+  }
+  window.addEventListener('scroll', paintProgress, { passive: true });
+  window.addEventListener('resize', paintProgress);
+  paintProgress();
+
+  /* ---------- W4: the FAQ plus that springs ---------- */
+  document.querySelectorAll('#faqDemo .faq-row').forEach(function (row) {
+    function toggle() {
+      var open = row.getAttribute('aria-expanded') === 'true';
+      row.setAttribute('aria-expanded', String(!open));
+      var panel = row.nextElementSibling;
+      if (panel) panel.classList.toggle('open', !open);
+    }
+    row.addEventListener('click', toggle);
+    row.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+    });
+  });
+
+  /* ---------- W5: the nav pill that slides between items ---------- */
+  (function () {
+    var nav = document.getElementById('navDemo');
+    if (!nav) return;
+    var pill = nav.querySelector('.nav-pill');
+    var items = nav.querySelectorAll('a');
+
+    function moveTo(el) {
+      pill.style.width = el.offsetWidth + 'px';
+      pill.style.transform = 'translateX(' + el.offsetLeft + 'px)';
+    }
+    items.forEach(function (a) {
+      a.addEventListener('pointerenter', function () { moveTo(a); });
+      a.addEventListener('focus', function () { moveTo(a); });
+      a.addEventListener('click', function (e) { e.preventDefault(); });
+    });
+    nav.addEventListener('pointerleave', function () {
+      moveTo(nav.querySelector('a.active'));
+    });
+    // settle on the active item once fonts have loaded and widths are real
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () { moveTo(nav.querySelector('a.active')); });
+    } else {
+      moveTo(nav.querySelector('a.active'));
+    }
+  })();
+
+  /* ---------- tilt card ---------- */
+  document.querySelectorAll('[data-tilt]').forEach(function (frameEl) {
+    var card = frameEl.querySelector('.tilt-card');
+    if (!card) return;
+    frameEl.addEventListener('pointermove', function (e) {
+      if (reduced) return;
+      var r = frameEl.getBoundingClientRect();
+      var px = (e.clientX - r.left) / r.width - 0.5;
+      var py = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = 'rotateY(' + (px * 16).toFixed(2) + 'deg) rotateX(' + (-py * 16).toFixed(2) + 'deg)';
+    });
+    frameEl.addEventListener('pointerleave', function () {
+      card.style.transition = 'transform .5s cubic-bezier(.22,.61,.36,1)';
+      card.style.transform = 'rotateY(0deg) rotateX(0deg)';
+      setTimeout(function () { card.style.transition = ''; }, 520);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
